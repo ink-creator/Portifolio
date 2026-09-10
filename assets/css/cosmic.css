@@ -66,14 +66,14 @@ body {
   top: -305px;
   transform: translateX(-50%) rotate(-5deg);
   border-radius: 50%;
-  border: 2px solid #dfb9ff;
+  border: 2px solid #b46aff;
   box-shadow:
-    0 0 10px 3px #f0d7ff,
-    0 0 32px 13px #bd67ff,
-    0 0 70px 26px #853bf3aa,
-    0 0 140px 52px #5631de55,
-    inset 0 0 20px 7px #ca8eff,
-    inset 0 0 55px 17px #924ff5;
+    0 0 10px 3px #bc78ff,
+    0 0 32px 13px #9b3dff,
+    0 0 70px 26px #8024efaa,
+    0 0 140px 52px #6621ce55,
+    inset 0 0 20px 7px #ac55ff,
+    inset 0 0 55px 17px #8b32f5;
   animation: halo-breathe 9s ease-in-out infinite alternate;
 }
 .cosmic-horizon {
@@ -512,12 +512,12 @@ body {
     height: 310px;
     top: -250px;
     box-shadow:
-      0 0 8px 2px #e0bbff,
-      0 0 27px 10px #a754ff,
-      0 0 64px 22px #8136f399,
-      0 0 115px 35px #5631de44,
-      inset 0 0 16px 5px #c48cff,
-      inset 0 0 40px 12px #9145f5;
+      0 0 8px 2px #b46aff,
+      0 0 27px 10px #9635ff,
+      0 0 64px 22px #7e24ef99,
+      0 0 115px 35px #6621ce44,
+      inset 0 0 16px 5px #a84fff,
+      inset 0 0 40px 12px #882df5;
   }
   .site-header .nav {
     background: #0f0922f5;
