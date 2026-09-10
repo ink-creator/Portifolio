@@ -20,23 +20,42 @@ for (const [name, pem] of [
   ["Windows CRLF and outer whitespace", `\uFEFF \r\n${pkcs1.replace(/\n/g, "\r\n")}\r\n `],
   ["escaped newlines", pkcs1.replace(/\n/g, "\\n")],
   ["escaped Windows newlines", pkcs1.replace(/\n/g, "\\r\\n")],
-  ["escaped PKCS#8", pkcs8.replace(/\n/g, "\\n")]
+  ["escaped PKCS#8", pkcs8.replace(/\n/g, "\\n")],
 ]) {
   test(`signs a verifiable RS256 JWT using ${name}`, async () => {
     const key = await importGitHubPrivateKey(pem);
     const token = await new SignJWT({ iss: "test-app" })
-      .setProtectedHeader({ alg: "RS256" }).setIssuedAt().setExpirationTime("5m").sign(key);
+      .setProtectedHeader({ alg: "RS256" })
+      .setIssuedAt()
+      .setExpirationTime("5m")
+      .sign(key);
     const { payload } = await jwtVerify(token, publicKey, { algorithms: ["RS256"] });
     assert.equal(payload.iss, "test-app");
   });
 }
 
 test("rejects missing, malformed, encrypted and non-RSA keys without exposing input", async () => {
-  const ec = generateKeyPairSync("ec", { namedCurve: "prime256v1" }).privateKey
-    .export({ format: "pem", type: "pkcs8" });
-  const encrypted = privateKey.export({ type: "pkcs8", format: "pem", cipher: "aes-256-cbc", passphrase: "test-only" });
-  for (const value of [undefined, "", "   ", "C:\\private\\secret.pem", "SECRET_MARKER", pkcs1.slice(0, 200), encrypted, ec]) {
-    await assert.rejects(importGitHubPrivateKey(value), error => {
+  const ec = generateKeyPairSync("ec", { namedCurve: "prime256v1" }).privateKey.export({
+    format: "pem",
+    type: "pkcs8",
+  });
+  const encrypted = privateKey.export({
+    type: "pkcs8",
+    format: "pem",
+    cipher: "aes-256-cbc",
+    passphrase: "test-only",
+  });
+  for (const value of [
+    undefined,
+    "",
+    "   ",
+    "C:\\private\\secret.pem",
+    "SECRET_MARKER",
+    pkcs1.slice(0, 200),
+    encrypted,
+    ec,
+  ]) {
+    await assert.rejects(importGitHubPrivateKey(value), (error) => {
       assert.match(error.message, /GITHUB_PRIVATE_KEY/);
       assert.doesNotMatch(error.message, /SECRET_MARKER|BEGIN|MII|secret\.pem/);
       return true;
@@ -44,15 +63,25 @@ test("rejects missing, malformed, encrypted and non-RSA keys without exposing in
   }
 });
 
-test("publishes through the Worker with a PKCS#1 key and verified App JWT", async t => {
+test("publishes through the Worker with a PKCS#1 key and verified App JWT", async (t) => {
   const env = {
-    GITHUB_PRIVATE_KEY: pkcs1, GITHUB_APP_ID: "test-app", GITHUB_OWNER: "test-owner",
-    GITHUB_REPO: "test-repo", GITHUB_BRANCH: "main", SESSION_SECRET: "disposable-session-secret-for-local-tests-only"
+    GITHUB_PRIVATE_KEY: pkcs1,
+    GITHUB_APP_ID: "test-app",
+    GITHUB_OWNER: "test-owner",
+    GITHUB_REPO: "test-repo",
+    GITHUB_BRANCH: "main",
+    SESSION_SECRET: "disposable-session-secret-for-local-tests-only",
   };
-  const session = await new SignJWT({ login: "test-owner" }).setProtectedHeader({ alg: "HS256" })
-    .setIssuer("ink-stella-admin").setAudience("portfolio-worker").setIssuedAt().setExpirationTime("5m")
+  const session = await new SignJWT({ login: "test-owner" })
+    .setProtectedHeader({ alg: "HS256" })
+    .setIssuer("ink-stella-admin")
+    .setAudience("portfolio-worker")
+    .setIssuedAt()
+    .setExpirationTime("5m")
     .sign(new TextEncoder().encode(env.SESSION_SECRET));
-  const projects = [{ id: "teste-do-painel", title: "Teste do Painel", shortDescription: "Teste", media: {} }];
+  const projects = [
+    { id: "teste-do-painel", title: "Teste do Painel", shortDescription: "Teste", media: {} },
+  ];
   const repo = "/repos/test-owner/test-repo";
   const expected = [
     ["GET", `${repo}/installation`, { id: 42 }],
@@ -62,7 +91,7 @@ test("publishes through the Worker with a PKCS#1 key and verified App JWT", asyn
     ["POST", `${repo}/git/blobs`, { sha: "projects-blob" }],
     ["POST", `${repo}/git/trees`, { sha: "next-tree" }],
     ["POST", `${repo}/git/commits`, { sha: "next-commit" }],
-    ["PATCH", `${repo}/git/refs/heads/main`, {}]
+    ["PATCH", `${repo}/git/refs/heads/main`, {}],
   ];
   let count = 0;
   t.mock.method(globalThis, "fetch", async (url, options) => {
@@ -79,17 +108,26 @@ test("publishes through the Worker with a PKCS#1 key and verified App JWT", asyn
     } else assert.equal(token, "test-installation-token");
     if (count === 5) {
       const body = JSON.parse(options.body);
-      const saved = JSON.parse(body.encoding === "utf-8" ? body.content : Buffer.from(body.content, "base64").toString("utf8"));
+      const saved = JSON.parse(
+        body.encoding === "utf-8"
+          ? body.content
+          : Buffer.from(body.content, "base64").toString("utf8"),
+      );
       assert.equal(saved.projects[0].id, "teste-do-painel");
     }
     if (count === 7) assert.equal(JSON.parse(options.body).message, "admin: atualizar projetos");
-    if (count === 8) assert.deepEqual(JSON.parse(options.body), { sha: "next-commit", force: false });
+    if (count === 8)
+      assert.deepEqual(JSON.parse(options.body), { sha: "next-commit", force: false });
     return Response.json(step[2]);
   });
-  const response = await worker.fetch(new Request("https://worker.test/api/publish", {
-    method: "POST", headers: { Authorization: `Bearer ${session}`, "Content-Type": "application/json" },
-    body: JSON.stringify({ projects })
-  }), env);
+  const response = await worker.fetch(
+    new Request("https://worker.test/api/publish", {
+      method: "POST",
+      headers: { Authorization: `Bearer ${session}`, "Content-Type": "application/json" },
+      body: JSON.stringify({ projects }),
+    }),
+    env,
+  );
   const body = await response.json();
   assert.equal(response.status, 200, JSON.stringify(body));
   assert.equal(body.ok, true);

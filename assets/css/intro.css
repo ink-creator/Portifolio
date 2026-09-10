@@ -1,24 +1,64 @@
 /* Entrance only. All temporary styles are removed when the intro finishes. */
-html.intro-pending { background: #03020d; }
+html.intro-pending {
+  background: #03020d;
+}
 .intro-pending .home-page .site-header,
 .intro-pending .home-page .hero-copy,
 .intro-pending .home-page .creative-stage,
 .intro-pending .home-page .home-paths,
-.intro-pending .home-page .footer { opacity: 0; }
-.intro-pending .home-page .cosmic-halo { visibility: hidden; animation: none; }
-.intro-pending .home-page .hero-note .smile { visibility: hidden; }
-.portfolio-intro { position: fixed; inset: 0; z-index: 90; pointer-events: none; }
-.portfolio-intro__screen { position: absolute; inset: 0; background: #03020d; }
-.portfolio-intro__ring { position: fixed; border-radius: 50%; pointer-events: none; }
-.portfolio-intro__face { position: fixed; margin: 0; fill: none; stroke: #c998f2; stroke-width: 2.5; stroke-linecap: round; overflow: visible; pointer-events: none; }
-.portfolio-intro__eye { transform-box: fill-box; transform-origin: center; }
+.intro-pending .home-page .footer {
+  opacity: 0;
+}
+.intro-pending .home-page .cosmic-halo {
+  visibility: hidden;
+  animation: none;
+}
+.intro-pending .home-page .hero-note .smile {
+  visibility: hidden;
+}
+.portfolio-intro {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  pointer-events: none;
+}
+.portfolio-intro__screen {
+  position: absolute;
+  inset: 0;
+  background: #03020d;
+}
+.portfolio-intro__ring {
+  position: fixed;
+  border-radius: 50%;
+  pointer-events: none;
+}
+.portfolio-intro__face {
+  position: fixed;
+  margin: 0;
+  fill: none;
+  stroke: #c998f2;
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  overflow: visible;
+  pointer-events: none;
+}
+.portfolio-intro__eye {
+  transform-box: fill-box;
+  transform-origin: center;
+}
 @media (prefers-reduced-motion: reduce) {
-  .portfolio-intro { display: none; }
+  .portfolio-intro {
+    display: none;
+  }
   .intro-pending .home-page .site-header,
   .intro-pending .home-page .hero-copy,
   .intro-pending .home-page .creative-stage,
   .intro-pending .home-page .home-paths,
-  .intro-pending .home-page .footer { opacity: 1; }
+  .intro-pending .home-page .footer {
+    opacity: 1;
+  }
   .intro-pending .home-page .cosmic-halo,
-  .intro-pending .home-page .hero-note .smile { visibility: visible; }
+  .intro-pending .home-page .hero-note .smile {
+    visibility: visible;
+  }
 }

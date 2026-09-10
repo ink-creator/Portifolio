@@ -1,61 +1,332 @@
 <!doctype html>
 <html lang="pt-BR">
-<head>
-  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#03020d"><meta name="robots" content="noindex">
-  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml"><title>Editor — Ink × Stella</title>
-  <link rel="stylesheet" href="../assets/css/style.css"><link rel="stylesheet" href="../assets/css/responsive.css"><link rel="stylesheet" href="../assets/css/cosmic.css"><link rel="stylesheet" href="../assets/css/admin.css">
-</head>
-<body class="editor-body">
-  <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
-  <header class="site-header"><a class="brand" href="../" aria-label="Ink e Stella, início">ink<span>×</span>stella<span class="brand-dot">.</span></a><button class="menu-toggle" aria-label="Abrir menu" aria-expanded="false" aria-controls="site-nav"><span></span><span></span></button><nav class="nav" id="site-nav" aria-label="Navegação do painel"><a href="../">Ver site ↗</a><a href="../projetos/">Projetos</a><a class="active" aria-current="page" href="./">Editor</a></nav></header>
-  <main id="conteudo" class="container page admin-page">
-    <div class="admin-heading"><div><p class="eyebrow">SEU PORTFÓLIO, DO SEU JEITO</p><h1>Projetos<span>.</span></h1><p>Organize suas criações e prepare a próxima publicação.</p></div><button class="button primary" id="new-project" type="button">＋ Novo projeto</button></div>
-    <div id="admin-notice" class="admin-notice" role="status" aria-live="polite" hidden></div>
-    <section class="panel cloud-panel" id="cloud-auth-panel" aria-labelledby="publish-title">
-      <div class="publish-copy"><p class="eyebrow">PUBLICAÇÃO</p><h2 id="publish-title">Do rascunho para o site</h2><p>Salve seus projetos e publique tudo quando estiver pronto.</p><small id="cloud-status" role="status">Verificando conexão…</small></div>
-      <div class="publish-controls"><span id="cloud-user" class="connection-state">Não autenticado</span><div class="form-actions"><a class="button secondary" id="github-login" href="#">Entrar com GitHub</a><button class="button primary" id="github-publish" type="button" disabled>Publicar no GitHub</button><button class="button secondary" id="github-logout" type="button" hidden>Sair</button></div></div>
-    </section>
-    <div class="admin-layout">
-      <aside class="admin-sidebar">
-        <section class="panel list-panel" aria-labelledby="count-title"><div class="panel-heading"><div><p class="eyebrow">BIBLIOTECA</p><h2 id="count-title">Seus projetos</h2></div></div><label class="search-field"><span class="sr-only">Pesquisar projetos</span><input id="project-search" type="search" placeholder="Pesquisar projetos…"></label><div id="admin-list" class="admin-list"><p class="list-empty">Carregando projetos…</p></div></section>
-        <details class="panel admin-tools"><summary>Backup e configurações</summary><p>Guarde uma cópia dos rascunhos ou recupere a versão publicada.</p><div class="backup-actions"><label class="button secondary file-button">Importar JSON<input id="import-json" type="file" accept=".json,application/json"></label><button class="button secondary" id="export-json" type="button">Exportar JSON</button><button class="button secondary" id="restore-json" type="button">Recarregar do site</button></div><details id="publication-help"><summary>Configuração da publicação</summary><p>A documentação fica na cópia local do projeto, em <code>.local/documentacao/docs/configuracao/README.md</code>. Abra esse arquivo no editor para seguir o tutorial.</p></details></details>
-      </aside>
-      <section class="panel editor-panel" tabindex="-1" aria-labelledby="editor-title">
-        <div class="panel-heading editor-heading"><div><p class="eyebrow">EDITOR DE PROJETO</p><h2 id="editor-title">Novo projeto</h2></div><span id="save-state" class="save-state" role="status">Carregando…</span></div>
-        <form id="project-form" novalidate><fieldset id="editor-fields" disabled>
-          <section class="editor-section" aria-labelledby="info-heading">
-            <div class="section-title"><span class="section-number" aria-hidden="true">01</span><div><h3 id="info-heading">Sobre o projeto</h3><p>Comece pelo essencial. Os campos com * são obrigatórios.</p></div></div>
-            <div class="form-grid">
-              <label>Título *<input id="f-title" required maxlength="160" placeholder="Ex.: Notas flutuantes"></label>
-              <label>ID do projeto *<input id="f-id" autocapitalize="none" spellcheck="false" required placeholder="notas-flutuantes"><small>Usado no endereço. Letras minúsculas e hífens.</small></label>
-              <label>Criação por<input id="f-creators" placeholder="Ink, Stella"><small>Separe os nomes por vírgulas.</small></label>
-              <label>Tipo<select id="f-type"><option value="web">Web</option><option value="desktop">Desktop</option><option value="mobile">Mobile</option><option value="backend">Backend</option><option value="api">API</option><option value="library">Biblioteca</option><option value="automation">Automação</option><option value="game">Game</option><option value="other">Outro</option></select></label>
-              <label>Status<select id="f-status"><option value="completed">Concluído</option><option value="in-progress">Em andamento</option><option value="paused">Pausado</option><option value="archived">Arquivado</option></select></label>
-              <label class="check feature-check"><input type="checkbox" id="f-featured"><span>Destacar projeto<small>Aparece primeiro na lista do site.</small></span></label>
-            </div>
-            <label>Descrição curta *<textarea id="f-short" rows="2" required placeholder="O que seu projeto faz, em uma ou duas frases."></textarea></label>
-            <label>Descrição completa<textarea id="f-description" rows="4" placeholder="Conte como funciona, os desafios e o que você aprendeu."></textarea></label>
-            <label>Tecnologias<input id="f-tech" placeholder="HTML, CSS, JavaScript"><small>Separe cada tecnologia por vírgula.</small></label>
-          </section>
-          <section class="editor-section" aria-labelledby="media-heading">
-            <div class="section-title"><span class="section-number" aria-hidden="true">02</span><div><h3 id="media-heading">Imagens e vídeo</h3><p>Escolha os arquivos aqui. Eles serão enviados ao GitHub na publicação.</p></div></div>
-            <div class="media-grid">
-              <div class="media-card"><h4>Capa do projeto</h4><button class="upload-zone" id="cover-drop" type="button"><span class="upload-icon" aria-hidden="true">↑</span><strong>Selecionar capa</strong><span>PNG, JPG ou WebP · até 4 MB</span></button><input id="cover-file" type="file" accept="image/png,image/jpeg,image/webp" hidden><div id="cover-preview" class="media-preview"></div><details class="media-link"><summary>Usar link ou caminho</summary><label>Caminho ou URL da capa<input id="f-cover" placeholder="assets/images/capa.png"></label></details></div>
-              <div class="media-card"><h4>Vídeo de demonstração</h4><button class="upload-zone" id="video-drop" type="button"><span class="upload-icon" aria-hidden="true">▷</span><strong>Selecionar vídeo</strong><span>MP4 ou WebM · até 15 MB</span></button><input id="video-file" type="file" accept="video/mp4,video/webm" hidden><div id="video-preview" class="media-preview"></div><details class="media-link"><summary>Usar link ou caminho</summary><label>Caminho ou URL do vídeo<input id="f-video" placeholder="assets/videos/video.mp4"><small>Use o endereço direto do arquivo MP4 ou WebM.</small></label></details></div>
-            </div>
-            <div class="media-card gallery-card"><h4>Galeria de imagens <span>Opcional</span></h4><button class="upload-zone gallery-upload" id="shots-drop" type="button"><span class="upload-icon" aria-hidden="true">＋</span><span><strong>Adicionar imagens</strong><span>Escolha várias ou arraste os arquivos · até 4 MB cada</span></span></button><input id="shots-file" type="file" accept="image/png,image/jpeg,image/webp" multiple hidden><div id="shots-preview" class="shots-preview"></div><details class="media-link"><summary>Usar links ou caminhos</summary><label>Caminhos ou URLs da galeria<textarea id="f-images" rows="3" placeholder="Um endereço por linha"></textarea><small>Os arquivos selecionados acima serão mantidos.</small></label></details></div>
-            <p class="media-help" id="media-size" role="status">Você também pode arrastar arquivos para as áreas acima.</p>
-          </section>
-          <section class="editor-section" aria-labelledby="links-heading">
-            <div class="section-title"><span class="section-number" aria-hidden="true">03</span><div><h3 id="links-heading">Onde encontrar</h3><p>Preencha apenas os links que seu projeto já tem.</p></div></div>
-            <div class="form-grid"><label>Repositório no GitHub<input id="f-github" type="url" inputmode="url" placeholder="https://github.com/..."></label><label>Demonstração online<input id="f-demo" type="url" inputmode="url" placeholder="https://..."></label><label>Download<input id="f-download" type="url" inputmode="url" placeholder="https://..."></label><label>Documentação<input id="f-docs" type="url" inputmode="url" placeholder="https://..."></label></div>
-          </section>
-          <div class="editor-actions"><p id="draft-help">Rascunhos ficam salvos neste navegador.</p><div class="form-actions"><button class="button secondary" type="button" id="clear-form">Limpar</button><button class="button secondary" type="button" id="preview-project">Visualizar ↗</button><button class="button primary" type="submit">Salvar rascunho</button></div></div>
-        </fieldset></form>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="theme-color" content="#03020d" />
+    <meta name="robots" content="noindex" />
+    <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml" />
+    <title>Editor — Ink × Stella</title>
+    <link rel="stylesheet" href="../assets/css/style.css" />
+    <link rel="stylesheet" href="../assets/css/responsive.css" />
+    <link rel="stylesheet" href="../assets/css/cosmic.css" />
+    <link rel="stylesheet" href="../assets/css/admin.css" />
+  </head>
+  <body class="editor-body">
+    <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
+    <header class="site-header">
+      <a class="brand" href="../" aria-label="Ink e Stella, início"
+        >ink<span>×</span>stella<span class="brand-dot">.</span></a
+      ><button
+        class="menu-toggle"
+        aria-label="Abrir menu"
+        aria-expanded="false"
+        aria-controls="site-nav"
+      >
+        <span></span><span></span>
+      </button>
+      <nav class="nav" id="site-nav" aria-label="Navegação do painel">
+        <a href="../">Ver site ↗</a><a href="../projetos/">Projetos</a
+        ><a class="active" aria-current="page" href="./">Editor</a>
+      </nav>
+    </header>
+    <main id="conteudo" class="container page admin-page">
+      <div class="admin-heading">
+        <div>
+          <p class="eyebrow">SEU PORTFÓLIO, DO SEU JEITO</p>
+          <h1>Projetos<span>.</span></h1>
+          <p>Organize suas criações e prepare a próxima publicação.</p>
+        </div>
+        <button class="button primary" id="new-project" type="button">＋ Novo projeto</button>
+      </div>
+      <div id="admin-notice" class="admin-notice" role="status" aria-live="polite" hidden></div>
+      <section class="panel cloud-panel" id="cloud-auth-panel" aria-labelledby="publish-title">
+        <div class="publish-copy">
+          <p class="eyebrow">PUBLICAÇÃO</p>
+          <h2 id="publish-title">Do rascunho para o site</h2>
+          <p>Salve seus projetos e publique tudo quando estiver pronto.</p>
+          <small id="cloud-status" role="status">Verificando conexão…</small>
+        </div>
+        <div class="publish-controls">
+          <span id="cloud-user" class="connection-state">Não autenticado</span>
+          <div class="form-actions">
+            <a class="button secondary" id="github-login" href="#">Entrar com GitHub</a
+            ><button class="button primary" id="github-publish" type="button" disabled>
+              Publicar no GitHub</button
+            ><button class="button secondary" id="github-logout" type="button" hidden>Sair</button>
+          </div>
+        </div>
       </section>
-    </div>
-  </main>
-  <footer class="footer"><div class="container footer-inner"><span>© <span data-year></span> Ink & Stella</span><span>Painel administrativo</span></div></footer>
-  <script src="../assets/js/app.js"></script><script src="../assets/js/projects.js"></script><script src="cloudflare.js"></script><script src="../assets/js/admin-storage.js"></script><script src="../assets/js/admin.js"></script><script src="admin.js"></script>
-</body>
+      <div class="admin-layout">
+        <aside class="admin-sidebar">
+          <section class="panel list-panel" aria-labelledby="count-title">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow">BIBLIOTECA</p>
+                <h2 id="count-title">Seus projetos</h2>
+              </div>
+            </div>
+            <label class="search-field"
+              ><span class="sr-only">Pesquisar projetos</span
+              ><input id="project-search" type="search" placeholder="Pesquisar projetos…"
+            /></label>
+            <div id="admin-list" class="admin-list">
+              <p class="list-empty">Carregando projetos…</p>
+            </div>
+          </section>
+          <details class="panel admin-tools">
+            <summary>Backup e configurações</summary>
+            <p>Guarde uma cópia dos rascunhos ou recupere a versão publicada.</p>
+            <div class="backup-actions">
+              <label class="button secondary file-button"
+                >Importar JSON<input
+                  id="import-json"
+                  type="file"
+                  accept=".json,application/json" /></label
+              ><button class="button secondary" id="export-json" type="button">Exportar JSON</button
+              ><button class="button secondary" id="restore-json" type="button">
+                Recarregar do site
+              </button>
+            </div>
+            <details id="publication-help">
+              <summary>Configuração da publicação</summary>
+              <p>
+                A documentação fica na cópia local do projeto, em
+                <code>.local/documentacao/docs/configuracao/README.md</code>. Abra esse arquivo no
+                editor para seguir o tutorial.
+              </p>
+            </details>
+          </details>
+        </aside>
+        <section class="panel editor-panel" tabindex="-1" aria-labelledby="editor-title">
+          <div class="panel-heading editor-heading">
+            <div>
+              <p class="eyebrow">EDITOR DE PROJETO</p>
+              <h2 id="editor-title">Novo projeto</h2>
+            </div>
+            <span id="save-state" class="save-state" role="status">Carregando…</span>
+          </div>
+          <form id="project-form" novalidate>
+            <fieldset id="editor-fields" disabled>
+              <section class="editor-section" aria-labelledby="info-heading">
+                <div class="section-title">
+                  <span class="section-number" aria-hidden="true">01</span>
+                  <div>
+                    <h3 id="info-heading">Sobre o projeto</h3>
+                    <p>Comece pelo essencial. Os campos com * são obrigatórios.</p>
+                  </div>
+                </div>
+                <div class="form-grid">
+                  <label
+                    >Título *<input
+                      id="f-title"
+                      required
+                      maxlength="160"
+                      placeholder="Ex.: Notas flutuantes"
+                  /></label>
+                  <label
+                    >ID do projeto *<input
+                      id="f-id"
+                      autocapitalize="none"
+                      spellcheck="false"
+                      required
+                      placeholder="notas-flutuantes"
+                    /><small>Usado no endereço. Letras minúsculas e hífens.</small></label
+                  >
+                  <label
+                    >Criação por<input id="f-creators" placeholder="Ink, Stella" /><small
+                      >Separe os nomes por vírgulas.</small
+                    ></label
+                  >
+                  <label
+                    >Tipo<select id="f-type">
+                      <option value="web">Web</option>
+                      <option value="desktop">Desktop</option>
+                      <option value="mobile">Mobile</option>
+                      <option value="backend">Backend</option>
+                      <option value="api">API</option>
+                      <option value="library">Biblioteca</option>
+                      <option value="automation">Automação</option>
+                      <option value="game">Game</option>
+                      <option value="other">Outro</option>
+                    </select></label
+                  >
+                  <label
+                    >Status<select id="f-status">
+                      <option value="completed">Concluído</option>
+                      <option value="in-progress">Em andamento</option>
+                      <option value="paused">Pausado</option>
+                      <option value="archived">Arquivado</option>
+                    </select></label
+                  >
+                  <label class="check feature-check"
+                    ><input type="checkbox" id="f-featured" /><span
+                      >Destacar projeto<small>Aparece primeiro na lista do site.</small></span
+                    ></label
+                  >
+                </div>
+                <label
+                  >Descrição curta *<textarea
+                    id="f-short"
+                    rows="2"
+                    required
+                    placeholder="O que seu projeto faz, em uma ou duas frases."
+                  ></textarea>
+                </label>
+                <label
+                  >Descrição completa<textarea
+                    id="f-description"
+                    rows="4"
+                    placeholder="Conte como funciona, os desafios e o que você aprendeu."
+                  ></textarea>
+                </label>
+                <label
+                  >Tecnologias<input id="f-tech" placeholder="HTML, CSS, JavaScript" /><small
+                    >Separe cada tecnologia por vírgula.</small
+                  ></label
+                >
+              </section>
+              <section class="editor-section" aria-labelledby="media-heading">
+                <div class="section-title">
+                  <span class="section-number" aria-hidden="true">02</span>
+                  <div>
+                    <h3 id="media-heading">Imagens e vídeo</h3>
+                    <p>Escolha os arquivos aqui. Eles serão enviados ao GitHub na publicação.</p>
+                  </div>
+                </div>
+                <div class="media-grid">
+                  <div class="media-card">
+                    <h4>Capa do projeto</h4>
+                    <button class="upload-zone" id="cover-drop" type="button">
+                      <span class="upload-icon" aria-hidden="true">↑</span
+                      ><strong>Selecionar capa</strong
+                      ><span>PNG, JPG ou WebP · até 4 MB</span></button
+                    ><input
+                      id="cover-file"
+                      type="file"
+                      accept="image/png,image/jpeg,image/webp"
+                      hidden
+                    />
+                    <div id="cover-preview" class="media-preview"></div>
+                    <details class="media-link">
+                      <summary>Usar link ou caminho</summary>
+                      <label
+                        >Caminho ou URL da capa<input
+                          id="f-cover"
+                          placeholder="assets/images/capa.png"
+                      /></label>
+                    </details>
+                  </div>
+                  <div class="media-card">
+                    <h4>Vídeo de demonstração</h4>
+                    <button class="upload-zone" id="video-drop" type="button">
+                      <span class="upload-icon" aria-hidden="true">▷</span
+                      ><strong>Selecionar vídeo</strong><span>MP4 ou WebM · até 15 MB</span></button
+                    ><input id="video-file" type="file" accept="video/mp4,video/webm" hidden />
+                    <div id="video-preview" class="media-preview"></div>
+                    <details class="media-link">
+                      <summary>Usar link ou caminho</summary>
+                      <label
+                        >Caminho ou URL do vídeo<input
+                          id="f-video"
+                          placeholder="assets/videos/video.mp4"
+                        /><small>Use o endereço direto do arquivo MP4 ou WebM.</small></label
+                      >
+                    </details>
+                  </div>
+                </div>
+                <div class="media-card gallery-card">
+                  <h4>Galeria de imagens <span>Opcional</span></h4>
+                  <button class="upload-zone gallery-upload" id="shots-drop" type="button">
+                    <span class="upload-icon" aria-hidden="true">＋</span
+                    ><span
+                      ><strong>Adicionar imagens</strong
+                      ><span>Escolha várias ou arraste os arquivos · até 4 MB cada</span></span
+                    ></button
+                  ><input
+                    id="shots-file"
+                    type="file"
+                    accept="image/png,image/jpeg,image/webp"
+                    multiple
+                    hidden
+                  />
+                  <div id="shots-preview" class="shots-preview"></div>
+                  <details class="media-link">
+                    <summary>Usar links ou caminhos</summary>
+                    <label
+                      >Caminhos ou URLs da galeria<textarea
+                        id="f-images"
+                        rows="3"
+                        placeholder="Um endereço por linha"
+                      ></textarea
+                      ><small>Os arquivos selecionados acima serão mantidos.</small></label
+                    >
+                  </details>
+                </div>
+                <p class="media-help" id="media-size" role="status">
+                  Você também pode arrastar arquivos para as áreas acima.
+                </p>
+              </section>
+              <section class="editor-section" aria-labelledby="links-heading">
+                <div class="section-title">
+                  <span class="section-number" aria-hidden="true">03</span>
+                  <div>
+                    <h3 id="links-heading">Onde encontrar</h3>
+                    <p>Preencha apenas os links que seu projeto já tem.</p>
+                  </div>
+                </div>
+                <div class="form-grid">
+                  <label
+                    >Repositório no GitHub<input
+                      id="f-github"
+                      type="url"
+                      inputmode="url"
+                      placeholder="https://github.com/..." /></label
+                  ><label
+                    >Demonstração online<input
+                      id="f-demo"
+                      type="url"
+                      inputmode="url"
+                      placeholder="https://..." /></label
+                  ><label
+                    >Download<input
+                      id="f-download"
+                      type="url"
+                      inputmode="url"
+                      placeholder="https://..." /></label
+                  ><label
+                    >Documentação<input
+                      id="f-docs"
+                      type="url"
+                      inputmode="url"
+                      placeholder="https://..."
+                  /></label>
+                </div>
+              </section>
+              <div class="editor-actions">
+                <p id="draft-help">Rascunhos ficam salvos neste navegador.</p>
+                <div class="form-actions">
+                  <button class="button secondary" type="button" id="clear-form">Limpar</button
+                  ><button class="button secondary" type="button" id="preview-project">
+                    Visualizar ↗</button
+                  ><button class="button primary" type="submit">Salvar rascunho</button>
+                </div>
+              </div>
+            </fieldset>
+          </form>
+        </section>
+      </div>
+    </main>
+    <footer class="footer">
+      <div class="container footer-inner">
+        <span>© <span data-year></span> Ink & Stella</span><span>Painel administrativo</span>
+      </div>
+    </footer>
+    <script src="../assets/js/app.js"></script>
+    <script src="../assets/js/projects.js"></script>
+    <script src="cloudflare.js"></script>
+    <script src="../assets/js/admin-storage.js"></script>
+    <script src="../assets/js/admin.js"></script>
+    <script src="admin.js"></script>
+  </body>
 </html>
