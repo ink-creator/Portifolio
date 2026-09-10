@@ -1,0 +1,58 @@
+{
+  "projects": [
+    {
+      "id": "bloco-de-notas",
+      "title": "Bloco de Notas",
+      "creators": [
+        "Ink"
+      ],
+      "type": "web",
+      "status": "completed",
+      "featured": true,
+      "shortDescription": "Aplicação web simples para criar e organizar anotações.",
+      "description": "Projeto front-end demonstrativo criado para explorar uma interface de anotações leve, responsiva e funcional.",
+      "technologies": [
+        "HTML",
+        "CSS",
+        "JavaScript"
+      ],
+      "media": {
+        "cover": null,
+        "images": [],
+        "video": null
+      },
+      "links": {
+        "github": "https://github.com/ink-creator/Bloco-anota-es",
+        "demo": null,
+        "download": null,
+        "documentation": null
+      }
+    },
+    {
+      "id": "teste-painel",
+      "title": "Teste do painel",
+      "creators": [
+        "Ink"
+      ],
+      "type": "other",
+      "status": "completed",
+      "featured": false,
+      "shortDescription": "teste",
+      "description": "teste teste",
+      "technologies": [
+        "testes testados"
+      ],
+      "media": {
+        "cover": null,
+        "images": [],
+        "video": null
+      },
+      "links": {
+        "github": null,
+        "demo": null,
+        "download": null,
+        "documentation": null
+      }
+    }
+  ]
+}

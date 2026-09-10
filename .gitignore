@@ -1,0 +1,15 @@
+.DS_Store
+Thumbs.db
+.vscode/
+node_modules/
+.wrangler/
+.dev.vars
+.dev.vars.*
+.env
+.env.*
+*.pem
+*.key
+!.dev.vars.example.txt
+
+# Documentacao mantida somente nesta maquina.
+/.local/documentacao/
