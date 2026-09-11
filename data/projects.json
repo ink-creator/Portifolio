@@ -1,47 +1,68 @@
 {
   "projects": [
     {
-      "id": "bloco-de-notas",
-      "title": "Bloco de Notas",
-      "creators": ["Ink"],
+      "id": "notas-flutuantes",
+      "title": "Notas Flutuantes",
+      "creators": [
+        "Ink"
+      ],
       "type": "web",
       "status": "completed",
       "featured": true,
-      "shortDescription": "Aplicação web simples para criar e organizar anotações.",
-      "description": "Projeto front-end demonstrativo criado para explorar uma interface de anotações leve, responsiva e funcional.",
-      "technologies": ["HTML", "CSS", "JavaScript"],
+      "shortDescription": "Browser-based sticky notes board with connections, files, multiple boards, dark mode and visual organization tools.",
+      "description": "English\nA browser-based floating notes app for organizing ideas in a visual and flexible way. It supports creating, moving, resizing and connecting notes, along with multiple boards, search, files, links, calendar and dark mode. Data is stored locally in the browser and can be exported as JSON.\n\nPortuguês\nUm aplicativo de notas flutuantes executado no navegador, projetado para organizar ideias de maneira visual e flexível. Ele permite criar, mover, redimensionar e conectar notas, além de oferecer suporte a múltiplos quadros, busca, arquivos, links, calendário e modo escuro. Os dados são armazenados localmente no navegador e podem ser exportados no formato JSON.",
+      "technologies": [
+        "HTML",
+        "CSS",
+        "JavaScript"
+      ],
       "media": {
-        "cover": null,
-        "images": [],
-        "video": null
+        "cover": "assets/images/projects/notas-flutuantes/cover-6b77434d25c15f1d.png",
+        "video": "assets/videos/projects/notas-flutuantes/demo-99d9c89bc9acd7c7.mp4",
+        "images": [
+          "assets/images/projects/notas-flutuantes/screenshot-1-5b38b2e17dbba25f.png",
+          "assets/images/projects/notas-flutuantes/screenshot-2-2a6f125b1a142966.png",
+          "assets/images/projects/notas-flutuantes/screenshot-3-7cce2bd0f67b2d09.png"
+        ]
       },
       "links": {
-        "github": "https://github.com/ink-creator/Bloco-anota-es",
-        "demo": null,
+        "github": "https://github.com/ink-creator/Notas-flutuantes",
+        "demo": "https://ink-creator.github.io/Notas-flutuantes/",
         "download": null,
-        "documentation": null
+        "documentation": "https://github.com/ink-creator/Notas-flutuantes/blob/main/README.md"
       }
     },
     {
-      "id": "teste-painel",
-      "title": "Teste do painel",
-      "creators": ["Ink"],
-      "type": "other",
+      "id": "visualmaker",
+      "title": "Visualmaker",
+      "creators": [
+        "Ink"
+      ],
+      "type": "web",
       "status": "completed",
-      "featured": false,
-      "shortDescription": "teste",
-      "description": "teste teste",
-      "technologies": ["testes testados"],
+      "featured": true,
+      "shortDescription": "Browser-based 2D and 3D floor plan editor with furniture, materials, interactive 3D editing and export.",
+      "description": "## English\n\n**VisualMaker** is a floor plan creation and visualization project designed to make environment planning more simple, visual, and interactive.\n\nThe application allows users to create floor plans with real-world dimensions, build walls, add doors, windows, furniture, text, and other elements, while visualizing the project in both **2D and 3D**. The editor also includes features focused on precision and usability, such as measurements in meters and centimeters, element alignment, room area calculations, and direct editing of different components.\n\nOne of the main goals of VisualMaker is to provide an accessible floor planning experience without giving up more advanced features. The project is also being developed to support multiple projects within the same file, multi-story buildings, customizable materials and textures, configurable floors and roofs, and interactive 3D project sharing.\n\nVisualMaker is continuously evolving, with a strong focus on improving the editing experience, 3D visualization quality, and the level of customization available to users.\n\n---\n\n## Português\n\nO **VisualMaker** é um projeto de criação e visualização de plantas baixas desenvolvido com foco em tornar o planejamento de ambientes mais simples, visual e interativo.\n\nA aplicação permite criar plantas com dimensões reais, construir paredes, adicionar portas, janelas, móveis, textos e outros elementos, além de visualizar o projeto em **2D e 3D**. O editor também conta com recursos voltados à precisão e à usabilidade, como medidas em metros e centímetros, alinhamento de elementos, cálculo da área dos cômodos e edição direta dos diferentes componentes da planta.\n\nUm dos principais objetivos do VisualMaker é oferecer uma experiência acessível para criação de plantas sem abrir mão de recursos mais avançados. O projeto também está sendo desenvolvido para suportar diferentes projetos dentro do mesmo arquivo, construções com múltiplos andares, materiais e texturas personalizáveis, chão e telhado configuráveis e compartilhamento interativo da visualização 3D.\n\nO VisualMaker continua em evolução, com foco em melhorar cada vez mais a experiência de edição, a qualidade da visualização 3D e as possibilidades de personalização dos ambientes.",
+      "technologies": [
+        "HTML",
+        "CSS",
+        "JavaScript"
+      ],
       "media": {
-        "cover": null,
-        "images": [],
-        "video": null
+        "cover": "assets/images/projects/visualmaker/cover-c7e122d8c07e579a.png",
+        "video": null,
+        "images": [
+          "assets/images/projects/visualmaker/screenshot-1-a5bb36826f769a62.png",
+          "assets/images/projects/visualmaker/screenshot-2-cba3f93f219a527c.png",
+          "assets/images/projects/visualmaker/screenshot-3-585f6358b3f4d777.png",
+          "assets/images/projects/visualmaker/screenshot-4-70d3cf152ff3e392.png"
+        ]
       },
       "links": {
-        "github": null,
-        "demo": null,
+        "github": "https://github.com/ink-creator/VisualMaker",
+        "demo": "https://ink-creator.github.io/VisualMaker/",
         "download": null,
-        "documentation": null
+        "documentation": "https://github.com/ink-creator/VisualMaker/blob/main/README.md"
       }
     }
   ]
