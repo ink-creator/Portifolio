@@ -18,11 +18,11 @@
       ],
       "media": {
         "cover": "assets/images/projects/notas-flutuantes/cover-6b77434d25c15f1d.png",
-        "video": "assets/videos/projects/notas-flutuantes/demo-99d9c89bc9acd7c7.mp4",
+        "video": null,
         "images": [
-          "assets/images/projects/notas-flutuantes/screenshot-1-5b38b2e17dbba25f.png",
-          "assets/images/projects/notas-flutuantes/screenshot-2-2a6f125b1a142966.png",
-          "assets/images/projects/notas-flutuantes/screenshot-3-7cce2bd0f67b2d09.png"
+          "assets/images/projects/notas-flutuantes/screenshot-1-7cce2bd0f67b2d09.png",
+          "assets/images/projects/notas-flutuantes/screenshot-2-5b38b2e17dbba25f.png",
+          "assets/images/projects/notas-flutuantes/screenshot-3-2a6f125b1a142966.png"
         ]
       },
       "links": {
@@ -52,10 +52,10 @@
         "cover": "assets/images/projects/visualmaker/cover-c7e122d8c07e579a.png",
         "video": null,
         "images": [
-          "assets/images/projects/visualmaker/screenshot-1-a5bb36826f769a62.png",
-          "assets/images/projects/visualmaker/screenshot-2-cba3f93f219a527c.png",
-          "assets/images/projects/visualmaker/screenshot-3-585f6358b3f4d777.png",
-          "assets/images/projects/visualmaker/screenshot-4-70d3cf152ff3e392.png"
+          "assets/images/projects/visualmaker/screenshot-1-70d3cf152ff3e392.png",
+          "assets/images/projects/visualmaker/screenshot-2-a5bb36826f769a62.png",
+          "assets/images/projects/visualmaker/screenshot-3-cba3f93f219a527c.png",
+          "assets/images/projects/visualmaker/screenshot-4-585f6358b3f4d777.png"
         ]
       },
       "links": {
