@@ -1,0 +1,15 @@
+name = "portfolio-admin-api"
+main = "src/index.js"
+compatibility_date = "2026-08-28"
+compatibility_flags = ["nodejs_compat"]
+
+[vars]
+GITHUB_OWNER = "ink-creator"
+GITHUB_REPO = "Portifolio"
+GITHUB_BRANCH = "main"
+ADMIN_GITHUB_USERS = "ink-creator"
+PUBLIC_SITE_ORIGINS = "https://ink-creator.github.io"
+ADMIN_URL = "https://ink-creator.github.io/Portifolio/admin/"
+WORKER_PUBLIC_URL = "https://portfolio-admin-api.productionss.workers.dev"
+GITHUB_APP_ID = "4874351"
+GITHUB_CLIENT_ID = "Iv23liGenJeVWPNxnKTQ"

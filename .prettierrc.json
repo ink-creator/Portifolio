@@ -1,0 +1,14 @@
+{
+  "tabWidth": 2,
+  "useTabs": false,
+  "printWidth": 100,
+  "endOfLine": "lf",
+  "htmlWhitespaceSensitivity": "css",
+  "embeddedLanguageFormatting": "off",
+  "overrides": [
+    {
+      "files": "*.svg",
+      "options": { "parser": "html" }
+    }
+  ]
+}

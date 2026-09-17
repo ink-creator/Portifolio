@@ -1,0 +1,36 @@
+{
+  "projects": [
+    {
+      "id": "notas-flutuantes",
+      "title": "Notas Flutuantes",
+      "creators": [
+        "Ink"
+      ],
+      "type": "web",
+      "status": "completed",
+      "featured": true,
+      "shortDescription": "Browser-based sticky notes board with connections, files, multiple boards, dark mode and visual organization tools.",
+      "description": "English\nA browser-based floating notes app for organizing ideas in a visual and flexible way. It supports creating, moving, resizing and connecting notes, along with multiple boards, search, files, links, calendar and dark mode. Data is stored locally in the browser and can be exported as JSON.\n\nPortuguês\nUm aplicativo de notas flutuantes executado no navegador, projetado para organizar ideias de maneira visual e flexível. Ele permite criar, mover, redimensionar e conectar notas, além de oferecer suporte a múltiplos quadros, busca, arquivos, links, calendário e modo escuro. Os dados são armazenados localmente no navegador e podem ser exportados no formato JSON.",
+      "technologies": [
+        "HTML",
+        "CSS",
+        "JavaScript"
+      ],
+      "media": {
+        "cover": "assets/images/projects/notas-flutuantes/cover-6b77434d25c15f1d.png",
+        "video": null,
+        "images": [
+          "assets/images/projects/notas-flutuantes/screenshot-1-7cce2bd0f67b2d09.png",
+          "assets/images/projects/notas-flutuantes/screenshot-2-5b38b2e17dbba25f.png",
+          "assets/images/projects/notas-flutuantes/screenshot-3-2a6f125b1a142966.png"
+        ]
+      },
+      "links": {
+        "github": "https://github.com/ink-creator/Notas-flutuantes",
+        "demo": "https://ink-creator.github.io/Notas-flutuantes/",
+        "download": null,
+        "documentation": "https://github.com/ink-creator/Notas-flutuantes/blob/main/README.md"
+      }
+    }
+  ]
+}

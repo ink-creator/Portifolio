@@ -1,0 +1,4 @@
+# Copie este arquivo para .dev.vars. NÃO COMITE .dev.vars.
+GITHUB_CLIENT_SECRET="xxxxxxxx"
+GITHUB_PRIVATE_KEY="-----BEGIN PRIVATE KEY-----\nCOLE_A_CHAVE_AQUI\n-----END PRIVATE KEY-----"
+SESSION_SECRET="gere-um-segredo-aleatorio-com-pelo-menos-32-bytes"

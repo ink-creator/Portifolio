@@ -1,0 +1,74 @@
+/* Entrance only. All temporary styles are removed when the intro finishes. */
+.intro-pending .home-page .site-header,
+.intro-pending .home-page .hero-copy,
+.intro-pending .home-page .creative-stage,
+.intro-pending .home-page .home-paths,
+.intro-pending .home-page .footer {
+  opacity: 0;
+}
+.intro-pending .home-page .cosmic-halo {
+  visibility: hidden;
+  animation: none;
+}
+.intro-pending .home-page .hero-note .smile {
+  visibility: hidden;
+}
+.portfolio-intro {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  pointer-events: none;
+}
+.portfolio-intro__star {
+  position: fixed;
+  overflow: visible;
+  filter:
+    drop-shadow(0 0 5px #c77dff)
+    drop-shadow(0 0 15px #8e25f0aa);
+  pointer-events: none;
+}
+.portfolio-intro__face {
+  position: fixed;
+  margin: 0;
+  fill: none;
+  stroke: var(--neon-star);
+  stroke-width: 1.65;
+  stroke-linecap: round;
+  filter:
+    drop-shadow(0 0 4px #c77dff)
+    drop-shadow(0 0 11px #8e25f0aa);
+  overflow: visible;
+  pointer-events: none;
+}
+.portfolio-intro__eye {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+.home-page .hero-note .smile {
+  width: 42px;
+  height: 42px;
+  stroke: var(--neon-star);
+  filter: drop-shadow(0 0 5px #a640ecaa);
+}
+@media (max-width: 540px) {
+  .home-page .hero-note .smile {
+    width: 36px;
+    height: 36px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .portfolio-intro {
+    display: none;
+  }
+  .intro-pending .home-page .site-header,
+  .intro-pending .home-page .hero-copy,
+  .intro-pending .home-page .creative-stage,
+  .intro-pending .home-page .home-paths,
+  .intro-pending .home-page .footer {
+    opacity: 1;
+  }
+  .intro-pending .home-page .cosmic-halo,
+  .intro-pending .home-page .hero-note .smile {
+    visibility: visible;
+  }
+}
