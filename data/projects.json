@@ -9,12 +9,15 @@
       "type": "web",
       "status": "completed",
       "featured": true,
-      "shortDescription": "Browser-based sticky notes board with connections, files, multiple boards, dark mode and visual organization tools.",
-      "description": "English\nA browser-based floating notes app for organizing ideas in a visual and flexible way. It supports creating, moving, resizing and connecting notes, along with multiple boards, search, files, links, calendar and dark mode. Data is stored locally in the browser and can be exported as JSON.\n\nPortuguês\nUm aplicativo de notas flutuantes executado no navegador, projetado para organizar ideias de maneira visual e flexível. Ele permite criar, mover, redimensionar e conectar notas, além de oferecer suporte a múltiplos quadros, busca, arquivos, links, calendário e modo escuro. Os dados são armazenados localmente no navegador e podem ser exportados no formato JSON.",
+      "shortDescription": "Quadro visual no navegador para organizar ideias com notas conectadas, arquivos, múltiplos quadros e armazenamento local.",
+      "description": "Notas Flutuantes é um espaço de trabalho visual criado para organizar ideias de forma livre e flexível. Permite criar, mover, redimensionar, colorir, fixar e conectar notas; organizar conteúdos em múltiplos quadros; anexar arquivos e links; e utilizar busca, calendário, zoom, atalhos, temas claro e escuro e interface em português ou inglês. Os quadros, anexos e versões salvas permanecem no navegador, sem conta ou backend, e podem ser protegidos por backups exportados e importados em JSON.",
       "technologies": [
         "HTML",
         "CSS",
-        "JavaScript"
+        "JavaScript",
+        "IndexedDB",
+        "Local Storage",
+        "File APIs"
       ],
       "media": {
         "cover": "assets/images/projects/notas-flutuantes/cover-6b77434d25c15f1d.png",
