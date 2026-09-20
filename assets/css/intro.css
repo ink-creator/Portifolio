@@ -40,16 +40,6 @@
   overflow: visible;
   pointer-events: none;
 }
-.portfolio-intro--document {
-  position: absolute;
-  inset: 0 0 auto;
-  height: 0;
-  overflow: visible;
-}
-.portfolio-intro--document .portfolio-intro__star,
-.portfolio-intro--document .portfolio-intro__face {
-  position: absolute;
-}
 .portfolio-intro__eye {
   transform-box: fill-box;
   transform-origin: center;
