@@ -138,6 +138,39 @@
         "download": "https://github.com/ink-creator/Conversor-arquivos/releases/latest",
         "documentation": "https://github.com/ink-creator/Conversor-arquivos/blob/main/README.md"
       }
+    },
+    {
+      "id": "servidor-php",
+      "title": "Servidor PHP",
+      "creators": [
+        "Ink"
+      ],
+      "type": "backend",
+      "status": "completed",
+      "featured": false,
+      "shortDescription": "Demonstração backend em PHP com autenticação, CRUD, controle de acesso e MariaDB rodando em outro dispositivo pela rede local.",
+      "description": "Servidor PHP é um projeto demonstrativo criado para mostrar, de forma simples e prática, como uma aplicação backend em PHP pode se comunicar com um banco MariaDB executado em outro dispositivo físico pela rede local. No ambiente original, o notebook executa a aplicação PHP e o servidor web, enquanto um tablet Android com Termux funciona como servidor MariaDB. A aplicação inclui cadastro, login, logout, sessões, páginas protegidas, operações CRUD e diferenciação entre usuários comuns e administradores. O projeto também demonstra configuração de conexão remota com banco de dados, uso do protocolo MySQL/MariaDB via TCP/IP, permissões de acesso, organização básica de uma aplicação PHP e a separação entre camada de aplicação e camada de dados. O objetivo não é ser um sistema de produção completo, mas servir como uma demonstração clara de backend, banco de dados, autenticação, controle de acesso e comunicação entre dispositivos em uma rede local.",
+      "technologies": [
+        "PHP",
+        "MariaDB",
+        "MySQLi",
+        "SQL",
+        "HTML",
+        "CSS",
+        "Termux",
+        "Apache"
+      ],
+      "media": {
+        "cover": "assets/images/projects/servidor-php/cover.svg",
+        "video": null,
+        "images": []
+      },
+      "links": {
+        "github": "https://github.com/ink-creator/Servidor-php",
+        "demo": null,
+        "download": null,
+        "documentation": "https://github.com/ink-creator/Servidor-php/blob/main/README.md"
+      }
     }
   ]
 }
