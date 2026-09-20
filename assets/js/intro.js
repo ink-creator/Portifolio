@@ -142,16 +142,40 @@
       await wait(550);
       if (finished) return;
 
+      // Keep the greeting centered while it appears and winks. At the exact
+      // start of the trip, move it to document coordinates without a visual
+      // jump. From then on it scrolls together with its real destinations.
+      const starCurrent = star.getBoundingClientRect();
+      const faceCurrent = face.getBoundingClientRect();
+      const pageX = scrollX;
+      const pageY = scrollY;
       const to = smile.getBoundingClientRect();
       const starTarget = halo.getBoundingClientRect();
+      const faceTravelStart = {
+        left: `${faceCurrent.left + pageX}px`,
+        top: `${faceCurrent.top + pageY}px`,
+        width: `${faceCurrent.width}px`,
+        height: `${faceCurrent.height}px`,
+      };
+      const starTravelStart = {
+        left: `${starCurrent.left + pageX + starCurrent.width / 2}px`,
+        top: `${starCurrent.top + pageY + starCurrent.height / 2}px`,
+        width: `${starCurrent.width}px`,
+        height: `${starCurrent.height}px`,
+        transform: "translate(-50%, -50%) rotate(0deg)",
+        opacity: 1,
+      };
       const starEnd = {
-        left: `${starTarget.left + starTarget.width / 2}px`,
-        top: `${starTarget.top}px`,
+        left: `${starTarget.left + pageX + starTarget.width / 2}px`,
+        top: `${starTarget.top + pageY}px`,
         width: haloStyle.width,
         height: haloStyle.height,
         transform: "translateX(-50%) rotate(360deg)",
         opacity: 1,
       };
+      overlay.classList.add("portfolio-intro--document");
+      Object.assign(face.style, faceTravelStart);
+      Object.assign(star.style, starTravelStart);
 
       const reveals = [
         ...document.querySelectorAll(
@@ -170,15 +194,10 @@
         animate(
           face,
           [
+            faceTravelStart,
             {
-              left: `${faceStartLeft}px`,
-              top: `${faceStartTop}px`,
-              width: `${faceSize}px`,
-              height: `${faceSize}px`,
-            },
-            {
-              left: `${to.left}px`,
-              top: `${to.top}px`,
+              left: `${to.left + pageX}px`,
+              top: `${to.top + pageY}px`,
               width: `${to.width}px`,
               height: `${to.height}px`,
             },
@@ -188,14 +207,7 @@
         animate(
           star,
           [
-            {
-              left: `${centerX}px`,
-              top: `${centerY}px`,
-              width: `${starSize}px`,
-              height: `${starSize}px`,
-              transform: "translate(-50%, -50%) rotate(0deg)",
-              opacity: 1,
-            },
+            starTravelStart,
             starEnd,
           ],
           { duration: 2200, easing: ease },

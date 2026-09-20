@@ -1,4 +1,36 @@
 (() => {
+  const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)");
+
+  // Add a brief exit only when leaving the introduction for the projects page.
+  // The pageshow cleanup also makes the transition safe with the back/forward cache.
+  addEventListener("pageshow", () => document.body.classList.remove("page-transition-out"));
+  document.addEventListener("click", (event) => {
+    const link = event.target.closest("a[href]");
+    if (
+      !document.body.classList.contains("home-page") ||
+      !link ||
+      event.defaultPrevented ||
+      event.button !== 0 ||
+      event.metaKey ||
+      event.ctrlKey ||
+      event.shiftKey ||
+      event.altKey ||
+      link.target ||
+      link.hasAttribute("download") ||
+      reducedMotion.matches
+    )
+      return;
+
+    const destination = new URL(link.href, location.href);
+    const destinationPath = destination.pathname.replace(/\/+$/, "");
+    if (destination.origin !== location.origin || !destinationPath.endsWith("/projetos")) return;
+
+    event.preventDefault();
+    if (document.body.classList.contains("page-transition-out")) return;
+    document.body.classList.add("page-transition-out");
+    setTimeout(() => location.assign(destination.href), 280);
+  });
+
   document
     .querySelectorAll("[data-year]")
     .forEach((el) => (el.textContent = new Date().getFullYear()));
