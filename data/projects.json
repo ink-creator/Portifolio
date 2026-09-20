@@ -9,16 +9,19 @@
       "type": "web",
       "status": "completed",
       "featured": true,
-      "shortDescription": "Browser-based sticky notes board with connections, files, multiple boards, dark mode and visual organization tools.",
-      "description": "English\nA browser-based floating notes app for organizing ideas in a visual and flexible way. It supports creating, moving, resizing and connecting notes, along with multiple boards, search, files, links, calendar and dark mode. Data is stored locally in the browser and can be exported as JSON.\n\nPortuguês\nUm aplicativo de notas flutuantes executado no navegador, projetado para organizar ideias de maneira visual e flexível. Ele permite criar, mover, redimensionar e conectar notas, além de oferecer suporte a múltiplos quadros, busca, arquivos, links, calendário e modo escuro. Os dados são armazenados localmente no navegador e podem ser exportados no formato JSON.",
+      "shortDescription": "Quadro visual no navegador para organizar ideias com notas conectadas, arquivos, múltiplos quadros e armazenamento local.",
+      "description": "Notas Flutuantes é um espaço de trabalho visual criado para organizar ideias de forma livre e flexível. Permite criar, mover, redimensionar, colorir, fixar e conectar notas; organizar conteúdos em múltiplos quadros; anexar arquivos e links; e utilizar busca, calendário, zoom, atalhos, temas claro e escuro e interface em português ou inglês. Os quadros, anexos e versões salvas permanecem no navegador, sem conta ou backend, e podem ser protegidos por backups exportados e importados em JSON.",
       "technologies": [
         "HTML",
         "CSS",
-        "JavaScript"
+        "JavaScript",
+        "IndexedDB",
+        "Local Storage",
+        "File APIs"
       ],
       "media": {
         "cover": "assets/images/projects/notas-flutuantes/cover-6b77434d25c15f1d.png",
-        "video": null,
+        "video": "assets/videos/projects/notas-flutuantes/demo-0f46e0f85ec481c3.mp4",
         "images": [
           "assets/images/projects/notas-flutuantes/screenshot-1-7cce2bd0f67b2d09.png",
           "assets/images/projects/notas-flutuantes/screenshot-2-5b38b2e17dbba25f.png",
@@ -30,6 +33,41 @@
         "demo": "https://ink-creator.github.io/Notas-flutuantes/",
         "download": null,
         "documentation": "https://github.com/ink-creator/Notas-flutuantes/blob/main/README.md"
+      }
+    },
+    {
+      "id": "analisador-de-arquivos",
+      "title": "Analisador de Arquivos",
+      "creators": [
+        "Ink"
+      ],
+      "type": "desktop",
+      "status": "completed",
+      "featured": true,
+      "shortDescription": "Aplicativo desktop para analisar projetos de programação, visualizar estrutura, linguagens, estatísticas, arquivos e indicadores de código sem modificar o projeto original.",
+      "description": "Analisador de Projetos é uma ferramenta desktop criada para inspecionar projetos de programação locais de forma visual e somente leitura. O programa analisa arquivos, pastas, linhas, tamanho, distribuição de linguagens, extensões, profundidade da estrutura e maiores arquivos e diretórios. Também oferece uma árvore interativa para explorar o projeto, pesquisa por arquivos e pastas, identificação de marcadores como TODO, FIXME e HACK, além de um modo CLI com saída em JSON.",
+      "technologies": [
+        "Python",
+        "pywebview",
+        "HTML",
+        "CSS",
+        "JavaScript",
+        "unittest"
+      ],
+      "media": {
+        "cover": "assets/images/projects/analisador-de-arquivos/cover-2629b0a674e0a714.png",
+        "video": "assets/videos/projects/analisador-de-arquivos/demo-47ea36a371eb32a5.mp4",
+        "images": [
+          "assets/images/projects/analisador-de-arquivos/screenshot-1-62fafe807e2ecf0d.png",
+          "assets/images/projects/analisador-de-arquivos/screenshot-2-fe2f2a9a0772d565.png",
+          "assets/images/projects/analisador-de-arquivos/screenshot-3-fea412b8b321e6ae.png"
+        ]
+      },
+      "links": {
+        "github": "https://github.com/ink-creator/Analisador-de-projetos",
+        "demo": null,
+        "download": "https://github.com/ink-creator/Analisador-de-projetos/releases/tag/v1.0.1",
+        "documentation": "https://github.com/ink-creator/Analisador-de-projetos/blob/main/README.md"
       }
     }
   ]
