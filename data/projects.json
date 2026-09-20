@@ -37,7 +37,7 @@
     },
     {
       "id": "analisador-de-arquivos",
-      "title": "Analisador de Arquivos",
+      "title": "Analisador de Projetos",
       "creators": [
         "Ink"
       ],
@@ -68,6 +68,40 @@
         "demo": null,
         "download": "https://github.com/ink-creator/Analisador-de-projetos/releases/tag/v1.0.1",
         "documentation": "https://github.com/ink-creator/Analisador-de-projetos/blob/main/README.md"
+      }
+    },
+    {
+      "id": "leito-de-projetos",
+      "title": "Leito de Projetos",
+      "creators": [
+        "Ink"
+      ],
+      "type": "desktop",
+      "status": "completed",
+      "featured": true,
+      "shortDescription": "Aplicativo desktop para transformar projetos de código em arquivos organizados para análise, documentação, compartilhamento e uso com ferramentas de IA.",
+      "description": "Leitor de Projetos é uma ferramenta desktop criada para preparar projetos de programação para análise e compartilhamento. O aplicativo permite selecionar arquivos e pastas, aplicar filtros e gerar o conteúdo em um único arquivo, arquivos separados ou partes preparadas para IA. O modo Prepare for AI estima tokens, divide projetos grandes automaticamente e exporta o conteúdo em Markdown ou TXT, mantendo tudo localmente e sem exigir chave de API.",
+      "technologies": [
+        "Python",
+        "Tkinter",
+        "JSON",
+        "PyInstaller",
+        "GitHub Actions"
+      ],
+      "media": {
+        "cover": "assets/images/projects/leito-de-projetos/cover-a539aa88552a5151.png",
+        "video": "assets/videos/projects/leito-de-projetos/demo-20d005b4f9c1969e.mp4",
+        "images": [
+          "assets/images/projects/leito-de-projetos/screenshot-1-2091a92583174e47.png",
+          "assets/images/projects/leito-de-projetos/screenshot-2-fbd9554a3d7da018.png",
+          "assets/images/projects/leito-de-projetos/screenshot-3-a1f2ee206ec27d93.png"
+        ]
+      },
+      "links": {
+        "github": "https://github.com/ink-creator/Leitor-de-projetos",
+        "demo": null,
+        "download": "https://github.com/ink-creator/Leitor-de-projetos/releases/latest",
+        "documentation": "https://github.com/ink-creator/Leitor-de-projetos/blob/main/README.md"
       }
     }
   ]
