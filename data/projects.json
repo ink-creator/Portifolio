@@ -103,6 +103,41 @@
         "download": "https://github.com/ink-creator/Leitor-de-projetos/releases/latest",
         "documentation": "https://github.com/ink-creator/Leitor-de-projetos/blob/main/README.md"
       }
+    },
+    {
+      "id": "conversor-de-arquivos",
+      "title": "Conversor de Arquivos",
+      "creators": [
+        "Ink"
+      ],
+      "type": "desktop",
+      "status": "completed",
+      "featured": false,
+      "shortDescription": "Aplicativo desktop para converter documentos, dados estruturados e imagens, com suporte a conversão em lote, compressão e redimensionamento.",
+      "description": "Conversor de Arquivos é uma aplicação desktop criada para simplificar conversões comuns de arquivos em uma interface visual. O programa suporta documentos, dados estruturados e imagens, detecta automaticamente formatos compatíveis e oferece conversão em lote com políticas para conflitos de nomes. A área de imagens também permite comprimir e redimensionar arquivos, enquanto o pywebview integra a interface em HTML, CSS e JavaScript ao backend em Python.",
+      "technologies": [
+        "Python",
+        "pywebview",
+        "HTML",
+        "CSS",
+        "JavaScript",
+        "PyInstaller"
+      ],
+      "media": {
+        "cover": "assets/images/projects/conversor-de-arquivos/cover.svg",
+        "video": "https://raw.githubusercontent.com/ink-creator/Conversor-arquivos/main/assets/demo/conversor-arquivos-demo.mp4",
+        "images": [
+          "https://raw.githubusercontent.com/ink-creator/Conversor-arquivos/main/assets/screenshots/files-overview.png",
+          "https://raw.githubusercontent.com/ink-creator/Conversor-arquivos/main/assets/screenshots/files-conversion.png",
+          "https://raw.githubusercontent.com/ink-creator/Conversor-arquivos/main/assets/screenshots/images-conversion.png"
+        ]
+      },
+      "links": {
+        "github": "https://github.com/ink-creator/Conversor-arquivos",
+        "demo": null,
+        "download": "https://github.com/ink-creator/Conversor-arquivos/releases/latest",
+        "documentation": "https://github.com/ink-creator/Conversor-arquivos/blob/main/README.md"
+      }
     }
   ]
 }
