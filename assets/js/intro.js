@@ -10,11 +10,16 @@
   let overlay;
   let finished = false;
   let watchdog;
+  let flightFrame;
+  let resolveFlight;
 
   function finish() {
     if (finished) return;
     finished = true;
     clearTimeout(watchdog);
+    cancelAnimationFrame(flightFrame);
+    resolveFlight?.();
+    resolveFlight = null;
     listeners.abort();
     root.classList.remove("intro-pending");
     animations.forEach((animation) => animation.cancel());
@@ -24,7 +29,8 @@
   function animate(element, frames, options) {
     const animation = element.animate(frames, { fill: "both", ...options });
     animations.add(animation);
-    // Cancellation is expected only when the page is closed or motion is reduced.
+    // Cancellation is also used when the fixed entrance hands off to the
+    // scroll-aware flight.
     return animation.finished.catch(() => {});
   }
 
@@ -32,9 +38,77 @@
     return new Promise((resolve) => setTimeout(resolve, duration));
   }
 
+  function flyToTargets(star, face, halo, smile, duration) {
+    const starStart = star.getBoundingClientRect();
+    const faceStart = face.getBoundingClientRect();
+
+    // Finished Web Animations keep their last frame. Lock that visual state into
+    // regular styles so this flight can be steered on every animation frame.
+    star.getAnimations().forEach((animation) => animation.cancel());
+    face.getAnimations().forEach((animation) => animation.cancel());
+    Object.assign(star.style, {
+      left: `${starStart.left}px`,
+      top: `${starStart.top}px`,
+      width: `${starStart.width}px`,
+      height: `${starStart.height}px`,
+      opacity: 1,
+      transform: "rotate(0deg)",
+    });
+    Object.assign(face.style, {
+      left: `${faceStart.left}px`,
+      top: `${faceStart.top}px`,
+      width: `${faceStart.width}px`,
+      height: `${faceStart.height}px`,
+      opacity: 1,
+      scale: 1,
+    });
+
+    const mix = (start, end, amount) => start + (end - start) * amount;
+    const startedAt = performance.now();
+
+    return new Promise((resolve) => {
+      resolveFlight = resolve;
+
+      const step = (now) => {
+        if (finished) return;
+        const progress = Math.min((now - startedAt) / duration, 1);
+        const eased = 1 - (1 - progress) ** 4;
+        // These rectangles are intentionally read on every frame. Scrolling in
+        // either direction moves the destination, and the clones follow it.
+        const starEnd = halo.getBoundingClientRect();
+        const faceEnd = smile.getBoundingClientRect();
+
+        Object.assign(star.style, {
+          left: `${mix(starStart.left, starEnd.left, eased)}px`,
+          top: `${mix(starStart.top, starEnd.top, eased)}px`,
+          width: `${mix(starStart.width, starEnd.width, eased)}px`,
+          height: `${mix(starStart.height, starEnd.height, eased)}px`,
+          transform: `rotate(${360 * eased}deg)`,
+        });
+        Object.assign(face.style, {
+          left: `${mix(faceStart.left, faceEnd.left, eased)}px`,
+          top: `${mix(faceStart.top, faceEnd.top, eased)}px`,
+          width: `${mix(faceStart.width, faceEnd.width, eased)}px`,
+          height: `${mix(faceStart.height, faceEnd.height, eased)}px`,
+        });
+
+        if (progress < 1) {
+          flightFrame = requestAnimationFrame(step);
+          return;
+        }
+        flightFrame = undefined;
+        resolveFlight = null;
+        resolve();
+      };
+
+      flightFrame = requestAnimationFrame(step);
+    });
+  }
+
   root.classList.add("intro-pending");
   watchdog = setTimeout(finish, 20000);
   window.addEventListener("pagehide", finish, { passive: true, signal: listeners.signal });
+  document.addEventListener("portfolio:intro-finish", finish, { signal: listeners.signal });
   reducedMotion.addEventListener(
     "change",
     (event) => {
@@ -74,7 +148,6 @@
       }
       face.lastElementChild?.setAttribute("d", "M7 18c5 6 13 6 18 0");
 
-      const haloStyle = getComputedStyle(halo);
       const viewportWidth = document.documentElement.clientWidth || innerWidth;
       const viewportHeight = document.documentElement.clientHeight || innerHeight;
       const centerX = viewportWidth / 2;
@@ -142,17 +215,6 @@
       await wait(550);
       if (finished) return;
 
-      const to = smile.getBoundingClientRect();
-      const starTarget = halo.getBoundingClientRect();
-      const starEnd = {
-        left: `${starTarget.left + starTarget.width / 2}px`,
-        top: `${starTarget.top}px`,
-        width: haloStyle.width,
-        height: haloStyle.height,
-        transform: "translateX(-50%) rotate(360deg)",
-        opacity: 1,
-      };
-
       const reveals = [
         ...document.querySelectorAll(
           ".home-page .site-header, .home-page .hero-copy, .home-page .creative-stage, .home-page .home-paths, .home-page .footer",
@@ -167,39 +229,7 @@
       // The face and star travel together; keep both visible until both arrive.
       await Promise.all([
         ...reveals,
-        animate(
-          face,
-          [
-            {
-              left: `${faceStartLeft}px`,
-              top: `${faceStartTop}px`,
-              width: `${faceSize}px`,
-              height: `${faceSize}px`,
-            },
-            {
-              left: `${to.left}px`,
-              top: `${to.top}px`,
-              width: `${to.width}px`,
-              height: `${to.height}px`,
-            },
-          ],
-          { duration: 2200, easing: ease },
-        ),
-        animate(
-          star,
-          [
-            {
-              left: `${centerX}px`,
-              top: `${centerY}px`,
-              width: `${starSize}px`,
-              height: `${starSize}px`,
-              transform: "translate(-50%, -50%) rotate(0deg)",
-              opacity: 1,
-            },
-            starEnd,
-          ],
-          { duration: 2200, easing: ease },
-        ),
+        flyToTargets(star, face, halo, smile, 2200),
       ]);
       if (!finished) await wait(180);
     } finally {

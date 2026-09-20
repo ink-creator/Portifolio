@@ -23,6 +23,59 @@ body {
 .hero h1 .gradient-text {
   background-image: var(--gradient);
 }
+.home-page .hero h1 .gradient-text {
+  background-image: linear-gradient(105deg, #4cc6ed 4%, #758df8 48%, var(--neon-star) 100%);
+}
+.home-page main,
+.home-page .site-header,
+.home-page .footer {
+  transition:
+    opacity 0.24s ease,
+    transform 0.28s cubic-bezier(0.4, 0, 1, 1);
+}
+.home-page.page-transition-out main,
+.home-page.page-transition-out .site-header,
+.home-page.page-transition-out .footer {
+  opacity: 0;
+  transform: translateY(-7px);
+  pointer-events: none;
+}
+.cosmic-halo.page-transition-star {
+  position: fixed;
+  z-index: 100;
+  margin: 0;
+  animation: none !important;
+  pointer-events: none;
+  will-change: top, rotate, scale, opacity;
+}
+.route-transition-lock,
+.route-transition-lock body {
+  overflow: hidden;
+  overscroll-behavior: none;
+  touch-action: none;
+}
+.route-transition-lock body {
+  pointer-events: none;
+  user-select: none;
+}
+body.about-transition-out > .cosmic-backdrop .cosmic-halo,
+.about-page.projects-transition-out .about-end-star {
+  opacity: 0;
+}
+body.about-transition-out .site-header,
+body.about-transition-out main,
+body.about-transition-out .footer,
+body.projects-transition-out .site-header,
+body.projects-transition-out main,
+body.projects-transition-out .footer {
+  opacity: 0 !important;
+  transform: translateY(9px) !important;
+  animation: none !important;
+  pointer-events: none;
+  transition:
+    opacity 0.3s ease,
+    transform 0.32s cubic-bezier(0.4, 0, 1, 1);
+}
 .button.primary {
   background: linear-gradient(180deg, #6c38a944, #55299566);
   border-color: #bc87ff50;
@@ -315,6 +368,84 @@ body {
 .page .page-heading h1 {
   font-size: clamp(2.5rem, 5vw, 3.65rem);
 }
+.projects-page .page-heading > .eyebrow,
+.projects-page .page-heading-row,
+.projects-page .page-heading > p:last-child,
+.projects-page .filters,
+.projects-page .project-card {
+  animation: projects-reveal 0.54s cubic-bezier(0.18, 0.78, 0.2, 1) both;
+}
+.projects-page .page-heading-row {
+  animation-delay: 0.06s;
+}
+.projects-page .page-heading > p:last-child {
+  animation-delay: 0.12s;
+}
+.projects-page .filters {
+  animation-delay: 0.18s;
+}
+.projects-page .project-card {
+  animation-delay: 0.22s;
+}
+.projects-page .project-card:nth-child(2) {
+  animation-delay: 0.27s;
+}
+.projects-page .project-card:nth-child(3) {
+  animation-delay: 0.32s;
+}
+.projects-page .project-card:nth-child(n + 4) {
+  animation-delay: 0.37s;
+}
+.about-page .page-heading > .eyebrow,
+.about-page .page-heading-row,
+.about-page .about-intro > *,
+.about-page .person-card,
+.about-page .about-follow {
+  animation: about-reveal 0.62s cubic-bezier(0.18, 0.78, 0.2, 1) both;
+}
+.about-page .page-heading-row {
+  animation-delay: 0.08s;
+}
+.about-page .about-intro > :first-child {
+  animation-delay: 0.18s;
+}
+.about-page .about-intro > :last-child {
+  animation-delay: 0.26s;
+}
+.about-page .person-card:first-child {
+  animation-delay: 0.34s;
+}
+.about-page .person-card:nth-child(2) {
+  animation-delay: 0.42s;
+}
+.about-page .about-follow {
+  animation-delay: 0.5s;
+}
+.about-page .about-end-mark {
+  animation: about-reveal 0.7s cubic-bezier(0.18, 0.78, 0.2, 1) 0.58s both;
+}
+.about-end-mark {
+  min-height: 725px;
+  display: grid;
+  place-items: center;
+  padding-top: 55px;
+  overflow: hidden;
+}
+.about-end-star {
+  width: 670px;
+  height: 670px;
+  overflow: visible;
+  filter:
+    drop-shadow(0 0 5px #c77dff)
+    drop-shadow(0 0 15px #8e25f0aa);
+  animation: star-breathe 8s ease-in-out infinite;
+}
+.about-end-star polygon {
+  fill: none;
+  stroke: var(--neon-star);
+  stroke-width: 2.2;
+  stroke-linejoin: round;
+}
 .code-mini {
   flex: 0 1 302px;
   width: 302px;
@@ -354,6 +485,26 @@ body {
   }
   50% {
     opacity: 0.86;
+  }
+}
+@keyframes projects-reveal {
+  from {
+    opacity: 0;
+    translate: 0 10px;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+@keyframes about-reveal {
+  from {
+    opacity: 0;
+    translate: 0 14px;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
   }
 }
 @media (min-width: 761px) {
@@ -428,6 +579,13 @@ body {
     width: 500px;
     height: 500px;
     top: -250px;
+  }
+  .about-end-mark {
+    min-height: 555px;
+  }
+  .about-end-star {
+    width: 500px;
+    height: 500px;
   }
   .cosmic-backdrop {
     height: 1250px;
@@ -505,6 +663,13 @@ body {
     filter:
       drop-shadow(0 0 4px #c77dff)
       drop-shadow(0 0 11px #8e25f0aa);
+  }
+  .about-end-mark {
+    min-height: 395px;
+  }
+  .about-end-star {
+    width: 340px;
+    height: 340px;
   }
   .site-header .nav {
     background: #0f0922f5;
