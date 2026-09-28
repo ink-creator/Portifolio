@@ -174,6 +174,47 @@ body.projects-transition-out .footer {
 .home-page .hero-actions {
   margin-top: 33px;
 }
+.home-page .programming-button {
+  border-color: #68b9ff;
+  background: linear-gradient(135deg, #86ceff, #4a98f2);
+  color: #071321;
+  font-weight: 750;
+  box-shadow: 0 10px 28px #4a98f226;
+}
+.home-page .programming-button:hover {
+  border-color: #b8e2ff;
+  box-shadow: 0 14px 34px #4a98f238;
+}
+.home-page .design-button {
+  border-color: #a970ff;
+  background: linear-gradient(135deg, #ddc8ff, #a970ff);
+  color: #130a21;
+  font-weight: 750;
+  box-shadow: 0 10px 28px #a970ff2b;
+}
+.home-page .design-button:hover {
+  border-color: #efe5ff;
+  box-shadow: 0 14px 34px #a970ff40;
+}
+
+.projects-page,
+.project-detail-page {
+  --accent: #58adff;
+  --accent2: #a8d5ff;
+  --neon-star: #58adff;
+  --gradient: linear-gradient(105deg, #a8d5ff 4%, #58adff 55%, #3978e8 100%);
+  background: radial-gradient(ellipse at 80% 0%, #174b834d, transparent 42%), var(--bg);
+}
+.projects-page .site-header .nav a.active,
+.project-detail-page .site-header .nav a.active {
+  background: #4a98f21f;
+  color: #d9efff;
+}
+.projects-page .code-window,
+.project-detail-page .code-window {
+  border-color: #58adff42;
+  background: linear-gradient(125deg, #102b4db8, #080f1ded);
+}
 .home-page .hero-note {
   margin-top: 35px;
   color: #9691ae;

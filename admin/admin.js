@@ -8,6 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const status = document.getElementById("cloud-status");
   const tokenKey = "portfolio_admin_session";
   let authenticated = false;
+  const getEditor = () => window.DesignAdmin || window.PortfolioAdmin;
 
   if (!login || !logout || !publish || !user || !status) return;
 
@@ -37,15 +38,16 @@ document.addEventListener("DOMContentLoaded", () => {
     user.textContent = authenticated ? `@${account.login}` : "Não autenticado";
     login.hidden = authenticated;
     logout.hidden = !authenticated;
-    publish.disabled = !authenticated || window.PortfolioAdmin?.isBusy();
+    publish.disabled = !authenticated || getEditor()?.isBusy();
+    const mediaDescription = getEditor()?.mediaDescription || "projetos, imagens e vídeos";
     status.textContent =
       message ||
       (authenticated
-        ? "Conectado. Seus projetos, imagens e vídeos serão publicados juntos."
+        ? `Conectado. Seus ${mediaDescription} serão publicados juntos.`
         : "Entre com uma das contas GitHub autorizadas para publicar.");
   };
   document.addEventListener("portfolio-editor-state", () => {
-    publish.disabled = !authenticated || window.PortfolioAdmin?.isBusy();
+    publish.disabled = !authenticated || getEditor()?.isBusy();
   });
 
   if (!API || API.includes("SEU-WORKER")) {
@@ -65,7 +67,10 @@ document.addEventListener("DOMContentLoaded", () => {
     return;
   }
 
-  login.href = `${API}/auth/login`;
+  const returnTo = location.href
+    ? location.href.split("#")[0]
+    : `${location.origin || ""}${location.pathname || ""}${location.search || ""}`;
+  login.href = `${API}/auth/login?return_to=${encodeURIComponent(returnTo)}`;
   async function checkSession() {
     if (callbackError) {
       setAuthenticated(
@@ -107,23 +112,25 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   publish.addEventListener("click", async () => {
-    if (window.PortfolioAdmin?.isBusy()) return;
+    const editor = getEditor();
+    if (!editor || editor.isBusy()) return;
     publish.disabled = true;
     logout.disabled = true;
     const originalLabel = publish.textContent;
     publish.textContent = "Publicando…";
-    status.textContent = "Preparando projetos, imagens e vídeos…";
+    const mediaDescription = editor.mediaDescription || "projetos, imagens e vídeos";
+    status.textContent = `Preparando ${mediaDescription}…`;
     try {
-      const projects = await window.PortfolioAdmin.preparePublish();
-      const videoCount = projects.filter((project) => Boolean(project.media?.video)).length;
-      const body = JSON.stringify({ projects });
+      const prepared = await editor.preparePublish();
+      const payload = editor.publishBody ? editor.publishBody(prepared) : { projects: prepared };
+      const body = JSON.stringify(payload);
       if (new Blob([body]).size > 25 * 1024 * 1024) {
         throw new Error(
           "A publicação ultrapassa 25 MB com a conversão dos arquivos. Remova algumas mídias deste envio e publique-as depois. Seu rascunho continua salvo.",
         );
       }
-      status.textContent = "Enviando projetos, imagens e vídeos ao GitHub. Aguarde…";
-      const response = await fetch(`${API}/api/publish`, {
+      status.textContent = `Enviando ${mediaDescription} ao GitHub. Aguarde…`;
+      const response = await fetch(`${API}${editor.publishEndpoint || "/api/publish"}`, {
         method: "POST",
         headers: authHeaders({ "content-type": "application/json" }),
         body,
@@ -143,26 +150,27 @@ document.addEventListener("DOMContentLoaded", () => {
         throw new Error(data.detail || data.error || fallback);
       }
       try {
-        await window.PortfolioAdmin.replaceProjects(data.projects || projects);
+        if (editor.applyPublished) await editor.applyPublished(data, prepared);
+        else await editor.replaceProjects(data.projects || prepared);
       } catch (error) {
         status.textContent =
           "Publicado no GitHub, mas a cópia local não pôde ser atualizada. Recarregue do site quando a publicação estiver disponível.";
-        window.PortfolioAdmin.notice(status.textContent, "error");
+        editor.notice(status.textContent, "error");
         return;
       }
-      status.textContent = videoCount
-        ? `Publicado com ${videoCount} vídeo(s). O GitHub Pages atualizará após concluir o deploy.`
-        : "Publicado sem vídeos: nenhum projeto tem um vídeo selecionado. O GitHub Pages atualizará após concluir o deploy.";
-      window.PortfolioAdmin.notice(status.textContent);
+      status.textContent = window.DesignAdmin
+        ? "Designs publicados. O GitHub Pages atualizará a galeria após concluir o deploy."
+        : "Projetos publicados. O GitHub Pages atualizará após concluir o deploy.";
+      editor.notice(status.textContent);
     } catch (error) {
       const detail =
         error instanceof TypeError
           ? "Não foi possível comunicar com o serviço de publicação. Confira a conexão e a configuração do Worker."
           : error.message;
       status.textContent = `Não foi possível publicar: ${detail} Seu rascunho foi mantido.`;
-      window.PortfolioAdmin.notice(detail, "error");
+      editor.notice(detail, "error");
     } finally {
-      window.PortfolioAdmin.setBusy(false);
+      editor.setBusy(false);
       publish.disabled = !authenticated;
       logout.disabled = false;
       publish.textContent = originalLabel;

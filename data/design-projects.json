@@ -1,0 +1,13 @@
+{
+  "categories": [
+    {
+      "id": "design-geral",
+      "label": "Design Geral"
+    },
+    {
+      "id": "planta-baixa",
+      "label": "Plantas Baixas"
+    }
+  ],
+  "projects": []
+}

@@ -73,6 +73,26 @@ test("valida todas as mídias antes de enviar qualquer arquivo", async () => {
   assert.equal(calls, 0);
 });
 
+test("separa mídias de design e processa imagens de comparação", async () => {
+  const projects = [
+    {
+      id: "sala-residencial",
+      media: { cover: data("image/png"), images: [data("image/webp")] },
+      comparison: {
+        before: data("image/jpeg", "antes"),
+        after: data("image/jpeg", "depois"),
+      },
+    },
+  ];
+  let index = 0;
+  const files = await prepareMedia(projects, async () => `design-sha-${++index}`, "design");
+  assert.equal(files.length, 4);
+  assert.ok(files.every((file) => file.path.startsWith("assets/images/design/sala-residencial/")));
+  assert.match(projects[0].comparison.before, /comparison-before-[a-f0-9]{16}\.jpg$/);
+  assert.match(projects[0].comparison.after, /comparison-after-[a-f0-9]{16}\.jpg$/);
+  assert.ok(!JSON.stringify(projects).includes("data:"));
+});
+
 test("limita o corpo real mesmo quando content-length não é enviado", async () => {
   let cancelled = false;
   const stream = new ReadableStream({
@@ -166,6 +186,44 @@ test("publicação autenticada inclui vídeo e JSON no mesmo commit; falha de up
     assert.equal(calls.filter((call) => call.method === "PATCH").length, 1);
     assert.equal(calls.find((call) => call.method === "PATCH").body.force, false);
     calls.length = 0;
+
+    const designResponse = await worker.fetch(
+      new Request("https://test/api/publish-design", {
+        method: "POST",
+        headers: { Authorization: `Bearer ${token}` },
+        body: JSON.stringify({
+          designData: {
+            categories: [{ id: "planta-baixa", label: "Plantas Baixas" }],
+            projects: [
+              {
+                id: "sala-residencial",
+                title: "Sala residencial",
+                category: "planta-baixa",
+                media: { cover: data("image/png"), images: [] },
+                comparison: {
+                  before: data("image/jpeg", "antes"),
+                  after: data("image/jpeg", "depois"),
+                },
+              },
+            ],
+          },
+        }),
+      }),
+      env,
+    );
+    assert.equal(designResponse.status, 200);
+    const designResult = await designResponse.json();
+    assert.match(designResult.designData.projects[0].comparison.after, /\.jpg$/);
+    const designTree = calls.find((call) => call.path.endsWith("/git/trees")).body.tree;
+    assert.ok(designTree.some((file) => file.path === "data/design-projects.json"));
+    assert.ok(designTree.some((file) => file.path.startsWith("assets/images/design/")));
+    const designJson = JSON.parse(
+      calls.find((call) => call.body?.encoding === "utf-8").body.content,
+    );
+    assert.equal(designJson.categories[0].label, "Plantas Baixas");
+    assert.ok(!JSON.stringify(designJson).includes("data:"));
+    calls.length = 0;
+
     failUpload = true;
     assert.equal((await worker.fetch(request(), env)).status, 500);
     assert.equal(calls.filter((call) => call.method === "PATCH").length, 0);

@@ -96,9 +96,23 @@ async function installationToken(env) {
   return (await response.json()).token;
 }
 
-async function oauthState(env) {
+function adminReturnUrl(value, env) {
+  const configured = new URL(env.ADMIN_URL);
+  if (!value) return configured.toString();
+  const requested = new URL(value);
+  const adminDirectory = configured.pathname.endsWith("/")
+    ? configured.pathname
+    : configured.pathname.slice(0, configured.pathname.lastIndexOf("/") + 1);
+  if (requested.origin !== configured.origin || !requested.pathname.startsWith(adminDirectory)) {
+    throw new Error("Endereço de retorno do editor inválido.");
+  }
+  requested.hash = "";
+  return requested.toString();
+}
+
+async function oauthState(env, adminUrl) {
   const nonce = crypto.randomUUID();
-  const token = await new SignJWT({ nonce, adminUrl: env.ADMIN_URL })
+  const token = await new SignJWT({ nonce, adminUrl })
     .setProtectedHeader({ alg: "HS256" })
     .setIssuedAt()
     .setExpirationTime("10m")
@@ -141,6 +155,21 @@ function validateProject(project, seen) {
   }
 }
 
+function validateDesignProject(project, seen) {
+  if (!project || typeof project !== "object") throw new Error("Trabalho de design inválido.");
+  if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(project.id || "")) {
+    throw new Error(`ID inválido: ${project.id || "vazio"}.`);
+  }
+  if (seen.has(project.id)) throw new Error(`ID duplicado: ${project.id}.`);
+  seen.add(project.id);
+  if (!String(project.title || "").trim()) {
+    throw new Error(`O título é obrigatório em ${project.id}.`);
+  }
+  if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(project.category || "")) {
+    throw new Error(`Categoria inválida em ${project.id}.`);
+  }
+}
+
 async function createBlob(env, token, content, encoding = "base64") {
   const response = await github(
     `/repos/${encodeURIComponent(env.GITHUB_OWNER)}/${encodeURIComponent(env.GITHUB_REPO)}/git/blobs`,
@@ -155,19 +184,26 @@ async function createBlob(env, token, content, encoding = "base64") {
   return (await response.json()).sha;
 }
 
-async function prepareProjects(env, token, input) {
+async function prepareProjects(env, token, input, validate = validateProject, folder = "projects") {
   const projects = structuredClone(input);
   const seen = new Set();
   for (const project of projects) {
-    validateProject(project, seen);
+    validate(project, seen);
   }
-  const files = await prepareMedia(projects, (content) => createBlob(env, token, content));
+  const files = await prepareMedia(projects, (content) => createBlob(env, token, content), folder);
   return { projects, files };
 }
 
-async function publish(env, projects) {
+async function publish(env, projects, options = {}) {
   if (!Array.isArray(projects) || projects.length > MAX_PROJECTS)
     throw new Error("Lista de projetos inválida ou muito grande.");
+  const {
+    validate = validateProject,
+    folder = "projects",
+    dataPath = "data/projects.json",
+    wrap = (items) => ({ projects: items }),
+    commitMessage = "admin: atualizar projetos",
+  } = options;
   const token = await installationToken(env);
   const owner = encodeURIComponent(env.GITHUB_OWNER);
   const repo = encodeURIComponent(env.GITHUB_REPO);
@@ -182,11 +218,11 @@ async function publish(env, projects) {
   );
   if (!commitResponse.ok) throw new Error("Não foi possível ler o commit atual.");
   const baseTreeSha = (await commitResponse.json()).tree.sha;
-  const prepared = await prepareProjects(env, token, projects);
-  const projectsContent = `${JSON.stringify({ projects: prepared.projects }, null, 2)}\n`;
+  const prepared = await prepareProjects(env, token, projects, validate, folder);
+  const projectsContent = `${JSON.stringify(wrap(prepared.projects), null, 2)}\n`;
   const projectsSha = await createBlob(env, token, projectsContent, "utf-8");
   const tree = [
-    { path: "data/projects.json", mode: "100644", type: "blob", sha: projectsSha },
+    { path: dataPath, mode: "100644", type: "blob", sha: projectsSha },
     ...prepared.files.map((file) => ({ ...file, mode: "100644", type: "blob" })),
   ];
   const treeResponse = await github(
@@ -206,7 +242,7 @@ async function publish(env, projects) {
       method: "POST",
       headers: { "content-type": "application/json" },
       body: JSON.stringify({
-        message: "admin: atualizar projetos",
+        message: commitMessage,
         tree: treeSha,
         parents: [baseCommitSha],
       }),
@@ -230,6 +266,33 @@ async function publish(env, projects) {
   return prepared.projects;
 }
 
+async function publishDesign(env, designData) {
+  if (!designData || !Array.isArray(designData.categories) || !Array.isArray(designData.projects)) {
+    throw new Error("Dados de design inválidos.");
+  }
+  const categoryIds = new Set();
+  for (const category of designData.categories) {
+    if (
+      !category ||
+      !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(category.id || "") ||
+      !String(category.label || "").trim() ||
+      categoryIds.has(category.id)
+    ) {
+      throw new Error("Há uma categoria de design inválida ou repetida.");
+    }
+    categoryIds.add(category.id);
+  }
+  const categories = structuredClone(designData.categories);
+  const projects = await publish(env, designData.projects, {
+    validate: validateDesignProject,
+    folder: "design",
+    dataPath: "data/design-projects.json",
+    wrap: (items) => ({ categories, projects: items }),
+    commitMessage: "admin: atualizar projetos de design",
+  });
+  return { categories, projects };
+}
+
 async function handle(request, env) {
   const url = new URL(request.url);
   if (request.method === "OPTIONS") {
@@ -241,7 +304,8 @@ async function handle(request, env) {
 
   if (url.pathname === "/auth/login" && request.method === "GET") {
     const callback = `${String(env.WORKER_PUBLIC_URL).replace(/\/$/, "")}/auth/callback`;
-    const state = await oauthState(env);
+    const returnTo = adminReturnUrl(url.searchParams.get("return_to"), env);
+    const state = await oauthState(env, returnTo);
     const authorize = new URL("https://github.com/login/oauth/authorize");
     authorize.searchParams.set("client_id", env.GITHUB_CLIENT_ID);
     authorize.searchParams.set("redirect_uri", callback);
@@ -253,14 +317,14 @@ async function handle(request, env) {
   }
 
   if (url.pathname === "/auth/callback" && request.method === "GET") {
-    const adminUrl = String(env.ADMIN_URL).replace(/#.*$/, "");
+    let adminUrl = String(env.ADMIN_URL).replace(/#.*$/, "");
     const code = url.searchParams.get("code");
     const state = url.searchParams.get("state");
     if (!code || !state) return redirect(`${adminUrl}#error=callback_invalido`);
     let statePayload;
     try {
       const { payload } = await jwtVerify(state, new TextEncoder().encode(env.SESSION_SECRET));
-      if (payload.adminUrl !== env.ADMIN_URL) throw new Error();
+      adminUrl = adminReturnUrl(payload.adminUrl, env);
       statePayload = payload;
     } catch {
       return redirect(`${adminUrl}#error=state_invalido`);
@@ -304,6 +368,12 @@ async function handle(request, env) {
     const body = await readPublishBody(request);
     const projects = await publish(env, body.projects);
     return json(request, env, { ok: true, projects });
+  }
+
+  if (url.pathname === "/api/publish-design" && request.method === "POST") {
+    const body = await readPublishBody(request);
+    const designData = await publishDesign(env, body.designData);
+    return json(request, env, { ok: true, designData });
   }
 
   return json(request, env, { error: "rota não encontrada" }, 404);

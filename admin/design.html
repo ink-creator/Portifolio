@@ -1,0 +1,373 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="theme-color" content="#07080b" />
+    <meta name="robots" content="noindex" />
+    <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml" />
+    <title>Editor de design — Ink × Stella</title>
+    <link rel="stylesheet" href="../assets/css/style.css" />
+    <link rel="stylesheet" href="../assets/css/responsive.css" />
+    <link rel="stylesheet" href="../assets/css/cosmic.css" />
+    <link rel="stylesheet" href="../assets/css/admin.css" />
+  </head>
+  <body class="editor-body design-editor-body">
+    <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
+    <header class="site-header">
+      <a class="brand" href="../" aria-label="Ink e Stella, início"
+        >ink<span>×</span>stella<span class="brand-dot">.</span></a
+      ><button
+        class="menu-toggle"
+        aria-label="Abrir menu"
+        aria-expanded="false"
+        aria-controls="site-nav"
+      >
+        <span></span><span></span>
+      </button>
+      <nav class="nav" id="site-nav" aria-label="Navegação do painel">
+        <a href="../design/#design">Ver design ↗</a><a href="./">Editor de código</a
+        ><a class="active" aria-current="page" href="design.html">Editor de design</a>
+      </nav>
+    </header>
+    <main id="conteudo" class="container page admin-page">
+      <div class="admin-heading">
+        <div>
+          <p class="eyebrow">GALERIA DA STELLA</p>
+          <h1>Designs<span>.</span></h1>
+          <p>Adicione imagens, organize os detalhes e publique sem precisar editar código.</p>
+        </div>
+        <button class="button primary" id="new-design-project" type="button">
+          ＋ Novo trabalho
+        </button>
+      </div>
+      <div id="admin-notice" class="admin-notice" role="status" aria-live="polite" hidden></div>
+      <section class="panel cloud-panel" id="cloud-auth-panel" aria-labelledby="publish-title">
+        <div class="publish-copy">
+          <p class="eyebrow">PUBLICAÇÃO</p>
+          <h2 id="publish-title">Do rascunho para a galeria</h2>
+          <p>Salve seus trabalhos e publique imagens e informações quando estiver pronta.</p>
+          <small id="cloud-status" role="status">Verificando conexão…</small>
+        </div>
+        <div class="publish-controls">
+          <span id="cloud-user" class="connection-state">Não autenticado</span>
+          <div class="form-actions">
+            <a class="button secondary" id="github-login" href="#">Entrar com GitHub</a
+            ><button class="button primary" id="github-publish" type="button" disabled>
+              Publicar designs</button
+            ><button class="button secondary" id="github-logout" type="button" hidden>Sair</button>
+          </div>
+        </div>
+      </section>
+
+      <div class="admin-layout">
+        <aside class="admin-sidebar">
+          <section class="panel list-panel" aria-labelledby="count-title">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow">BIBLIOTECA</p>
+                <h2 id="count-title">Seus trabalhos</h2>
+              </div>
+            </div>
+            <label class="search-field"
+              ><span class="sr-only">Pesquisar trabalhos</span
+              ><input id="design-project-search" type="search" placeholder="Pesquisar trabalhos…"
+            /></label>
+            <div id="design-admin-list" class="admin-list">
+              <p class="list-empty">Carregando trabalhos…</p>
+            </div>
+          </section>
+          <details class="panel admin-tools">
+            <summary>Backup e ajuda</summary>
+            <p>Guarde uma cópia dos rascunhos ou recupere a versão publicada.</p>
+            <div class="backup-actions">
+              <label class="button secondary file-button"
+                >Importar JSON<input
+                  id="design-import-json"
+                  type="file"
+                  accept=".json,application/json" /></label
+              ><button class="button secondary" id="design-export-json" type="button">
+                Exportar JSON</button
+              ><button class="button secondary" id="design-restore-json" type="button">
+                Recarregar do site
+              </button>
+            </div>
+            <p>
+              O guia rápido fica em <code>COMO_ADICIONAR_DESIGN.md</code> na pasta principal do
+              portfólio.
+            </p>
+          </details>
+        </aside>
+
+        <section class="panel editor-panel" tabindex="-1" aria-labelledby="editor-title">
+          <div class="panel-heading editor-heading">
+            <div>
+              <p class="eyebrow">EDITOR DE DESIGN</p>
+              <h2 id="editor-title">Novo trabalho</h2>
+            </div>
+            <span id="save-state" class="save-state" role="status">Carregando…</span>
+          </div>
+          <form id="design-project-form" novalidate>
+            <fieldset id="design-editor-fields" disabled>
+              <section class="editor-section" aria-labelledby="design-info-heading">
+                <div class="section-title">
+                  <span class="section-number" aria-hidden="true">01</span>
+                  <div>
+                    <h3 id="design-info-heading">Sobre o trabalho</h3>
+                    <p>Só título e categoria são obrigatórios. Preencha o que fizer sentido.</p>
+                  </div>
+                </div>
+                <div class="form-grid">
+                  <label
+                    >Título *<input
+                      id="d-title"
+                      required
+                      maxlength="160"
+                      placeholder="Ex.: Identidade Café Aurora"
+                  /></label>
+                  <label
+                    >ID do trabalho *<input
+                      id="d-id"
+                      autocapitalize="none"
+                      spellcheck="false"
+                      required
+                      placeholder="identidade-cafe-aurora"
+                    /><small>Usado no link. Letras minúsculas e hífens.</small></label
+                  >
+                  <label
+                    >Autoria<input id="d-creator" value="Stella" placeholder="Stella" /></label
+                  ><label
+                    >Categoria *<input
+                      id="d-category"
+                      required
+                      list="design-category-options"
+                      placeholder="design-geral"
+                    /><datalist id="design-category-options">
+                      <option value="design-geral">Design Geral</option>
+                      <option value="planta-baixa">Plantas Baixas</option>
+                      <option value="identidade-visual">Identidade Visual</option>
+                      <option value="social-media">Social Media</option>
+                      <option value="ilustracao">Ilustração</option>
+                      <option value="ui-ux">UI/UX</option>
+                      <option value="arquitetura">Arquitetura</option>
+                      <option value="outros">Outros</option>
+                    </datalist><small>Você também pode escrever uma nova categoria.</small></label
+                  >
+                  <label
+                    >Data<input id="d-date" type="month" /><small
+                      >Opcional. Ajuda a ordenar a galeria.</small
+                    ></label
+                  ><label class="check feature-check"
+                    ><input type="checkbox" id="d-featured" /><span
+                      >Destacar trabalho<small>Aparece primeiro e com mais espaço.</small></span
+                    ></label
+                  >
+                </div>
+                <label
+                  >Descrição curta<textarea
+                    id="d-short"
+                    rows="2"
+                    placeholder="Uma frase para o card da galeria."
+                  ></textarea></label
+                ><label
+                  >Descrição completa<textarea
+                    id="d-description"
+                    rows="5"
+                    placeholder="Conte o conceito, o objetivo e as escolhas do projeto."
+                  ></textarea></label
+                >
+                <div class="form-grid">
+                  <label
+                    >Ferramentas<input id="d-tools" placeholder="AutoCAD, SketchUp, Canva" /><small
+                      >Separe por vírgulas.</small
+                    ></label
+                  ><label
+                    >Tags<input id="d-tags" placeholder="residencial, minimalista, logotipo" /><small
+                      >Separe por vírgulas.</small
+                    ></label
+                  >
+                </div>
+              </section>
+
+              <section class="editor-section" aria-labelledby="design-media-heading">
+                <div class="section-title">
+                  <span class="section-number" aria-hidden="true">02</span>
+                  <div>
+                    <h3 id="design-media-heading">Capa e galeria</h3>
+                    <p>A capa apresenta o trabalho. A galeria mostra os detalhes.</p>
+                  </div>
+                </div>
+                <div class="media-card">
+                  <h4>Capa do trabalho</h4>
+                  <button class="upload-zone" id="design-cover-drop" type="button">
+                    <span class="upload-icon" aria-hidden="true">↑</span
+                    ><strong>Selecionar capa</strong><span>PNG, JPG ou WebP · até 4 MB</span>
+                  </button>
+                  <input
+                    id="design-cover-file"
+                    type="file"
+                    accept="image/png,image/jpeg,image/webp"
+                    hidden
+                  />
+                  <div id="design-cover-preview" class="media-preview"></div>
+                  <details class="media-link">
+                    <summary>Usar link ou caminho</summary>
+                    <label
+                      >Caminho ou URL da capa<input
+                        id="d-cover"
+                        placeholder="assets/images/design/capa.png"
+                    /></label>
+                  </details>
+                </div>
+                <div class="media-card gallery-card">
+                  <h4>Galeria de imagens <span>Opcional</span></h4>
+                  <button class="upload-zone gallery-upload" id="design-shots-drop" type="button">
+                    <span class="upload-icon" aria-hidden="true">＋</span
+                    ><span
+                      ><strong>Adicionar imagens</strong
+                      ><span>Escolha várias ou arraste os arquivos · até 4 MB cada</span></span
+                    >
+                  </button>
+                  <input
+                    id="design-shots-file"
+                    type="file"
+                    accept="image/png,image/jpeg,image/webp"
+                    multiple
+                    hidden
+                  />
+                  <div id="design-shots-preview" class="shots-preview"></div>
+                  <details class="media-link">
+                    <summary>Usar links ou caminhos</summary>
+                    <label
+                      >Caminhos ou URLs da galeria<textarea
+                        id="d-images"
+                        rows="3"
+                        placeholder="Um endereço por linha"
+                      ></textarea></label>
+                  </details>
+                </div>
+                <p class="media-help" id="design-media-size" role="status">
+                  Você também pode arrastar imagens para as áreas acima.
+                </p>
+              </section>
+
+              <section class="editor-section" aria-labelledby="floor-plan-heading">
+                <div class="section-title">
+                  <span class="section-number" aria-hidden="true">03</span>
+                  <div>
+                    <h3 id="floor-plan-heading">Dados da planta baixa</h3>
+                    <p>Opcional. Deixe em branco quando o trabalho não for uma planta.</p>
+                  </div>
+                </div>
+                <div class="form-grid">
+                  <label
+                    >Tipo de ambiente<input
+                      id="d-environment"
+                      placeholder="Ex.: apartamento residencial"
+                  /></label>
+                  <label
+                    >Área aproximada<input id="d-area" placeholder="Ex.: 72 m²" /></label
+                  ><label>Escala<input id="d-scale" placeholder="Ex.: 1:50" /></label
+                  ><label>Versão<input id="d-version" placeholder="Ex.: V2" /></label>
+                </div>
+              </section>
+
+              <section class="editor-section" aria-labelledby="comparison-heading">
+                <div class="section-title">
+                  <span class="section-number" aria-hidden="true">04</span>
+                  <div>
+                    <h3 id="comparison-heading">Comparação de imagens</h3>
+                    <p>Opcional para antes/depois, rascunho/final ou versões.</p>
+                  </div>
+                </div>
+                <div class="media-grid comparison-editor-grid">
+                  <div class="media-card">
+                    <h4>Primeira imagem</h4>
+                    <button class="upload-zone" id="design-before-drop" type="button">
+                      <span class="upload-icon" aria-hidden="true">A</span
+                      ><strong>Selecionar imagem</strong><span>PNG, JPG ou WebP</span>
+                    </button>
+                    <input
+                      id="design-before-file"
+                      type="file"
+                      accept="image/png,image/jpeg,image/webp"
+                      hidden
+                    />
+                    <div id="design-before-preview" class="media-preview"></div>
+                    <label
+                      >Caminho ou URL<input id="d-before" placeholder="assets/images/antes.jpg"
+                    /></label>
+                    <label>Rótulo<input id="d-before-label" placeholder="Antes" /></label>
+                  </div>
+                  <div class="media-card">
+                    <h4>Segunda imagem</h4>
+                    <button class="upload-zone" id="design-after-drop" type="button">
+                      <span class="upload-icon" aria-hidden="true">B</span
+                      ><strong>Selecionar imagem</strong><span>PNG, JPG ou WebP</span>
+                    </button>
+                    <input
+                      id="design-after-file"
+                      type="file"
+                      accept="image/png,image/jpeg,image/webp"
+                      hidden
+                    />
+                    <div id="design-after-preview" class="media-preview"></div>
+                    <label
+                      >Caminho ou URL<input id="d-after" placeholder="assets/images/depois.jpg"
+                    /></label>
+                    <label>Rótulo<input id="d-after-label" placeholder="Depois" /></label>
+                  </div>
+                </div>
+              </section>
+
+              <section class="editor-section" aria-labelledby="design-notes-heading">
+                <div class="section-title">
+                  <span class="section-number" aria-hidden="true">05</span>
+                  <div>
+                    <h3 id="design-notes-heading">Informações finais</h3>
+                    <p>Use apenas se houver algo importante a acrescentar.</p>
+                  </div>
+                </div>
+                <label
+                  >Observações<textarea
+                    id="d-notes"
+                    rows="3"
+                    placeholder="Restrições, decisões ou contexto adicional."
+                  ></textarea></label
+                ><label
+                  >Créditos<textarea
+                    id="d-credits"
+                    rows="2"
+                    placeholder="Fotografia, colaboração ou referências autorizadas."
+                  ></textarea></label
+                >
+              </section>
+
+              <div class="editor-actions">
+                <p id="draft-help">Rascunhos ficam salvos neste navegador.</p>
+                <div class="form-actions">
+                  <button class="button secondary" type="button" id="clear-design-form">
+                    Limpar</button
+                  ><button class="button secondary" type="button" id="preview-design-project">
+                    Visualizar ↗</button
+                  ><button class="button primary" type="submit">Salvar rascunho</button>
+                </div>
+              </div>
+            </fieldset>
+          </form>
+        </section>
+      </div>
+    </main>
+    <footer class="footer">
+      <div class="container footer-inner">
+        <span>© <span data-year></span> Ink × Stella</span><span>Painel de design</span>
+      </div>
+    </footer>
+    <script src="../assets/js/app.js"></script>
+    <script src="../assets/js/projects.js"></script>
+    <script src="cloudflare.js"></script>
+    <script src="../assets/js/admin-storage.js"></script>
+    <script src="../assets/js/design-admin.js?v=20260928-1"></script>
+    <script src="admin.js?v=20260928-1"></script>
+  </body>
+</html>

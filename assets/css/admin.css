@@ -235,8 +235,39 @@
   padding: 0;
   min-width: 0;
 }
-#editor-fields:disabled {
+#editor-fields:disabled,
+#design-editor-fields:disabled {
   opacity: 0.65;
+}
+
+.design-editor-body {
+  --accent: #a970ff;
+  --accent2: #ddc8ff;
+}
+
+.design-editor-body .section-number {
+  border-color: #a970ff42;
+  background: #a970ff0d;
+  color: #ddc8ff;
+}
+
+.design-editor-body .admin-page .upload-zone:hover,
+.design-editor-body .admin-page .upload-zone.drag {
+  border-color: #a970ff;
+  background: #20152f;
+}
+
+.design-editor-body .admin-page .editor-actions {
+  border-top-color: #614683;
+  background: #19131ff2;
+}
+
+.design-editor-body input[type="month"] {
+  color-scheme: dark;
+}
+
+.comparison-editor-grid .media-card > label {
+  margin-top: 14px;
 }
 .editor-section {
   padding: 26px 30px;

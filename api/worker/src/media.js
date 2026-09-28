@@ -32,7 +32,7 @@ export function parseMedia(value, kind) {
   return { extension, content };
 }
 
-export async function prepareMedia(projects, upload) {
+export async function prepareMedia(projects, upload, folder = "projects") {
   // Valida todas as mídias antes de iniciar o envio dos arquivos.
   const pending = [];
   for (const project of projects) {
@@ -44,6 +44,12 @@ export async function prepareMedia(projects, upload) {
       ...media.images.map((_, index) => [media.images, index, "image", `screenshot-${index + 1}`]),
       [media, "video", "video", "demo"],
     ];
+    if (project.comparison && typeof project.comparison === "object") {
+      entries.push(
+        [project.comparison, "before", "image", "comparison-before"],
+        [project.comparison, "after", "image", "comparison-after"],
+      );
+    }
     for (const [target, key, kind, name] of entries) {
       const file = parseMedia(target[key], kind);
       if (!file) continue;
@@ -53,7 +59,7 @@ export async function prepareMedia(projects, upload) {
         .map((byte) => byte.toString(16).padStart(2, "0"))
         .join("")
         .slice(0, 16);
-      const path = `assets/${kind === "video" ? "videos" : "images"}/projects/${project.id}/${name}-${hash}.${file.extension}`;
+      const path = `assets/${kind === "video" ? "videos" : "images"}/${folder}/${project.id}/${name}-${hash}.${file.extension}`;
       pending.push({ target, key, path, content: file.content });
     }
   }

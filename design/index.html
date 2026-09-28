@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="theme-color" content="#07080b" />
+    <meta
+      name="description"
+      content="Portfólio de design de Stella: projetos visuais, identidades, layouts e plantas baixas."
+    />
+    <title>Design por Stella — Ink × Stella</title>
+    <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="../assets/css/style.css" />
+    <link rel="stylesheet" href="../assets/css/responsive.css" />
+    <link rel="stylesheet" href="../assets/css/cosmic.css?v=20260920-11" />
+    <link rel="stylesheet" href="../assets/css/design.css?v=20260928-1" />
+  </head>
+  <body class="design-page">
+    <div class="cosmic-backdrop" aria-hidden="true">
+      <svg class="cosmic-halo" viewBox="0 -3.5 100 100">
+        <polygon points="50,3 61,36 96,36 67,56 78,90 50,70 22,90 33,56 4,36 39,36" />
+      </svg>
+    </div>
+    <a class="skip-link" href="#design-gallery">Pular para os trabalhos</a>
+    <header class="site-header">
+      <a class="brand" href="../" aria-label="Ink e Stella, início"
+        >ink<span>×</span>stella<span class="brand-dot">.</span></a
+      ><button
+        class="menu-toggle"
+        aria-label="Abrir menu"
+        aria-expanded="false"
+        aria-controls="site-nav"
+      >
+        <span></span><span></span>
+      </button>
+      <nav class="nav" id="site-nav" aria-label="Navegação principal">
+        <a href="../">Início</a><a href="../projetos/#programacao">Programação</a
+        ><a href="../design/#design" class="active" aria-current="page">Design</a
+        ><a href="../sobre/">Sobre nós</a>
+      </nav>
+      <a
+        class="header-social"
+        href="https://www.instagram.com/inkxstella/"
+        target="_blank"
+        rel="noopener"
+        >Vamos conversar <span aria-hidden="true">↗</span></a
+      >
+    </header>
+
+    <main id="conteudo" class="container design-main">
+      <nav class="area-switch" aria-label="Escolha uma área do portfólio">
+        <a href="../projetos/#programacao"><span aria-hidden="true">&lt;/&gt;</span> Programação</a>
+        <a href="#design" class="active" aria-current="page"><span aria-hidden="true">✦</span> Design</a>
+      </nav>
+
+      <section class="design-intro" aria-labelledby="design-title">
+        <div class="design-intro-copy">
+          <p class="eyebrow">PORTFÓLIO VISUAL · STELLA</p>
+          <h1 id="design-title">Ideias que ganham<br /><span>forma e espaço.</span></h1>
+          <p>
+            Designs, identidades e plantas baixas pensados para transformar referências em uma
+            experiência visual clara, bonita e possível.
+          </p>
+        </div>
+        <div class="design-signature" aria-hidden="true">
+          <span>STELLA</span><strong>✦</strong><small>design · interiores · criação</small>
+        </div>
+      </section>
+
+      <section class="design-library" aria-labelledby="library-title">
+        <div class="design-library-heading">
+          <div>
+            <p class="eyebrow">TRABALHOS</p>
+            <h2 id="library-title">Galeria de projetos</h2>
+          </div>
+          <p id="design-results" role="status" aria-live="polite">Carregando trabalhos…</p>
+        </div>
+
+        <div class="design-toolbar">
+          <label class="design-search">
+            <span class="sr-only">Pesquisar trabalhos de design</span>
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <circle cx="11" cy="11" r="6.5"></circle><path d="m16 16 4 4"></path>
+            </svg>
+            <input
+              id="design-search"
+              type="search"
+              autocomplete="off"
+              placeholder="Pesquisar por título, tag ou ferramenta…"
+            />
+          </label>
+          <details class="secondary-filters" id="secondary-filters">
+            <summary>Filtros <span id="active-filter-count" hidden>0</span></summary>
+            <div class="secondary-filter-panel">
+              <label
+                >Ferramenta<select id="tool-filter">
+                  <option value="all">Todas</option>
+                </select></label
+              >
+              <label
+                >Tag<select id="tag-filter">
+                  <option value="all">Todas</option>
+                </select></label
+              >
+              <button class="text-button" id="clear-design-filters" type="button">
+                Limpar filtros
+              </button>
+            </div>
+          </details>
+        </div>
+
+        <div
+          class="design-categories"
+          id="design-categories"
+          aria-label="Filtrar por categoria"
+        ></div>
+        <div id="design-gallery" class="design-grid" aria-live="polite" aria-busy="true">
+          <div class="design-loading" aria-hidden="true"><i></i><i></i><i></i></div>
+        </div>
+        <noscript><p>Ative o JavaScript para visualizar os trabalhos de design.</p></noscript>
+      </section>
+    </main>
+
+    <dialog class="design-dialog" id="design-project-dialog" aria-labelledby="dialog-title">
+      <div class="design-dialog-shell">
+        <button class="dialog-close" type="button" data-close-project aria-label="Fechar projeto">
+          <span aria-hidden="true">×</span>
+        </button>
+        <div id="design-project-content"></div>
+      </div>
+    </dialog>
+
+    <dialog class="design-lightbox" id="design-lightbox" aria-label="Imagem ampliada">
+      <div class="lightbox-toolbar">
+        <p id="lightbox-caption">Imagem ampliada</p>
+        <div>
+          <button type="button" data-zoom="out" aria-label="Diminuir zoom">−</button>
+          <button type="button" data-zoom="reset" aria-label="Restaurar zoom">100%</button>
+          <button type="button" data-zoom="in" aria-label="Aumentar zoom">＋</button>
+          <button type="button" data-close-lightbox aria-label="Fechar imagem">×</button>
+        </div>
+      </div>
+      <div class="lightbox-stage" id="lightbox-stage">
+        <button type="button" class="lightbox-nav previous" data-lightbox-step="-1" aria-label="Imagem anterior">←</button>
+        <img id="lightbox-image" alt="" draggable="false" />
+        <button type="button" class="lightbox-nav next" data-lightbox-step="1" aria-label="Próxima imagem">→</button>
+      </div>
+      <p class="lightbox-help">Use os botões para ampliar. Quando houver zoom, arraste para explorar os detalhes.</p>
+    </dialog>
+
+    <div class="design-toast" id="design-toast" role="status" aria-live="polite" hidden></div>
+
+    <footer class="footer">
+      <div class="container footer-inner">
+        <span>© <span data-year></span> Ink × Stella</span
+        ><span>Código, criatividade e um pouco de nós.</span
+        ><a href="https://www.instagram.com/inkxstella/" target="_blank" rel="noopener"
+          >Instagram ↗</a
+        >
+      </div>
+    </footer>
+    <script src="../assets/js/app.js?v=20260920-10"></script>
+    <script src="../assets/js/projects.js"></script>
+    <script src="../assets/js/admin-storage.js"></script>
+    <script src="../assets/js/design.js?v=20260928-1"></script>
+  </body>
+</html>

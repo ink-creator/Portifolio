@@ -19,7 +19,7 @@ window.Portfolio = (() => {
   let cache;
   function base() {
     const p = location.pathname;
-    for (const m of ["/projetos/", "/projeto/", "/admin/", "/sobre/"])
+    for (const m of ["/projetos/", "/projeto/", "/design/", "/admin/", "/sobre/"])
       if (p.includes(m)) return p.split(m)[0] + "/";
     return p.endsWith("/") ? p : p.substring(0, p.lastIndexOf("/") + 1);
   }
