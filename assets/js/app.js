@@ -143,14 +143,19 @@
     if (destination.origin !== location.origin) return;
 
     const goesToProjects = destinationPath.endsWith("/projetos");
+    const goesToDesign = destinationPath.endsWith("/design");
     const goesToAbout = destinationPath.endsWith("/sobre");
     const fromHome = document.body.classList.contains("home-page");
     const fromProjects = document.body.classList.contains("projects-page");
+    const fromDesign = document.body.classList.contains("design-page");
     const fromAbout = document.body.classList.contains("about-page");
     const fallsToAbout = goesToAbout && (fromHome || fromProjects);
     const risesToProjects = goesToProjects && fromAbout;
-    const fadesToProjects = goesToProjects && fromHome;
-    if (!fallsToAbout && !risesToProjects && !fadesToProjects) return;
+    const fadesToPortfolio =
+      ((goesToProjects || goesToDesign) && fromHome) ||
+      (goesToDesign && fromProjects) ||
+      (goesToProjects && fromDesign);
+    if (!fallsToAbout && !risesToProjects && !fadesToPortfolio) return;
 
     event.preventDefault();
     if (
