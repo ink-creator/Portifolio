@@ -149,13 +149,13 @@
     const fromProjects = document.body.classList.contains("projects-page");
     const fromDesign = document.body.classList.contains("design-page");
     const fromAbout = document.body.classList.contains("about-page");
-    const fallsToAbout = goesToAbout && (fromHome || fromProjects);
-    const risesToProjects = goesToProjects && fromAbout;
+    const fallsToAbout = goesToAbout && (fromHome || fromProjects || fromDesign);
+    const risesToPortfolio = (goesToProjects || goesToDesign) && fromAbout;
     const fadesToPortfolio =
       ((goesToProjects || goesToDesign) && fromHome) ||
       (goesToDesign && fromProjects) ||
       (goesToProjects && fromDesign);
-    if (!fallsToAbout && !risesToProjects && !fadesToPortfolio) return;
+    if (!fallsToAbout && !risesToPortfolio && !fadesToPortfolio) return;
 
     event.preventDefault();
     if (
@@ -168,7 +168,7 @@
       leaveWithStar(destination.href, "down");
       return;
     }
-    if (risesToProjects) {
+    if (risesToPortfolio) {
       leaveWithStar(destination.href, "up");
       return;
     }
