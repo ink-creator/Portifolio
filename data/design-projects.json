@@ -7,7 +7,42 @@
     {
       "id": "planta-baixa",
       "label": "Plantas Baixas"
+    },
+    {
+      "id": "ilustracao",
+      "label": "Ilustracao"
+    },
+    {
+      "id": "outros",
+      "label": "Outros"
     }
   ],
-  "projects": []
+  "projects": [
+    {
+      "id": "convite-de-casamento-demonstrativo",
+      "title": "Convite de casamento (demonstrativo)",
+      "creator": "Stella",
+      "category": "outros",
+      "date": "2026-09",
+      "featured": true,
+      "shortDescription": "Convite de casamento demonstrativo, desenvolvido como exercício de composição e identidade visual.",
+      "description": "Este projeto apresenta um convite de casamento criado de forma meramente demonstrativa, explorando composição, tipografia, cores e elementos visuais para construir uma proposta elegante e personalizada.\n\nO design pode variar bastante de acordo com a pessoa, suas preferências e a forma como deseja representar uma ocasião. Por isso, a proposta busca mostrar como diferentes escolhas visuais podem transformar a mesma ideia em resultados completamente distintos.",
+      "tools": [
+        "Canva"
+      ],
+      "tags": [
+        "Convite"
+      ],
+      "media": {
+        "cover": "assets/images/design/convite-de-casamento-demonstrativo/cover-f83df1f0a13d6b0d.png",
+        "images": [
+          "assets/images/design/convite-de-casamento-demonstrativo/screenshot-1-f83df1f0a13d6b0d.png"
+        ]
+      },
+      "floorPlan": null,
+      "comparison": null,
+      "notes": null,
+      "credits": null
+    }
+  ]
 }

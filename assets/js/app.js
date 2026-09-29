@@ -65,6 +65,7 @@
       top: `${startTop}px`,
       width: `${size}px`,
       height: `${size}px`,
+      opacity: "1",
       transform: "none",
     });
     source.dataset.transitionSource = "true";

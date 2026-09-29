@@ -379,7 +379,7 @@
   width: 100%;
   height: 100%;
   display: block;
-  object-fit: cover;
+  object-fit: contain;
   transition: transform 0.5s cubic-bezier(0.2, 0.75, 0.2, 1);
 }
 
@@ -593,16 +593,19 @@
 }
 
 .design-detail-cover {
+  display: grid;
+  place-items: center;
   min-height: 420px;
-  overflow: hidden;
   background: #15171e;
 }
 
 .design-detail-cover img {
-  width: 100%;
-  height: 100%;
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: min(76vh, 900px);
   display: block;
-  object-fit: cover;
+  object-fit: contain;
 }
 
 .design-detail-cover .design-card-placeholder {
@@ -610,6 +613,7 @@
 }
 
 .design-detail-heading {
+  min-width: 0;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -636,19 +640,27 @@
 
 .design-detail-heading h2 {
   margin: 0;
-  font: 700 clamp(2.4rem, 5.5vw, 5rem) / 0.96 "Space Grotesk", sans-serif;
-  letter-spacing: -0.065em;
+  font: 700 clamp(2rem, 3.9vw, 3.6rem) / 1.04 "Space Grotesk", sans-serif;
+  letter-spacing: -0.04em;
+  overflow-wrap: anywhere;
+  text-wrap: balance;
 }
 
 .design-detail-heading > p {
+  max-width: 42ch;
   margin: 18px 0 0;
   color: var(--muted);
+  font-size: 0.95rem;
+  line-height: 1.65;
+  overflow-wrap: anywhere;
 }
 
 .design-detail-byline {
   margin-top: 20px;
   color: #c8cbd3;
   font-size: 0.78rem;
+  line-height: 1.55;
+  overflow-wrap: anywhere;
 }
 
 .design-detail-actions {
@@ -742,17 +754,18 @@
 
 .design-viewer-main {
   position: relative;
-  aspect-ratio: 16 / 10;
   display: grid;
   place-items: center;
-  overflow: hidden;
+  min-height: 320px;
   border: 1px solid var(--border);
   background: #07080b;
 }
 
 .design-viewer-main img {
-  width: 100%;
-  height: 100%;
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: min(76vh, 900px);
   display: block;
   object-fit: contain;
   cursor: zoom-in;
@@ -1055,7 +1068,6 @@ body:has(dialog[open]) {
 
   .design-detail-cover {
     min-height: 0;
-    aspect-ratio: 16 / 10;
   }
 
   .design-detail-heading {
@@ -1167,11 +1179,15 @@ body:has(dialog[open]) {
   }
 
   .design-detail-cover {
-    aspect-ratio: 4 / 3;
+    min-height: 0;
   }
 
   .design-detail-heading {
     padding: 36px 22px 40px;
+  }
+
+  .design-detail-heading h2 {
+    font-size: clamp(2rem, 9vw, 3rem);
   }
 
   .design-detail-body {
@@ -1182,7 +1198,10 @@ body:has(dialog[open]) {
     grid-template-columns: 1fr 1fr;
   }
 
-  .design-viewer-main,
+  .design-viewer-main {
+    min-height: 220px;
+  }
+
   .comparison-frame {
     aspect-ratio: 4 / 3;
   }
