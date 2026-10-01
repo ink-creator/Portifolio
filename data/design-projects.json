@@ -1,11 +1,26 @@
 {
-  "categories": [],
+  "categories": [
+    {
+      "id": "convites",
+      "label": "Convites"
+    },
+    {
+      "id": "casamento",
+      "label": "Casamento",
+      "parent": "convites"
+    },
+    {
+      "id": "aniversario",
+      "label": "Aniversário",
+      "parent": "convites"
+    }
+  ],
   "projects": [
     {
       "id": "convite-de-casamento-demonstrativo",
-      "title": "Convites",
+      "title": "Convite de casamento (demonstrativo)",
       "creator": "Stella",
-      "category": null,
+      "category": "casamento",
       "date": "2026-09",
       "featured": true,
       "shortDescription": "Convite de casamento demonstrativo, desenvolvido como exercício de composição e identidade visual.",
@@ -19,8 +34,33 @@
       "media": {
         "cover": "assets/images/design/convite-de-casamento-demonstrativo/cover-f83df1f0a13d6b0d.png",
         "images": [
-          "assets/images/design/convite-de-casamento-demonstrativo/screenshot-1-f83df1f0a13d6b0d.png",
-          "assets/images/design/convite-de-casamento-demonstrativo/screenshot-2-8289f96740d82126.png"
+          "assets/images/design/convite-de-casamento-demonstrativo/screenshot-1-f83df1f0a13d6b0d.png"
+        ]
+      },
+      "floorPlan": null,
+      "comparison": null,
+      "notes": null,
+      "credits": null
+    },
+    {
+      "id": "convite-de-aniversario-demonstrativo",
+      "title": "Convite de aniversário (demonstrativo)",
+      "creator": "Stella",
+      "category": "aniversario",
+      "date": "2026-10",
+      "featured": true,
+      "shortDescription": "Convite de aniversário demonstrativo, desenvolvido como exercício de composição, criatividade e identidade visual.",
+      "description": "Este projeto apresenta um convite de aniversário criado de forma meramente demonstrativa, explorando composição, tipografia, cores e elementos visuais para construir uma proposta personalizada e adequada à ocasião.\n\nCada convite pode assumir uma identidade diferente de acordo com a pessoa, sua personalidade, preferências e o estilo da comemoração. A proposta deste projeto é demonstrar como diferentes escolhas visuais podem transformar uma ideia simples em uma composição única e marcante.",
+      "tools": [
+        "Canva"
+      ],
+      "tags": [
+        "Convite"
+      ],
+      "media": {
+        "cover": "assets/images/design/convite-de-aniversario-demonstrativo/cover-8289f96740d82126.png",
+        "images": [
+          "assets/images/design/convite-de-aniversario-demonstrativo/screenshot-1-8289f96740d82126.png"
         ]
       },
       "floorPlan": null,
