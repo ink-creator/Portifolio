@@ -192,7 +192,7 @@
                   <span class="section-number" aria-hidden="true">02</span>
                   <div>
                     <h3 id="media-heading">Imagens e vídeo</h3>
-                    <p>Escolha os arquivos aqui, salve o projeto e clique em Publicar no GitHub. Enviar um arquivo diretamente ao repositório não o associa ao projeto: o campo de vídeo também precisa apontar para ele.</p>
+                    <p>Selecione os arquivos aqui, salve o projeto e clique em Publicar no GitHub. O painel envia as mídias junto com os dados; não digite caminhos locais em “link externo”.</p>
                   </div>
                 </div>
                 <div class="media-grid">
@@ -210,12 +210,12 @@
                     />
                     <div id="cover-preview" class="media-preview"></div>
                     <details class="media-link">
-                      <summary>Usar link ou caminho</summary>
+                      <summary>Usar link externo</summary>
                       <label
-                        >Caminho ou URL da capa<input
+                        >URL externa da capa<input
                           id="f-cover"
-                          placeholder="assets/images/capa.png"
-                      /></label>
+                          placeholder="https://exemplo.com/capa.png"
+                      /><small>Para enviar uma imagem ao GitHub Pages, use “Selecionar capa”.</small></label>
                     </details>
                   </div>
                   <div class="media-card">
@@ -226,12 +226,12 @@
                     ><input id="video-file" type="file" accept="video/mp4,video/webm" hidden />
                     <div id="video-preview" class="media-preview"></div>
                     <details class="media-link">
-                      <summary>Usar link ou caminho</summary>
+                      <summary>Usar link externo</summary>
                       <label
-                        >Caminho ou URL do vídeo<input
+                        >URL externa do vídeo<input
                           id="f-video"
-                          placeholder="assets/videos/video.mp4"
-                        /><small>Use o endereço direto do arquivo MP4 ou WebM.</small></label
+                          placeholder="https://exemplo.com/video.mp4"
+                        /><small>Para enviar um vídeo ao GitHub Pages, use “Selecionar vídeo”.</small></label
                       >
                     </details>
                   </div>
@@ -253,14 +253,14 @@
                   />
                   <div id="shots-preview" class="shots-preview"></div>
                   <details class="media-link">
-                    <summary>Usar links ou caminhos</summary>
+                    <summary>Usar links externos</summary>
                     <label
-                      >Caminhos ou URLs da galeria<textarea
+                      >URLs externas da galeria<textarea
                         id="f-images"
                         rows="3"
                         placeholder="Um endereço por linha"
                       ></textarea
-                      ><small>Os arquivos selecionados acima serão mantidos.</small></label
+                      ><small>Os arquivos selecionados acima serão enviados ao GitHub; links externos não são copiados.</small></label
                     >
                   </details>
                 </div>

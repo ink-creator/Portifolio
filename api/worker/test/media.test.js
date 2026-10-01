@@ -157,6 +157,9 @@ test("publicação autenticada inclui vídeo e JSON no mesmo commit; falha de up
     if (path.endsWith("/access_tokens")) return Response.json({ token: "installation-test-token" });
     if (path.endsWith("/git/ref/heads/main")) return Response.json({ object: { sha: "base" } });
     if (path.endsWith("/git/commits/base")) return Response.json({ tree: { sha: "base-tree" } });
+    if (path.endsWith("/git/trees/base-tree")) {
+      return Response.json({ tree: [{ path: "assets/images/existente.jpg", type: "blob" }] });
+    }
     if (path.endsWith("/git/blobs"))
       return failUpload
         ? new Response("upload failed", { status: 502 })
@@ -177,7 +180,7 @@ test("publicação autenticada inclui vídeo e JSON no mesmo commit; falha de up
     assert.equal(response.status, 200);
     const result = await response.json();
     assert.match(result.projects[0].media.video, /\.mp4$/);
-    const tree = calls.find((call) => call.path.endsWith("/git/trees")).body.tree;
+    const tree = calls.find((call) => call.path.endsWith("/git/trees") && call.method === "POST").body.tree;
     assert.equal(tree.length, 4);
     assert.ok(tree.some((file) => file.path.startsWith("assets/videos/")));
     const jsonBlob = calls.find((call) => call.body?.encoding === "utf-8").body.content;
@@ -214,7 +217,7 @@ test("publicação autenticada inclui vídeo e JSON no mesmo commit; falha de up
     assert.equal(designResponse.status, 200);
     const designResult = await designResponse.json();
     assert.match(designResult.designData.projects[0].comparison.after, /\.jpg$/);
-    const designTree = calls.find((call) => call.path.endsWith("/git/trees")).body.tree;
+    const designTree = calls.find((call) => call.path.endsWith("/git/trees") && call.method === "POST").body.tree;
     assert.ok(designTree.some((file) => file.path === "data/design-projects.json"));
     assert.ok(designTree.some((file) => file.path.startsWith("assets/images/design/")));
     const designJson = JSON.parse(
@@ -232,6 +235,61 @@ test("publicação autenticada inclui vídeo e JSON no mesmo commit; falha de up
       env,
     );
     assert.equal(unauthorized.status, 401);
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
+});
+
+test("impede a publicação de uma referência assets/ que não existe no repositório", async () => {
+  const { privateKey } = generateKeyPairSync("rsa", { modulusLength: 2048 });
+  const env = {
+    SESSION_SECRET: "test-only-session-secret-at-least-32-characters",
+    GITHUB_PRIVATE_KEY: privateKey.export({ type: "pkcs8", format: "pem" }),
+    GITHUB_APP_ID: "123",
+    GITHUB_OWNER: "test",
+    GITHUB_REPO: "portfolio",
+    GITHUB_BRANCH: "main",
+  };
+  const token = await new SignJWT({ login: "test" })
+    .setProtectedHeader({ alg: "HS256" })
+    .setIssuer("ink-stella-admin")
+    .setAudience("portfolio-worker")
+    .setExpirationTime("5m")
+    .sign(new TextEncoder().encode(env.SESSION_SECRET));
+  const originalFetch = globalThis.fetch;
+  let committed = false;
+  globalThis.fetch = async (url, options = {}) => {
+    const path = new URL(url).pathname;
+    if (path.endsWith("/installation")) return Response.json({ id: 1 });
+    if (path.endsWith("/access_tokens")) return Response.json({ token: "installation-test-token" });
+    if (path.endsWith("/git/ref/heads/main")) return Response.json({ object: { sha: "base" } });
+    if (path.endsWith("/git/commits/base")) return Response.json({ tree: { sha: "base-tree" } });
+    if (path.endsWith("/git/trees/base-tree")) return Response.json({ tree: [] });
+    if (path.endsWith("/git/refs/heads/main") && options.method === "PATCH") committed = true;
+    throw Error("A publicação não deveria criar arquivos após detectar a mídia ausente.");
+  };
+  try {
+    const response = await worker.fetch(
+      new Request("https://test/api/publish", {
+        method: "POST",
+        headers: { Authorization: `Bearer ${token}` },
+        body: JSON.stringify({
+          projects: [
+            {
+              id: "midia-ausente",
+              title: "Mídia ausente",
+              shortDescription: "Não deve publicar um caminho quebrado.",
+              media: { cover: "assets/images/projects/midia-ausente/cover.png", images: [] },
+            },
+          ],
+        }),
+      }),
+      env,
+    );
+    const body = await response.json();
+    assert.equal(response.status, 500);
+    assert.match(body.detail, /não existem no repositório/);
+    assert.equal(committed, false);
   } finally {
     globalThis.fetch = originalFetch;
   }

@@ -9,7 +9,9 @@
   let busy = false;
   let ready = false;
   let customId = false;
+  let categoryIdCustom = false;
   let media = { cover: null, images: [], before: null, after: null };
+  let createKind = null;
 
   const value = (id) => $(id).value.trim();
   const items = (text) =>
@@ -31,6 +33,13 @@
     String(text || "")
       .replace(/[-_]+/g, " ")
       .replace(/\b\w/g, (letter) => letter.toUpperCase());
+  const slugify = (text) =>
+    String(text || "")
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-|-$/g, "");
 
   function notice(message, type = "success") {
     const node = $("admin-notice");
@@ -129,18 +138,25 @@
       throw new Error("O arquivo precisa conter as listas categories e projects.");
     }
     if (next.projects.length > 200) throw new Error("O arquivo aceita até 200 trabalhos.");
+    const categories = new Map();
+    for (const category of next.categories) {
+      if (!category || !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(category.id || "") || !String(category.label || "").trim()) {
+        throw new Error("Cada pasta precisa de um ID válido e um nome.");
+      }
+      if (categories.has(category.id)) throw new Error("Há pastas com IDs repetidos.");
+      categories.set(category.id, category);
+    }
+    for (const category of categories.values()) {
+      if (!category.parent) continue;
+      const parent = categories.get(category.parent);
+      if (!parent || parent.parent) throw new Error("Uma subpasta precisa ficar dentro de uma pasta principal.");
+    }
     const ids = new Set();
     for (const project of next.projects) {
       validate(project);
       if (ids.has(project.id)) throw new Error("Há IDs de trabalho repetidos.");
+      if (!categories.has(project.category)) throw new Error("Escolha uma pasta ou subpasta existente para cada arquivo.");
       ids.add(project.id);
-    }
-  }
-
-  function ensureCategory(categoryId) {
-    if (!data.categories.some((category) => category.id === categoryId)) {
-      data.categories.push({ id: categoryId, label: humanize(categoryId) });
-      renderCategoryOptions();
     }
   }
 
@@ -162,22 +178,16 @@
   }
 
   function renderCategoryOptions() {
-    const datalist = $("design-category-options");
-    const defaults = [
-      ["design-geral", "Design Geral"],
-      ["planta-baixa", "Plantas Baixas"],
-      ["identidade-visual", "Identidade Visual"],
-      ["social-media", "Social Media"],
-      ["ilustracao", "Ilustração"],
-      ["ui-ux", "UI/UX"],
-      ["arquitetura", "Arquitetura"],
-      ["outros", "Outros"],
-    ];
-    const all = new Map(defaults);
-    for (const category of data.categories) all.set(category.id, category.label);
-    datalist.innerHTML = [...all]
-      .map(([id, label]) => `<option value="${e(id)}">${e(label)}</option>`)
-      .join("");
+    const select = $("d-category");
+    const selected = select.value;
+    const categoryName = (category) => {
+      const parent = data.categories.find((item) => item.id === category.parent);
+      return parent ? `${parent.label} › ${category.label}` : category.label;
+    };
+    select.innerHTML = `<option value="">Selecione onde o arquivo ficará</option>${data.categories
+      .map((category) => `<option value="${e(category.id)}">${e(categoryName(category))}</option>`)
+      .join("")}`;
+    select.value = data.categories.some((category) => category.id === selected) ? selected : "";
   }
 
   function syncMediaInputs() {
@@ -241,6 +251,36 @@
     render();
   }
 
+  function categoryPath(categoryId) {
+    const category = data.categories.find((item) => item.id === categoryId);
+    if (!category) return humanize(categoryId);
+    const parent = data.categories.find((item) => item.id === category.parent);
+    return parent ? `${parent.label} › ${category.label}` : category.label;
+  }
+
+  function projectItem(project) {
+    return '<article class="admin-item' +
+      (editingId === project.id ? " selected" : "") +
+      '"><div class="admin-item-info"><strong>▧ ' +
+      e(project.title) +
+      "</strong><small>" +
+      e(categoryPath(project.category)) +
+      (project.featured ? " · Destaque" : "") +
+      '</small></div><div class="admin-actions"><button type="button" data-action="edit" data-id="' +
+      e(project.id) +
+      '">Editar</button><button type="button" data-action="duplicate" data-id="' +
+      e(project.id) +
+      '">Duplicar</button><button type="button" class="danger" data-action="delete" data-id="' +
+      e(project.id) +
+      '">Excluir</button></div></article>';
+  }
+
+  function folderMarkup(category, projects) {
+    const children = data.categories.filter((item) => item.parent === category.id);
+    const directProjects = projects.filter((project) => project.category === category.id);
+    return `<section class="admin-folder"><h3>▾ ${e(category.label)}</h3>${directProjects.map(projectItem).join("")}${children.map((child) => `<section class="admin-subfolder"><h4>↳ ${e(child.label)}</h4>${projects.filter((project) => project.category === child.id).map(projectItem).join("") || '<p class="admin-folder-empty">Nenhum arquivo nesta subpasta.</p>'}</section>`).join("")}${!directProjects.length && !children.length ? '<p class="admin-folder-empty">Nenhum arquivo nesta pasta.</p>' : ""}</section>`;
+  }
+
   function render() {
     const query = value("design-project-search").toLowerCase();
     const projects = data.projects.filter((project) =>
@@ -249,32 +289,18 @@
         .toLowerCase()
         .includes(query),
     );
-    $("count-title").textContent =
-      data.projects.length + (data.projects.length === 1 ? " trabalho" : " trabalhos");
-    $("design-admin-list").innerHTML = projects.length
-      ? projects
-          .map(
-            (project) =>
-              '<article class="admin-item' +
-              (editingId === project.id ? " selected" : "") +
-              '"><div class="admin-item-info"><strong>' +
-              e(project.title) +
-              "</strong><small>" +
-              e(data.categories.find((category) => category.id === project.category)?.label || humanize(project.category)) +
-              (project.featured ? " · Destaque" : "") +
-              '</small></div><div class="admin-actions"><button type="button" data-action="edit" data-id="' +
-              e(project.id) +
-              '">Editar</button><button type="button" data-action="duplicate" data-id="' +
-              e(project.id) +
-              '">Duplicar</button><button type="button" class="danger" data-action="delete" data-id="' +
-              e(project.id) +
-              '">Excluir</button></div></article>',
-          )
-          .join("")
+    $("count-title").textContent = `${data.projects.length} ${data.projects.length === 1 ? "arquivo" : "arquivos"} · ${data.categories.length} ${data.categories.length === 1 ? "pasta" : "pastas"}`;
+    const rootCategories = data.categories.filter((category) => !category.parent);
+    const unfiled = projects.filter((project) => !data.categories.some((category) => category.id === project.category));
+    const hasVisibleItems = query ? projects.length : rootCategories.length || unfiled.length;
+    $("design-admin-list").innerHTML = hasVisibleItems
+      ? (query
+          ? projects.map(projectItem).join("")
+          : `${rootCategories.map((category) => folderMarkup(category, projects)).join("")}${unfiled.length ? `<section class="admin-folder"><h3>▾ Sem pasta</h3>${unfiled.map(projectItem).join("")}</section>` : ""}`)
       : '<p class="list-empty">' +
         (query
           ? "Nenhum resultado para essa pesquisa."
-          : "Seu primeiro trabalho começa aqui. Clique em Novo trabalho.") +
+          : "Sua estrutura está vazia. Clique em Criar item para começar.") +
         "</p>";
     $("design-admin-list")
       .querySelectorAll("button")
@@ -359,7 +385,6 @@
     if (!editingId && data.projects.some((item) => item.id === project.id)) {
       throw new Error("Esse ID já existe. Escolha outro.");
     }
-    ensureCategory(project.category);
     const next = structuredClone(data);
     next.categories = structuredClone(data.categories);
     const index = next.projects.findIndex((item) => item.id === editingId);
@@ -420,14 +445,6 @@
         .replace(/^-|-$/g, "");
     }
   });
-  $("d-category").addEventListener("change", () => {
-    $("d-category").value = value("d-category")
-      .normalize("NFD")
-      .replace(/[\u0300-\u036f]/g, "")
-      .toLowerCase()
-      .replace(/[^a-z0-9]+/g, "-")
-      .replace(/^-|-$/g, "");
-  });
   $("design-project-form").addEventListener("submit", async (event) => {
     event.preventDefault();
     if (busy || !ready) return;
@@ -479,12 +496,79 @@
     }
   });
   $("design-project-search").addEventListener("input", render);
+  function resetCreateDialog() {
+    createKind = null;
+    $("create-item-choices").hidden = false;
+    $("create-folder-fields").hidden = true;
+    $("new-category-label").value = "";
+    $("new-category-id").value = "";
+    $("new-category-parent").value = "";
+    categoryIdCustom = false;
+  }
+
+  function showCategoryFields(kind) {
+    createKind = kind;
+    const subfolder = kind === "subfolder";
+    $("create-item-choices").hidden = true;
+    $("create-folder-fields").hidden = false;
+    $("create-folder-kind").textContent = subfolder ? "SUBPASTA" : "PASTA";
+    $("create-folder-title").textContent = subfolder ? "Criar subpasta" : "Criar pasta";
+    $("create-folder-help").textContent = subfolder
+      ? "Escolha a pasta principal na qual ela ficará organizada."
+      : "Ela aparecerá como uma categoria principal no portfólio.";
+    $("new-category-parent-field").hidden = !subfolder;
+    $("save-category").textContent = subfolder ? "Criar subpasta" : "Criar pasta";
+    const roots = data.categories.filter((category) => !category.parent);
+    $("new-category-parent").innerHTML = `<option value="">Selecione a pasta principal</option>${roots.map((category) => `<option value="${e(category.id)}">${e(category.label)}</option>`).join("")}`;
+    $("new-category-label").focus();
+  }
+
+  async function createCategory() {
+    const label = value("new-category-label");
+    const id = slugify(value("new-category-id") || label);
+    const parent = createKind === "subfolder" ? value("new-category-parent") : null;
+    if (!label) throw new Error("Informe o nome da pasta.");
+    if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(id)) throw new Error("Informe um ID válido para a pasta.");
+    if (data.categories.some((category) => category.id === id)) throw new Error("Já existe uma pasta com esse ID.");
+    if (createKind === "subfolder" && !data.categories.some((category) => category.id === parent && !category.parent)) {
+      throw new Error("Escolha a pasta principal da subpasta.");
+    }
+    await persist({ categories: [...data.categories, { id, label, ...(parent ? { parent } : {}) }], projects: data.projects });
+    $("create-design-item-dialog").close();
+    resetCreateDialog();
+    notice(`${createKind === "subfolder" ? "Subpasta" : "Pasta"} criada. Agora você pode escolher esse local para um arquivo.`);
+  }
+
   $("new-design-project").addEventListener("click", () => {
-    if (ready && canLeave()) {
+    if (!ready || !canLeave()) return;
+    resetCreateDialog();
+    $("create-design-item-dialog").showModal();
+  });
+  $("create-design-item-dialog").addEventListener("click", async (event) => {
+    if (event.target === $("create-design-item-dialog")) $("create-design-item-dialog").close();
+    const kind = event.target.closest("[data-create-kind]")?.dataset.createKind;
+    if (kind === "file") {
+      $("create-design-item-dialog").close();
       reset();
       focusEditor();
+    } else if (kind) showCategoryFields(kind);
+    if (event.target.closest("[data-back-create]")) resetCreateDialog();
+    if (event.target.closest("#save-category")) {
+      if (busy || !ready) return;
+      setBusy(true);
+      try {
+        await createCategory();
+      } catch (error) {
+        notice(error.message, "error");
+      } finally {
+        setBusy(false);
+      }
     }
   });
+  $("new-category-label").addEventListener("input", () => {
+    if (!categoryIdCustom) $("new-category-id").value = slugify(value("new-category-label"));
+  });
+  $("new-category-id").addEventListener("input", () => (categoryIdCustom = true));
   $("clear-design-form").addEventListener("click", () => {
     if (canLeave()) reset();
   });

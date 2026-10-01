@@ -194,6 +194,43 @@ async function prepareProjects(env, token, input, validate = validateProject, fo
   return { projects, files };
 }
 
+function localMediaPaths(projects) {
+  const paths = new Set();
+  for (const project of projects) {
+    const media = project.media || {};
+    const sources = [media.cover, media.video, ...(Array.isArray(media.images) ? media.images : [])];
+    if (project.comparison && typeof project.comparison === "object") {
+      sources.push(project.comparison.before, project.comparison.after);
+    }
+    for (const source of sources) {
+      if (typeof source === "string" && source.startsWith("assets/")) paths.add(source);
+    }
+  }
+  return paths;
+}
+
+async function verifyReferencedMedia(env, token, baseTreeSha, projects, uploadedFiles) {
+  const uploaded = new Set(uploadedFiles.map((file) => file.path));
+  const required = [...localMediaPaths(projects)].filter((path) => !uploaded.has(path));
+  if (!required.length) return;
+
+  const owner = encodeURIComponent(env.GITHUB_OWNER);
+  const repo = encodeURIComponent(env.GITHUB_REPO);
+  const response = await github(`/repos/${owner}/${repo}/git/trees/${baseTreeSha}?recursive=1`, {}, token);
+  if (!response.ok) throw new Error("Não foi possível conferir as mídias já publicadas no GitHub.");
+  const tree = await response.json();
+  if (tree.truncated) {
+    throw new Error("O repositório é grande demais para conferir as mídias publicadas com segurança.");
+  }
+  const existing = new Set((tree.tree || []).filter((entry) => entry.type === "blob").map((entry) => entry.path));
+  const missing = required.filter((path) => !existing.has(path));
+  if (missing.length) {
+    throw new Error(
+      `Estas mídias não existem no repositório: ${missing.slice(0, 3).join(", ")}${missing.length > 3 ? "…" : ""}. Selecione os arquivos novamente no painel antes de publicar.`,
+    );
+  }
+}
+
 async function publish(env, projects, options = {}) {
   if (!Array.isArray(projects) || projects.length > MAX_PROJECTS)
     throw new Error("Lista de projetos inválida ou muito grande.");
@@ -219,6 +256,7 @@ async function publish(env, projects, options = {}) {
   if (!commitResponse.ok) throw new Error("Não foi possível ler o commit atual.");
   const baseTreeSha = (await commitResponse.json()).tree.sha;
   const prepared = await prepareProjects(env, token, projects, validate, folder);
+  await verifyReferencedMedia(env, token, baseTreeSha, prepared.projects, prepared.files);
   const projectsContent = `${JSON.stringify(wrap(prepared.projects), null, 2)}\n`;
   const projectsSha = await createBlob(env, token, projectsContent, "utf-8");
   const tree = [

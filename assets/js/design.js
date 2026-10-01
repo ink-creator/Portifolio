@@ -53,6 +53,21 @@
     return state.categories.find((category) => category.id === id)?.label || humanize(id);
   }
 
+  function categoryChildren(id) {
+    return state.categories.filter((category) => category.parent === id);
+  }
+
+  function categoryMatches(selectedId, projectCategory) {
+    if (selectedId === "all") return true;
+    if (projectCategory === selectedId) return true;
+    let current = state.categories.find((category) => category.id === projectCategory);
+    while (current?.parent) {
+      if (current.parent === selectedId) return true;
+      current = state.categories.find((category) => category.id === current.parent);
+    }
+    return false;
+  }
+
   function formatDate(value) {
     if (!value) return "";
     const match = String(value).match(/^(\d{4})(?:-(\d{2}))?(?:-(\d{2}))?/);
@@ -88,17 +103,22 @@
     setSelectOptions(toolFilter, tools, "Todas");
     setSelectOptions(tagFilter, tags, "Todas");
 
-    const categories = [{ id: "all", label: "Todos" }, ...state.categories];
-    categoryRoot.innerHTML = categories
-      .map(
-        (category) =>
-          `<button class="design-category${category.id === state.category ? " active" : ""}" type="button" data-category="${e(category.id)}" aria-pressed="${category.id === state.category}">${e(category.label)}</button>`,
-      )
-      .join("");
+    const rootCategories = state.categories.filter((category) => !category.parent);
+    const categoryButton = (category, className = "") => {
+      const active = category.id === state.category;
+      return `<button class="design-category${className}${active ? " active" : ""}" type="button" data-category="${e(category.id)}" aria-pressed="${active}">${e(category.label)}</button>`;
+    };
+    categoryRoot.innerHTML = `${categoryButton({ id: "all", label: "Todos" })}${rootCategories
+      .map((category) => {
+        const children = categoryChildren(category.id);
+        if (!children.length) return categoryButton(category);
+        return `<div class="design-folder">${categoryButton(category, " design-folder-button")}<div class="design-subfolders" aria-label="Subpastas de ${e(category.label)}">${children.map((child) => categoryButton(child, " design-subfolder")).join("")}</div></div>`;
+      })
+      .join("")}`;
   }
 
   function matches(project) {
-    if (state.category !== "all" && project.category !== state.category) return false;
+    if (!categoryMatches(state.category, project.category)) return false;
     if (state.tool !== "all" && !list(project.tools).includes(state.tool)) return false;
     if (state.tag !== "all" && !list(project.tags).includes(state.tag)) return false;
     if (!state.query) return true;

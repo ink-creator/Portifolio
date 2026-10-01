@@ -151,6 +151,39 @@
   max-height: 55vh;
   overflow-y: auto;
 }
+.admin-page .admin-folder {
+  display: grid;
+  gap: 8px;
+  padding: 12px;
+  border: 1px solid #3b3249;
+  border-radius: 10px;
+  background: #ffffff02;
+}
+.admin-page .admin-folder + .admin-folder {
+  margin-top: 4px;
+}
+.admin-page .admin-folder h3,
+.admin-page .admin-subfolder h4 {
+  margin: 0;
+  color: #ddc8ff;
+  font: 600 0.76rem "Space Grotesk", sans-serif;
+  letter-spacing: 0.04em;
+}
+.admin-page .admin-subfolder {
+  display: grid;
+  gap: 8px;
+  margin-left: 10px;
+  padding: 10px 0 0 12px;
+  border-left: 1px solid #614683;
+}
+.admin-page .admin-subfolder h4 {
+  color: #c8bed5;
+}
+.admin-folder-empty {
+  margin: 0;
+  color: #858093;
+  font-size: 0.72rem;
+}
 .admin-page .admin-item {
   flex-direction: column;
   align-items: stretch;
@@ -268,6 +301,90 @@
 
 .comparison-editor-grid .media-card > label {
   margin-top: 14px;
+}
+.create-item-dialog {
+  width: min(560px, calc(100% - 32px));
+  padding: 0;
+  border: 1px solid #544364;
+  border-radius: 16px;
+  background: #121018;
+  color: var(--text);
+  box-shadow: 0 28px 90px #000b;
+}
+.create-item-dialog::backdrop {
+  background: #050308c9;
+  backdrop-filter: blur(7px);
+}
+.create-item-shell {
+  position: relative;
+  padding: 32px;
+}
+.create-item-shell h2 {
+  margin: 7px 0 10px;
+  font: 650 1.7rem "Space Grotesk", sans-serif;
+}
+.create-item-shell > div > p:not(.eyebrow) {
+  margin: 0 0 24px;
+  color: var(--muted);
+  font-size: 0.84rem;
+  line-height: 1.55;
+}
+.create-item-options {
+  display: grid;
+  gap: 10px;
+}
+.create-item-options button {
+  display: grid;
+  gap: 5px;
+  padding: 16px;
+  border: 1px solid #40354d;
+  border-radius: 10px;
+  background: #ffffff04;
+  color: var(--text);
+  text-align: left;
+  cursor: pointer;
+}
+.create-item-options button:hover,
+.create-item-options button:focus-visible {
+  border-color: #a970ff;
+  background: #a970ff14;
+}
+.create-item-options span {
+  color: var(--muted);
+  font-size: 0.76rem;
+}
+.create-item-close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 34px;
+  height: 34px;
+  border: 1px solid #4a4055;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--text);
+  font-size: 1.25rem;
+  cursor: pointer;
+}
+.create-item-shell label {
+  display: grid;
+  gap: 7px;
+  margin: 16px 0;
+  color: #d9d3e3;
+  font-size: 0.8rem;
+}
+.create-item-shell input,
+.create-item-shell select {
+  min-height: 42px;
+  padding: 9px 10px;
+  border: 1px solid #3b3249;
+  border-radius: 8px;
+  background: #0b0911;
+  color: var(--text);
+}
+.create-item-shell small {
+  color: #aba1b8;
+  font-size: 0.68rem;
 }
 .editor-section {
   padding: 26px 30px;
