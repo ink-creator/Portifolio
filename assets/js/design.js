@@ -25,10 +25,6 @@
   const activeFilterCount = $("#active-filter-count");
   const projectDialog = $("#design-project-dialog");
   const projectContent = $("#design-project-content");
-  const lightbox = $("#design-lightbox");
-  const lightboxStage = $("#lightbox-stage");
-  const lightboxImage = $("#lightbox-image");
-  const lightboxCaption = $("#lightbox-caption");
   const toast = $("#design-toast");
 
   const state = {
@@ -41,12 +37,6 @@
     active: null,
     images: [],
     imageIndex: 0,
-    zoom: 1,
-    x: 0,
-    y: 0,
-    dragging: false,
-    dragX: 0,
-    dragY: 0,
   };
 
   function categoryName(id) {
@@ -213,7 +203,7 @@
     const images = projectImages(project);
     if (!images.length) return "";
     const multiple = images.length > 1;
-    return `<section class="design-viewer" aria-labelledby="gallery-title"><div class="design-detail-section"><h3 id="gallery-title">Galeria</h3></div><div class="design-viewer-main">${multiple ? '<button class="viewer-step previous" type="button" data-gallery-step="-1" aria-label="Imagem anterior">←</button>' : ""}<img id="design-viewer-image" src="${e(asset(images[0]))}" alt="${e(project.title)} — imagem 1 de ${images.length}" data-open-lightbox>${multiple ? '<button class="viewer-step next" type="button" data-gallery-step="1" aria-label="Próxima imagem">→</button>' : ""}<button class="viewer-expand" type="button" data-open-lightbox>Ampliar ↗</button></div>${multiple ? `<div class="design-thumbnails" aria-label="Escolher imagem">${images.map((source, index) => `<button class="design-thumbnail${index === 0 ? " active" : ""}" type="button" data-gallery-index="${index}" aria-label="Ver imagem ${index + 1}"><img src="${e(asset(source))}" alt="" loading="lazy" decoding="async"></button>`).join("")}</div>` : ""}</section>`;
+    return `<section class="design-viewer" aria-labelledby="gallery-title"><div class="design-detail-section"><h3 id="gallery-title">Galeria</h3></div><div class="design-viewer-main">${multiple ? '<button class="viewer-step previous" type="button" data-gallery-step="-1" aria-label="Imagem anterior">←</button>' : ""}<img id="design-viewer-image" src="${e(asset(images[0]))}" alt="${e(project.title)} — imagem 1 de ${images.length}">${multiple ? '<button class="viewer-step next" type="button" data-gallery-step="1" aria-label="Próxima imagem">→</button>' : ""}</div>${multiple ? `<div class="design-thumbnails" aria-label="Escolher imagem">${images.map((source, index) => `<button class="design-thumbnail${index === 0 ? " active" : ""}" type="button" data-gallery-index="${index}" aria-label="Ver imagem ${index + 1}"><img src="${e(asset(source))}" alt="" loading="lazy" decoding="async"></button>`).join("")}</div>` : ""}</section>`;
   }
 
   function comparisonMarkup(project) {
@@ -243,7 +233,7 @@
       : `<div class="design-card-placeholder"><strong>Imagem ainda não publicada</strong><span>${e(project.title)}</span></div>`;
     const date = formatDate(project.date);
     const creator = project.creator || list(project.creators).join(" + ");
-    projectContent.innerHTML = `<article><header class="design-detail-hero"><div class="design-detail-cover">${cover}</div><div class="design-detail-heading"><div class="design-detail-kicker"><span>${e(categoryName(project.category))}</span>${project.featured ? "<span>✦ Destaque</span>" : ""}</div><h2 id="dialog-title">${e(project.title)}</h2>${project.shortDescription ? `<p>${e(project.shortDescription)}</p>` : ""}${creator || date ? `<div class="design-detail-byline">${creator ? `por ${e(creator)}` : ""}${creator && date ? " · " : ""}${date ? e(date) : ""}</div>` : ""}<div class="design-detail-actions"><button type="button" data-share-project>Copiar link ↗</button>${projectImages(project).length ? '<button type="button" data-open-lightbox>Ver em tela cheia</button>' : ""}</div></div></header><div class="design-detail-body">${infoFacts(project)}${textSection("Sobre o projeto", project.description)}${galleryMarkup(project)}${comparisonMarkup(project)}${tagsMarkup(project)}${textSection("Observações", project.notes)}${textSection("Créditos", project.credits)}</div></article>`;
+    projectContent.innerHTML = `<article><header class="design-detail-hero"><div class="design-detail-cover">${cover}</div><div class="design-detail-heading"><div class="design-detail-kicker"><span>${e(categoryName(project.category))}</span>${project.featured ? "<span>✦ Destaque</span>" : ""}</div><h2 id="dialog-title">${e(project.title)}</h2>${project.shortDescription ? `<p>${e(project.shortDescription)}</p>` : ""}${creator || date ? `<div class="design-detail-byline">${creator ? `por ${e(creator)}` : ""}${creator && date ? " · " : ""}${date ? e(date) : ""}</div>` : ""}<div class="design-detail-actions"><button type="button" data-share-project>Copiar link ↗</button></div></div></header><div class="design-detail-body">${infoFacts(project)}${textSection("Sobre o projeto", project.description)}${galleryMarkup(project)}${comparisonMarkup(project)}${tagsMarkup(project)}${textSection("Observações", project.notes)}${textSection("Créditos", project.credits)}</div></article>`;
     state.active = project;
     state.images = projectImages(project);
     state.imageIndex = 0;
@@ -269,7 +259,6 @@
   }
 
   function closeProject(updateUrl = true) {
-    if (lightbox.open) lightbox.close();
     if (projectDialog.open) projectDialog.close();
     state.active = null;
     state.images = [];
@@ -287,57 +276,6 @@
     $$("[data-gallery-index]", projectContent).forEach((button) => {
       button.classList.toggle("active", Number(button.dataset.galleryIndex) === state.imageIndex);
     });
-  }
-
-  function resetZoom() {
-    state.zoom = 1;
-    state.x = 0;
-    state.y = 0;
-    state.dragging = false;
-    applyZoom();
-  }
-
-  function applyZoom() {
-    lightboxImage.style.transform = `translate(${state.x}px, ${state.y}px) scale(${state.zoom})`;
-    lightboxStage.classList.toggle("zoomed", state.zoom > 1);
-    lightboxStage.classList.toggle("dragging", state.dragging);
-    const reset = $("[data-zoom='reset']", lightbox);
-    if (reset) reset.textContent = `${Math.round(state.zoom * 100)}%`;
-  }
-
-  function showLightbox(index = state.imageIndex) {
-    if (!state.images.length || !state.active) return;
-    state.imageIndex = (index + state.images.length) % state.images.length;
-    resetZoom();
-    lightboxImage.src = asset(state.images[state.imageIndex]);
-    lightboxImage.alt = `${state.active.title} — imagem ampliada ${state.imageIndex + 1} de ${state.images.length}`;
-    lightboxCaption.textContent = `${state.active.title} · ${state.imageIndex + 1} de ${state.images.length}`;
-    $$("[data-lightbox-step]", lightbox).forEach(
-      (button) => (button.hidden = state.images.length < 2),
-    );
-    if (!lightbox.open) lightbox.showModal();
-  }
-
-  function stepLightbox(step) {
-    showLightbox(state.imageIndex + step);
-    updateGallery(state.imageIndex);
-  }
-
-  function changeZoom(next, centerX = 0, centerY = 0) {
-    const previous = state.zoom;
-    state.zoom = Math.min(5, Math.max(1, next));
-    if (state.zoom === 1) {
-      state.x = 0;
-      state.y = 0;
-    } else if (previous !== state.zoom && centerX && centerY) {
-      const rect = lightboxStage.getBoundingClientRect();
-      const offsetX = centerX - (rect.left + rect.width / 2);
-      const offsetY = centerY - (rect.top + rect.height / 2);
-      const ratio = state.zoom / previous - 1;
-      state.x -= offsetX * ratio;
-      state.y -= offsetY * ratio;
-    }
-    applyZoom();
   }
 
   async function copyProjectLink() {
@@ -452,7 +390,6 @@
     if (step) updateGallery(state.imageIndex + Number(step.dataset.galleryStep));
     const thumbnail = event.target.closest("[data-gallery-index]");
     if (thumbnail) updateGallery(Number(thumbnail.dataset.galleryIndex));
-    if (event.target.closest("[data-open-lightbox]")) showLightbox();
     if (event.target.closest("[data-share-project]")) copyProjectLink();
   });
   projectDialog.addEventListener("close", () => {
@@ -463,52 +400,8 @@
     }
   });
 
-  lightbox.addEventListener("click", (event) => {
-    if (event.target.closest("[data-close-lightbox]")) lightbox.close();
-    const step = event.target.closest("[data-lightbox-step]");
-    if (step) stepLightbox(Number(step.dataset.lightboxStep));
-    const zoom = event.target.closest("[data-zoom]")?.dataset.zoom;
-    if (zoom === "in") changeZoom(state.zoom + 0.5);
-    if (zoom === "out") changeZoom(state.zoom - 0.5);
-    if (zoom === "reset") resetZoom();
-  });
-  lightbox.addEventListener("close", resetZoom);
-  lightboxImage.addEventListener("dblclick", (event) => {
-    changeZoom(state.zoom === 1 ? 2.5 : 1, event.clientX, event.clientY);
-  });
-  lightboxStage.addEventListener(
-    "wheel",
-    (event) => {
-      event.preventDefault();
-      changeZoom(state.zoom + (event.deltaY < 0 ? 0.35 : -0.35), event.clientX, event.clientY);
-    },
-    { passive: false },
-  );
-  lightboxStage.addEventListener("pointerdown", (event) => {
-    if (state.zoom <= 1 || event.target.closest("button")) return;
-    state.dragging = true;
-    state.dragX = event.clientX - state.x;
-    state.dragY = event.clientY - state.y;
-    lightboxStage.setPointerCapture(event.pointerId);
-    applyZoom();
-  });
-  lightboxStage.addEventListener("pointermove", (event) => {
-    if (!state.dragging) return;
-    state.x = event.clientX - state.dragX;
-    state.y = event.clientY - state.dragY;
-    applyZoom();
-  });
-  for (const name of ["pointerup", "pointercancel"]) {
-    lightboxStage.addEventListener(name, () => {
-      state.dragging = false;
-      applyZoom();
-    });
-  }
-
   document.addEventListener("keydown", (event) => {
-    if (lightbox.open && event.key === "ArrowLeft") stepLightbox(-1);
-    else if (lightbox.open && event.key === "ArrowRight") stepLightbox(1);
-    else if (projectDialog.open && event.key === "ArrowLeft") updateGallery(state.imageIndex - 1);
+    if (projectDialog.open && event.key === "ArrowLeft") updateGallery(state.imageIndex - 1);
     else if (projectDialog.open && event.key === "ArrowRight") updateGallery(state.imageIndex + 1);
   });
   addEventListener("hashchange", syncHash);

@@ -58,9 +58,9 @@
         "cover": "assets/images/projects/analisador-de-arquivos/cover-2629b0a674e0a714.png",
         "video": "assets/videos/projects/analisador-de-arquivos/demo-47ea36a371eb32a5.mp4",
         "images": [
-          "assets/images/projects/analisador-de-arquivos/screenshot-1-fe2f2a9a0772d565.png",
-          "assets/images/projects/analisador-de-arquivos/screenshot-2-fea412b8b321e6ae.png",
-          "assets/images/projects/analisador-de-arquivos/screenshot-3-62fafe807e2ecf0d.png"
+          "assets/images/projects/analisador-de-arquivos/screenshot-1-fea412b8b321e6ae.png",
+          "assets/images/projects/analisador-de-arquivos/screenshot-2-62fafe807e2ecf0d.png",
+          "assets/images/projects/analisador-de-arquivos/screenshot-3-fe2f2a9a0772d565.png"
         ]
       },
       "links": {
@@ -92,9 +92,9 @@
         "cover": "assets/images/projects/leito-de-projetos/cover-a539aa88552a5151.png",
         "video": "assets/videos/projects/leito-de-projetos/demo-20d005b4f9c1969e.mp4",
         "images": [
-          "assets/images/projects/leito-de-projetos/screenshot-1-2091a92583174e47.png",
-          "assets/images/projects/leito-de-projetos/screenshot-2-fbd9554a3d7da018.png",
-          "assets/images/projects/leito-de-projetos/screenshot-3-a1f2ee206ec27d93.png"
+          "assets/images/projects/leito-de-projetos/screenshot-1-a1f2ee206ec27d93.png",
+          "assets/images/projects/leito-de-projetos/screenshot-2-2091a92583174e47.png",
+          "assets/images/projects/leito-de-projetos/screenshot-3-fbd9554a3d7da018.png"
         ]
       },
       "links": {
@@ -137,39 +137,6 @@
         "demo": null,
         "download": "https://github.com/ink-creator/Conversor-arquivos/releases/latest",
         "documentation": "https://github.com/ink-creator/Conversor-arquivos/blob/main/README.md"
-      }
-    },
-    {
-      "id": "servidor-php",
-      "title": "Servidor PHP",
-      "creators": [
-        "Ink"
-      ],
-      "type": "backend",
-      "status": "completed",
-      "featured": false,
-      "shortDescription": "Demonstração backend em PHP com autenticação, CRUD, controle de acesso e MariaDB rodando em outro dispositivo pela rede local.",
-      "description": "Servidor PHP é um projeto demonstrativo criado para mostrar, de forma simples e prática, como uma aplicação backend em PHP pode se comunicar com um banco MariaDB executado em outro dispositivo físico pela rede local. No ambiente original, o notebook executa a aplicação PHP e o servidor web, enquanto um tablet Android com Termux funciona como servidor MariaDB. A aplicação inclui cadastro, login, logout, sessões, páginas protegidas, operações CRUD e diferenciação entre usuários comuns e administradores. O projeto também demonstra configuração de conexão remota com banco de dados, uso do protocolo MySQL/MariaDB via TCP/IP, permissões de acesso, organização básica de uma aplicação PHP e a separação entre camada de aplicação e camada de dados. O objetivo não é ser um sistema de produção completo, mas servir como uma demonstração clara de backend, banco de dados, autenticação, controle de acesso e comunicação entre dispositivos em uma rede local.",
-      "technologies": [
-        "PHP",
-        "MariaDB",
-        "MySQLi",
-        "SQL",
-        "HTML",
-        "CSS",
-        "Termux",
-        "Apache"
-      ],
-      "media": {
-        "cover": "assets/images/projects/servidor-php/cover.svg",
-        "video": null,
-        "images": []
-      },
-      "links": {
-        "github": "https://github.com/ink-creator/Servidor-php",
-        "demo": null,
-        "download": null,
-        "documentation": "https://github.com/ink-creator/Servidor-php/blob/main/README.md"
       }
     }
   ]
