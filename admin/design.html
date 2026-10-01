@@ -136,14 +136,9 @@
                   >
                   <label
                     >Autoria<input id="d-creator" value="Stella" placeholder="Stella" /></label
-                  ><label
-                      >Pasta ou subpasta *<select
-                      id="d-category"
-                      required
-                    ><option value="">Selecione onde o arquivo ficará</option></select><small
-                      >Crie uma nova pasta ou subpasta pelo botão “Criar item”.</small
-                    ></label
-                  >
+                  ><div class="category-picker"><label for="d-category"
+                      >Pasta ou subpasta *<select id="d-category" required><option value="">Carregando pastas…</option></select></label
+                    ><button class="button secondary" id="create-category-from-form" type="button">Criar pasta ou subpasta</button><small id="category-picker-help">Carregando pastas…</small></div>
                   <label
                     >Data<input id="d-date" type="month" /><small
                       >Opcional. Ajuda a ordenar a galeria.</small
@@ -382,7 +377,7 @@
     <script src="../assets/js/projects.js"></script>
     <script src="cloudflare.js"></script>
     <script src="../assets/js/admin-storage.js"></script>
-    <script src="../assets/js/design-admin.js?v=20260930-1"></script>
+    <script src="../assets/js/design-admin.js?v=20261001-1"></script>
     <script src="admin.js?v=20260928-1"></script>
   </body>
 </html>

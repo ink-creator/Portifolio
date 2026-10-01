@@ -2,6 +2,16 @@
   const $ = (id) => document.getElementById(id);
   const e = Portfolio.escapeHTML;
   const draftKey = "portfolio_design_projects_draft";
+  const folderMigrationKey = "portfolio_design_seed_folders_removed_v1";
+  const precreatedCategoryIds = new Set([
+    "design-geral",
+    "planta-baixa",
+    "ilustracao",
+    "outros",
+    "convite",
+    "convite-1",
+    "convite-de-casamento",
+  ]);
   const MB = 1024 * 1024;
   let data = { categories: [], projects: [] };
   let editingId = null;
@@ -113,12 +123,15 @@
     };
   }
 
-  function validate(project) {
+  function validate(project, allowUnfiled = false) {
     if (!project || !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(project.id || "")) {
       throw new Error("Preencha um ID com letras minúsculas, números e hífens.");
     }
     if (!String(project.title || "").trim()) throw new Error("Preencha o título do trabalho.");
-    if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(project.category || "")) {
+    if (!allowUnfiled && !project.category) {
+      throw new Error("Selecione uma pasta ou subpasta para o trabalho.");
+    }
+    if (project.category && !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(project.category)) {
       throw new Error("A categoria deve usar letras minúsculas, números e hífens.");
     }
     for (const source of [
@@ -153,9 +166,9 @@
     }
     const ids = new Set();
     for (const project of next.projects) {
-      validate(project);
+      validate(project, true);
       if (ids.has(project.id)) throw new Error("Há IDs de trabalho repetidos.");
-      if (!categories.has(project.category)) throw new Error("Escolha uma pasta ou subpasta existente para cada arquivo.");
+      if (project.category && !categories.has(project.category)) throw new Error("Escolha uma pasta ou subpasta existente para cada arquivo.");
       ids.add(project.id);
     }
   }
@@ -184,10 +197,16 @@
       const parent = data.categories.find((item) => item.id === category.parent);
       return parent ? `${parent.label} › ${category.label}` : category.label;
     };
-    select.innerHTML = `<option value="">Selecione onde o arquivo ficará</option>${data.categories
+    const placeholder = data.categories.length
+      ? "Selecione uma pasta ou subpasta"
+      : "Nenhuma pasta criada ainda";
+    select.innerHTML = `<option value="">${placeholder}</option>${data.categories
       .map((category) => `<option value="${e(category.id)}">${e(categoryName(category))}</option>`)
       .join("")}`;
     select.value = data.categories.some((category) => category.id === selected) ? selected : "";
+    $("category-picker-help").textContent = data.categories.length
+      ? "Escolha a pasta principal ou uma subpasta para organizar este arquivo."
+      : "Crie uma pasta para habilitar a seleção do local deste arquivo.";
   }
 
   function syncMediaInputs() {
@@ -252,6 +271,7 @@
   }
 
   function categoryPath(categoryId) {
+    if (!categoryId) return "Sem pasta";
     const category = data.categories.find((item) => item.id === categoryId);
     if (!category) return humanize(categoryId);
     const parent = data.categories.find((item) => item.id === category.parent);
@@ -416,9 +436,20 @@
         if (!response.ok) throw new Error("Não foi possível carregar os trabalhos publicados.");
         next = await response.json();
       }
+      const needsFolderMigration = !(await PortfolioDrafts.get(folderMigrationKey));
+      if (needsFolderMigration) {
+        next = {
+          ...next,
+          categories: next.categories.filter((category) => !precreatedCategoryIds.has(category.id)),
+          projects: next.projects.map((project) =>
+            precreatedCategoryIds.has(project.category) ? { ...project, category: null } : project,
+          ),
+        };
+      }
       validateData(next);
       data = structuredClone(next);
       await PortfolioDrafts.put(draftKey, data);
+      if (needsFolderMigration) await PortfolioDrafts.put(folderMigrationKey, true);
       ready = true;
       renderCategoryOptions();
       reset();
@@ -524,6 +555,7 @@
   }
 
   async function createCategory() {
+    const createdKind = createKind;
     const label = value("new-category-label");
     const id = slugify(value("new-category-id") || label);
     const parent = createKind === "subfolder" ? value("new-category-parent") : null;
@@ -536,11 +568,16 @@
     await persist({ categories: [...data.categories, { id, label, ...(parent ? { parent } : {}) }], projects: data.projects });
     $("create-design-item-dialog").close();
     resetCreateDialog();
-    notice(`${createKind === "subfolder" ? "Subpasta" : "Pasta"} criada. Agora você pode escolher esse local para um arquivo.`);
+    notice(`${createdKind === "subfolder" ? "Subpasta" : "Pasta"} criada. Agora você pode escolher esse local para um arquivo.`);
   }
 
   $("new-design-project").addEventListener("click", () => {
     if (!ready || !canLeave()) return;
+    resetCreateDialog();
+    $("create-design-item-dialog").showModal();
+  });
+  $("create-category-from-form").addEventListener("click", () => {
+    if (!ready || busy) return;
     resetCreateDialog();
     $("create-design-item-dialog").showModal();
   });

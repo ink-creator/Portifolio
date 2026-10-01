@@ -435,6 +435,24 @@
   font-size: 0.8125rem;
   margin-bottom: 18px;
 }
+.admin-page .category-picker {
+  display: grid;
+  align-content: start;
+  gap: 8px;
+  min-width: 0;
+  margin-bottom: 18px;
+}
+.admin-page .category-picker label {
+  margin: 0;
+}
+.admin-page .category-picker button {
+  justify-self: start;
+  min-height: 36px;
+  font-size: 0.75rem;
+}
+.admin-page .category-picker small {
+  margin: 0;
+}
 .admin-page .panel input:not([type="checkbox"]),
 .admin-page .panel textarea,
 .admin-page .panel select {

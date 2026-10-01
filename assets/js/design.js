@@ -17,7 +17,6 @@
       .replace(/\b\w/g, (letter) => letter.toUpperCase());
 
   const gallery = $("#design-gallery");
-  const categoryRoot = $("#design-categories");
   const search = $("#design-search");
   const toolFilter = $("#tool-filter");
   const tagFilter = $("#tag-filter");
@@ -30,7 +29,6 @@
   const state = {
     projects: [],
     categories: [],
-    category: "all",
     query: "",
     tool: "all",
     tag: "all",
@@ -40,22 +38,12 @@
   };
 
   function categoryName(id) {
+    if (!id) return "Sem pasta";
     return state.categories.find((category) => category.id === id)?.label || humanize(id);
   }
 
   function categoryChildren(id) {
     return state.categories.filter((category) => category.parent === id);
-  }
-
-  function categoryMatches(selectedId, projectCategory) {
-    if (selectedId === "all") return true;
-    if (projectCategory === selectedId) return true;
-    let current = state.categories.find((category) => category.id === projectCategory);
-    while (current?.parent) {
-      if (current.parent === selectedId) return true;
-      current = state.categories.find((category) => category.id === current.parent);
-    }
-    return false;
   }
 
   function formatDate(value) {
@@ -92,23 +80,9 @@
     const tags = [...new Set(state.projects.flatMap((project) => list(project.tags)))];
     setSelectOptions(toolFilter, tools, "Todas");
     setSelectOptions(tagFilter, tags, "Todas");
-
-    const rootCategories = state.categories.filter((category) => !category.parent);
-    const categoryButton = (category, className = "") => {
-      const active = category.id === state.category;
-      return `<button class="design-category${className}${active ? " active" : ""}" type="button" data-category="${e(category.id)}" aria-pressed="${active}">${e(category.label)}</button>`;
-    };
-    categoryRoot.innerHTML = `${categoryButton({ id: "all", label: "Todos" })}${rootCategories
-      .map((category) => {
-        const children = categoryChildren(category.id);
-        if (!children.length) return categoryButton(category);
-        return `<div class="design-folder">${categoryButton(category, " design-folder-button")}<div class="design-subfolders" aria-label="Subpastas de ${e(category.label)}">${children.map((child) => categoryButton(child, " design-subfolder")).join("")}</div></div>`;
-      })
-      .join("")}`;
   }
 
   function matches(project) {
-    if (!categoryMatches(state.category, project.category)) return false;
     if (state.tool !== "all" && !list(project.tools).includes(state.tool)) return false;
     if (state.tag !== "all" && !list(project.tags).includes(state.tag)) return false;
     if (!state.query) return true;
@@ -126,8 +100,7 @@
   }
 
   function emptyState(filtered) {
-    const hasFilters =
-      state.query || state.category !== "all" || state.tool !== "all" || state.tag !== "all";
+    const hasFilters = state.query || state.tool !== "all" || state.tag !== "all";
     if (!state.projects.length) {
       return `<div class="design-empty"><div><div class="design-empty-mark" aria-hidden="true">✦</div><h3>O primeiro trabalho vem aí.</h3><p>Esta galeria está pronta para receber designs, identidades visuais e plantas baixas da Stella.</p></div></div>`;
     }
@@ -146,6 +119,36 @@
     return `<article class="design-card${project.featured ? " featured" : ""}"><button class="design-card-open" type="button" data-open-project="${e(project.id)}" aria-label="Abrir ${e(project.title)}"><figure class="design-card-visual">${cover}${project.featured ? '<span class="design-card-marker">✦ Destaque</span>' : ""}</figure><div class="design-card-body"><div class="design-card-meta"><span>${e(categoryName(project.category))}</span>${date ? `<time datetime="${e(project.date)}">${e(date)}</time>` : ""}</div><h3>${e(project.title)}</h3>${project.shortDescription ? `<p>${e(project.shortDescription)}</p>` : ""}<div class="design-card-foot">${creator ? `<span>por ${e(creator)}</span>` : "<span></span>"}<span>Ver trabalho →</span></div></div></button></article>`;
   }
 
+  function fileCount(count) {
+    return `${count} ${count === 1 ? "arquivo" : "arquivos"}`;
+  }
+
+  function renderSubfolder(category, projects) {
+    const files = projects.filter((project) => project.category === category.id);
+    return `<details class="design-tree-subfolder" open><summary><span class="design-tree-name">${e(category.label)}</span><span class="design-tree-count">${fileCount(files.length)}</span></summary><div class="design-tree-content">${files.length ? `<div class="design-grid" aria-label="Arquivos em ${e(category.label)}">${files.map(renderCard).join("")}</div>` : '<p class="design-tree-empty">Esta subpasta ainda está vazia.</p>'}</div></details>`;
+  }
+
+  function renderFolder(category, projects) {
+    const children = categoryChildren(category.id);
+    const directFiles = projects.filter((project) => project.category === category.id);
+    const totalFiles = directFiles.length + children.reduce(
+      (total, child) => total + projects.filter((project) => project.category === child.id).length,
+      0,
+    );
+    const directMarkup = directFiles.length
+      ? `<section class="design-tree-direct"><h3>Arquivos principais</h3><div class="design-grid" aria-label="Arquivos principais de ${e(category.label)}">${directFiles.map(renderCard).join("")}</div></section>`
+      : "";
+    const childrenMarkup = children.map((child) => renderSubfolder(child, projects)).join("");
+    const emptyMarkup = !directFiles.length && !children.length
+      ? '<p class="design-tree-empty">Esta pasta ainda está vazia.</p>'
+      : "";
+    return `<details class="design-tree-folder" open><summary><span class="design-tree-name">${e(category.label)}</span><span class="design-tree-count">${fileCount(totalFiles)}</span></summary><div class="design-tree-content">${directMarkup}${childrenMarkup}${emptyMarkup}</div></details>`;
+  }
+
+  function renderUnfiled(projects) {
+    return `<details class="design-tree-folder" open><summary><span class="design-tree-name">Arquivos sem pasta</span><span class="design-tree-count">${fileCount(projects.length)}</span></summary><div class="design-tree-content"><div class="design-grid" aria-label="Arquivos sem pasta">${projects.map(renderCard).join("")}</div></div></details>`;
+  }
+
   function render() {
     const filtered = state.projects
       .filter(matches)
@@ -154,15 +157,21 @@
           Number(Boolean(b.featured)) - Number(Boolean(a.featured)) ||
           String(b.date || "").localeCompare(String(a.date || "")),
       );
-    gallery.innerHTML = filtered.length ? filtered.map(renderCard).join("") : emptyState(filtered);
+    const rootCategories = state.categories.filter((category) => !category.parent);
+    const unfiled = filtered.filter(
+      (project) => !state.categories.some((category) => category.id === project.category),
+    );
+    const hasFilters = state.query || state.tool !== "all" || state.tag !== "all";
+    if (!filtered.length && hasFilters) {
+      gallery.innerHTML = emptyState(filtered);
+    } else if (!rootCategories.length && !unfiled.length) {
+      gallery.innerHTML = emptyState(filtered);
+    } else {
+      gallery.innerHTML = `${rootCategories.map((category) => renderFolder(category, filtered)).join("")}${unfiled.length ? renderUnfiled(unfiled) : ""}`;
+    }
     gallery.setAttribute("aria-busy", "false");
     const total = filtered.length;
     resultCount.textContent = `${total} ${total === 1 ? "trabalho" : "trabalhos"}`;
-    $$(".design-category", categoryRoot).forEach((button) => {
-      const active = button.dataset.category === state.category;
-      button.classList.toggle("active", active);
-      button.setAttribute("aria-pressed", String(active));
-    });
     const secondaryCount = Number(state.tool !== "all") + Number(state.tag !== "all");
     activeFilterCount.hidden = secondaryCount === 0;
     activeFilterCount.textContent = secondaryCount;
@@ -170,7 +179,6 @@
 
   function clearFilters() {
     state.query = "";
-    state.category = "all";
     state.tool = "all";
     state.tag = "all";
     search.value = "";
@@ -364,12 +372,6 @@
   });
   tagFilter.addEventListener("change", () => {
     state.tag = tagFilter.value;
-    render();
-  });
-  categoryRoot.addEventListener("click", (event) => {
-    const button = event.target.closest("[data-category]");
-    if (!button) return;
-    state.category = button.dataset.category;
     render();
   });
   $("#clear-design-filters").addEventListener("click", clearFilters);

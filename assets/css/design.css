@@ -299,64 +299,99 @@
   cursor: pointer;
 }
 
-.design-categories {
+.design-tree {
   display: flex;
-  flex-wrap: wrap;
-  align-items: flex-start;
-  gap: 8px;
-  margin-bottom: 28px;
+  flex-direction: column;
 }
 
-.design-folder {
+.design-tree-folder {
+  border-top: 1px solid var(--border);
+}
+
+.design-tree-folder:last-child {
+  border-bottom: 1px solid var(--border);
+}
+
+.design-tree-folder > summary,
+.design-tree-subfolder > summary {
+  min-height: 56px;
   display: flex;
   align-items: center;
-  gap: 8px;
-}
-
-.design-subfolders {
-  display: flex;
-  gap: 6px;
-  padding-left: 8px;
-  border-left: 1px solid #504263;
-}
-
-.design-category {
-  min-height: 38px;
-  padding: 0 14px;
-  border: 1px solid var(--border);
-  border-radius: 999px;
-  background: transparent;
-  color: var(--muted);
-  font-size: 0.79rem;
+  gap: 12px;
   cursor: pointer;
-  transition: 0.2s ease;
+  list-style: none;
 }
 
-.design-category:hover,
-.design-category.active {
-  border-color: #7654a7;
-  background: rgba(169, 112, 255, 0.11);
+.design-tree-folder > summary::-webkit-details-marker,
+.design-tree-subfolder > summary::-webkit-details-marker {
+  display: none;
+}
+
+.design-tree-folder > summary::before,
+.design-tree-subfolder > summary::before {
+  width: 14px;
   color: var(--design-accent-soft);
+  content: "+";
+  font-weight: 700;
 }
 
-.design-folder-button::before {
-  content: "▾";
-  margin-right: 7px;
-  color: var(--design-accent-soft);
+.design-tree-folder[open] > summary::before,
+.design-tree-subfolder[open] > summary::before {
+  content: "−";
 }
 
-.design-subfolder {
-  min-height: 34px;
-  padding: 0 11px;
-  border-style: dashed;
-  color: #aeb3bf;
-  font-size: 0.73rem;
+.design-tree-name {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  color: var(--text);
+  font: 700 1rem "Space Grotesk", sans-serif;
 }
 
-.design-subfolder::before {
-  content: "↳";
-  margin-right: 6px;
-  color: var(--design-accent-soft);
+.design-tree-count {
+  margin-left: auto;
+  color: var(--muted);
+  font-size: 0.75rem;
+  white-space: nowrap;
+}
+
+.design-tree-content {
+  padding: 0 0 28px 26px;
+}
+
+.design-tree-direct {
+  margin-bottom: 26px;
+}
+
+.design-tree-direct > h3 {
+  margin: 0 0 12px;
+  color: var(--muted);
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.design-tree-subfolder {
+  margin-top: 10px;
+  padding-left: 16px;
+  border-left: 1px solid var(--border2);
+}
+
+.design-tree-subfolder > summary {
+  min-height: 46px;
+}
+
+.design-tree-subfolder .design-tree-name {
+  font: 600 0.88rem "Space Grotesk", sans-serif;
+}
+
+.design-tree-subfolder .design-tree-content {
+  padding: 0 0 18px 12px;
+}
+
+.design-tree-empty {
+  margin: 2px 0 12px;
+  color: var(--muted);
+  font-size: 0.8rem;
 }
 
 .design-grid {
@@ -1050,26 +1085,6 @@ body:has(dialog[open]) {
     right: auto;
     left: 0;
     width: 100%;
-  }
-
-  .design-categories {
-    flex-wrap: nowrap;
-    margin-right: -20px;
-    padding-right: 20px;
-    overflow-x: auto;
-    scrollbar-width: none;
-  }
-
-  .design-folder {
-    flex: 0 0 auto;
-  }
-
-  .design-categories::-webkit-scrollbar {
-    display: none;
-  }
-
-  .design-category {
-    flex: 0 0 auto;
   }
 
   .design-card,

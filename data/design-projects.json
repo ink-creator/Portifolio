@@ -1,42 +1,11 @@
 {
-  "categories": [
-    {
-      "id": "design-geral",
-      "label": "Design Geral"
-    },
-    {
-      "id": "planta-baixa",
-      "label": "Plantas Baixas"
-    },
-    {
-      "id": "ilustracao",
-      "label": "Ilustracao"
-    },
-    {
-      "id": "outros",
-      "label": "Outros"
-    },
-    {
-      "id": "convite",
-      "label": "Convites"
-    },
-    {
-      "id": "convite-1",
-      "label": "Convite 1",
-      "parent": "convite"
-    },
-    {
-      "id": "convite-de-casamento",
-      "label": "Convite de casamento",
-      "parent": "convite"
-    }
-  ],
+  "categories": [],
   "projects": [
     {
       "id": "convite-de-casamento-demonstrativo",
       "title": "Convites",
       "creator": "Stella",
-      "category": "convite-de-casamento",
+      "category": null,
       "date": "2026-09",
       "featured": true,
       "shortDescription": "Convite de casamento demonstrativo, desenvolvido como exercício de composição e identidade visual.",
