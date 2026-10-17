@@ -74,7 +74,7 @@ test("publishes through the Worker with a PKCS#1 key and verified App JWT", asyn
   };
   const session = await new SignJWT({ login: "test-owner" })
     .setProtectedHeader({ alg: "HS256" })
-    .setIssuer("ink-stella-admin")
+    .setIssuer("ink-admin")
     .setAudience("portfolio-worker")
     .setIssuedAt()
     .setExpirationTime("5m")

@@ -1,10 +1,10 @@
 /* Regras exclusivas do editor. */
 .editor-body {
-  background: radial-gradient(ellipse at 95% 0%, #3b226026, transparent 40%), #080711;
+  background: radial-gradient(ellipse at 95% 0%, #0e2d6026, transparent 40%), #080711;
 }
 .admin-page {
-  --muted: #aaa3ba;
-  --border: #322c41;
+  --muted: #44a7ba;
+  --border: #123041;
   --max: 1280px;
   padding: 42px 0 72px;
 }
@@ -35,7 +35,7 @@
   margin: 0 0 12px;
 }
 .admin-heading h1 span {
-  color: #b59aff;
+  color: #41acff;
 }
 .admin-heading p:last-child {
   color: var(--muted);
@@ -52,22 +52,22 @@
   border-radius: 9px;
 }
 .admin-page .button.primary {
-  background: #a98be8;
-  color: #160e25;
-  border-color: #a98be8;
+  background: #3a9ce8;
+  color: #061225;
+  border-color: #3a9ce8;
   box-shadow: none;
   font-weight: 600;
 }
 .admin-page .button.primary:hover {
-  background: #bda0f6;
+  background: #43aff6;
 }
 .admin-page .button.secondary {
   background: #ffffff04;
-  border-color: #43394f;
+  border-color: #183d4f;
 }
 .admin-page .panel {
   background: #121019;
-  border: 1px solid #322c41;
+  border: 1px solid #123041;
   border-radius: 16px;
   box-shadow: none;
 }
@@ -78,7 +78,7 @@
   gap: 24px;
   padding: 23px 26px;
   margin-bottom: 28px;
-  background: linear-gradient(110deg, #21182d, #15121e);
+  background: linear-gradient(110deg, #0a1c2d, #15121e);
 }
 .publish-copy h2 {
   font:
@@ -87,7 +87,7 @@
   margin: 0;
 }
 .publish-copy p:not(.eyebrow) {
-  color: #c2bace;
+  color: #4ebece;
   font-size: 0.8125rem;
   margin: 8px 0;
 }
@@ -106,14 +106,14 @@
   align-items: center;
   gap: 7px;
   font-size: 0.75rem;
-  color: #c9bfd8;
+  color: #50c4d8;
 }
 .connection-state::before {
   content: "";
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background: #b9a3d8;
+  background: #44add8;
 }
 .admin-page .cloud-panel .form-actions {
   margin: 10px 0 0;
@@ -155,7 +155,7 @@
   display: grid;
   gap: 8px;
   padding: 12px;
-  border: 1px solid #3b3249;
+  border: 1px solid #153649;
   border-radius: 10px;
   background: #ffffff02;
 }
@@ -165,7 +165,7 @@
 .admin-page .admin-folder h3,
 .admin-page .admin-subfolder h4 {
   margin: 0;
-  color: #ddc8ff;
+  color: #54d2ff;
   font: 600 0.76rem "Space Grotesk", sans-serif;
   letter-spacing: 0.04em;
 }
@@ -174,14 +174,14 @@
   gap: 8px;
   margin-left: 10px;
   padding: 10px 0 0 12px;
-  border-left: 1px solid #614683;
+  border-left: 1px solid #1d5183;
 }
 .admin-page .admin-subfolder h4 {
-  color: #c8bed5;
+  color: #50c2d5;
 }
 .admin-folder-empty {
   margin: 0;
-  color: #858093;
+  color: #368393;
   font-size: 0.72rem;
 }
 .admin-page .admin-item {
@@ -194,8 +194,8 @@
   background: #ffffff03;
 }
 .admin-page .admin-item.selected {
-  border-color: #8f70bb;
-  background: #a78bea10;
+  border-color: #2f7ebb;
+  background: #3a9cea10;
 }
 .admin-item-info strong {
   font-size: 0.875rem;
@@ -216,8 +216,8 @@
   flex: 1;
 }
 .admin-actions button[data-a="edit"] {
-  background: #a98be812;
-  color: #d9c6fa;
+  background: #3a9ce812;
+  color: #53cffa;
 }
 .list-empty {
   color: var(--muted);
@@ -230,7 +230,7 @@
 }
 .admin-tools summary {
   cursor: pointer;
-  color: #c7bed5;
+  color: #50c2d5;
   font-size: 0.8125rem;
 }
 .admin-tools p {
@@ -259,8 +259,8 @@
   font-size: 0.6875rem;
   padding: 5px 10px;
   border-radius: 6px;
-  background: #b49ce710;
-  color: #cbb5ee;
+  background: #42aae710;
+  color: #4cbfee;
 }
 #editor-fields {
   border: 0;
@@ -268,35 +268,8 @@
   padding: 0;
   min-width: 0;
 }
-#editor-fields:disabled,
-#design-editor-fields:disabled {
+#editor-fields:disabled {
   opacity: 0.65;
-}
-
-.design-editor-body {
-  --accent: #a970ff;
-  --accent2: #ddc8ff;
-}
-
-.design-editor-body .section-number {
-  border-color: #a970ff42;
-  background: #a970ff0d;
-  color: #ddc8ff;
-}
-
-.design-editor-body .admin-page .upload-zone:hover,
-.design-editor-body .admin-page .upload-zone.drag {
-  border-color: #a970ff;
-  background: #20152f;
-}
-
-.design-editor-body .admin-page .editor-actions {
-  border-top-color: #614683;
-  background: #19131ff2;
-}
-
-.design-editor-body input[type="month"] {
-  color-scheme: dark;
 }
 
 .comparison-editor-grid .media-card > label {
@@ -305,7 +278,7 @@
 .create-item-dialog {
   width: min(560px, calc(100% - 32px));
   padding: 0;
-  border: 1px solid #544364;
+  border: 1px solid #1c4964;
   border-radius: 16px;
   background: #121018;
   color: var(--text);
@@ -337,7 +310,7 @@
   display: grid;
   gap: 5px;
   padding: 16px;
-  border: 1px solid #40354d;
+  border: 1px solid #16394d;
   border-radius: 10px;
   background: #ffffff04;
   color: var(--text);
@@ -346,8 +319,8 @@
 }
 .create-item-options button:hover,
 .create-item-options button:focus-visible {
-  border-color: #a970ff;
-  background: #a970ff14;
+  border-color: #2f8aff;
+  background: #2f8aff14;
 }
 .create-item-options span {
   color: var(--muted);
@@ -359,7 +332,7 @@
   right: 14px;
   width: 34px;
   height: 34px;
-  border: 1px solid #4a4055;
+  border: 1px solid #1b4455;
   border-radius: 50%;
   background: transparent;
   color: var(--text);
@@ -370,20 +343,20 @@
   display: grid;
   gap: 7px;
   margin: 16px 0;
-  color: #d9d3e3;
+  color: #59d6e3;
   font-size: 0.8rem;
 }
 .create-item-shell input,
 .create-item-shell select {
   min-height: 42px;
   padding: 9px 10px;
-  border: 1px solid #3b3249;
+  border: 1px solid #153649;
   border-radius: 8px;
   background: #0b0911;
   color: var(--text);
 }
 .create-item-shell small {
-  color: #aba1b8;
+  color: #44a5b8;
   font-size: 0.68rem;
 }
 .editor-section {
@@ -402,13 +375,13 @@
   place-items: center;
   width: 30px;
   height: 30px;
-  border: 1px solid #6f59833d;
+  border: 1px solid #2561833d;
   border-radius: 8px;
   font:
     500 0.7rem "Space Grotesk",
     sans-serif;
-  color: #c5a8eb;
-  background: #a98be809;
+  color: #47b4eb;
+  background: #3a9ce809;
 }
 .section-title h3 {
   font-size: 0.9375rem;
@@ -424,7 +397,7 @@
   display: grid;
   gap: 7px;
   font-size: 0.8125rem;
-  color: #d9d3e3;
+  color: #59d6e3;
   margin-bottom: 18px;
   min-width: 0;
 }
@@ -457,7 +430,7 @@
 .admin-page .panel textarea,
 .admin-page .panel select {
   background: #0b0911;
-  border-color: #3b3249;
+  border-color: #153649;
   border-radius: 8px;
   padding: 11px 12px;
   min-height: 44px;
@@ -465,11 +438,11 @@
 }
 .admin-page .panel input::placeholder,
 .admin-page .panel textarea::placeholder {
-  color: #81788f;
+  color: #327c8f;
 }
 .admin-page .panel small {
   font-size: 0.6875rem;
-  color: #aba1b8;
+  color: #44a5b8;
   line-height: 1.6;
 }
 .admin-page .feature-check {
@@ -492,7 +465,7 @@
 }
 .media-card {
   min-width: 0;
-  border: 1px solid #322c41;
+  border: 1px solid #123041;
   padding: 16px;
   border-radius: 12px;
   background: #ffffff02;
@@ -503,7 +476,7 @@
   margin: 0 0 12px;
 }
 .media-card h4 span {
-  color: #a197ad;
+  color: #3f9bad;
   font-size: 0.6875rem;
   font-weight: 400;
   margin-left: 8px;
@@ -514,9 +487,9 @@
   margin: 0;
   padding: 18px 10px;
   background: #0c0a13;
-  border-color: #645273;
+  border-color: #225873;
   border-radius: 9px;
-  color: #d9cceb;
+  color: #56d2eb;
 }
 .admin-page .upload-zone strong {
   font-size: 0.8125rem;
@@ -527,18 +500,18 @@
 }
 .admin-page .upload-zone:hover,
 .admin-page .upload-zone.drag {
-  background: #201729;
-  border-color: #b797e4;
+  background: #0a1a29;
+  border-color: #3fa5e4;
 }
 .admin-page .upload-zone:focus-visible {
-  outline: 2px solid #c4a6ef;
+  outline: 2px solid #46b3ef;
   outline-offset: 3px;
 }
 .admin-page .upload-icon {
   width: 32px;
   height: 32px;
   font-size: 1.2rem !important;
-  background: #b48de619;
+  background: #3b9de619;
   border-radius: 8px;
 }
 .gallery-card {
@@ -561,7 +534,7 @@
 .media-link summary {
   cursor: pointer;
   font-size: 0.6875rem;
-  color: #b0a1c3;
+  color: #44a7c3;
   padding: 4px 0;
 }
 .media-link label {
@@ -594,14 +567,14 @@
 }
 .media-caption span {
   font-size: 0.6875rem;
-  color: #b6a8c5;
+  color: #47adc5;
   overflow-wrap: anywhere;
   min-width: 0;
 }
 .remove-media {
   border: 0;
   background: #ffffff05;
-  color: #e9b5bd;
+  color: #4cb6bd;
   cursor: pointer;
   border-radius: 6px;
   padding: 7px 9px;
@@ -618,7 +591,7 @@
   margin: 0;
 }
 .media-help {
-  color: #a79ab6;
+  color: #419fb6;
   font-size: 0.6875rem;
   margin: 14px 0 0;
 }
@@ -627,9 +600,9 @@
   bottom: 0;
   z-index: 5;
   border: 0;
-  border-top: 1px solid #4d3d60;
+  border-top: 1px solid #1a4360;
   border-radius: 0 0 16px 16px;
-  background: #19131ff2;
+  background: #08151ff2;
   padding: 16px 30px;
   margin: 0;
   display: flex;
@@ -638,7 +611,7 @@
   gap: 16px;
 }
 .editor-actions p {
-  color: #ac9ebb;
+  color: #42a3bb;
   font-size: 0.6875rem;
   max-width: 170px;
   margin: 0;
@@ -650,7 +623,7 @@
 .admin-page .admin-notice {
   z-index: 20;
   bottom: 20px;
-  background: #241c2f;
+  background: #0c1f2f;
 }
 @media (max-width: 1080px) {
   .admin-page .admin-layout {

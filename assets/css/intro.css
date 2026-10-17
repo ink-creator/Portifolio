@@ -19,24 +19,24 @@
   z-index: 90;
   pointer-events: none;
 }
-.portfolio-intro__star {
+.portfolio-intro__black-hole {
   position: fixed;
   overflow: visible;
   filter:
-    drop-shadow(0 0 5px #c77dff)
-    drop-shadow(0 0 15px #8e25f0aa);
+    drop-shadow(0 0 5px #58adff)
+    drop-shadow(0 0 18px #176fc4aa);
   pointer-events: none;
 }
 .portfolio-intro__face {
   position: fixed;
   margin: 0;
   fill: none;
-  stroke: var(--neon-star);
+  stroke: var(--black-hole-glow);
   stroke-width: 1.65;
   stroke-linecap: round;
   filter:
-    drop-shadow(0 0 4px #c77dff)
-    drop-shadow(0 0 11px #8e25f0aa);
+    drop-shadow(0 0 4px #58adff)
+    drop-shadow(0 0 11px #176fc4aa);
   overflow: visible;
   pointer-events: none;
 }
@@ -47,8 +47,8 @@
 .home-page .hero-note .smile {
   width: 42px;
   height: 42px;
-  stroke: var(--neon-star);
-  filter: drop-shadow(0 0 5px #a640ecaa);
+  stroke: var(--black-hole-glow);
+  filter: drop-shadow(0 0 5px #176fc4aa);
 }
 @media (max-width: 540px) {
   .home-page .hero-note .smile {

@@ -24,7 +24,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
   if (!project) {
     root.innerHTML =
-      '<div class="empty-state"><h2>Projeto não encontrado.</h2><p>Explore os outros projetos da dupla.</p><a class="button primary" href="../projetos/">Explorar projetos →</a></div>';
+      '<div class="empty-state"><h2>Projeto não encontrado.</h2><p>Explore os outros projetos de Ink.</p><a class="button primary" href="../projetos/">Explorar projetos →</a></div>';
     return;
   }
   const p = project,
@@ -32,7 +32,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     u = Portfolio.assetURL,
     media = p.media || {},
     links = p.links || {};
-  document.title = p.title + " — Ink × Stella";
+  document.title = p.title + " — Ink";
   const description = document.querySelector('meta[name="description"]');
   if (description) description.content = p.shortDescription || p.title;
   const actions = [

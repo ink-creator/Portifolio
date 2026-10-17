@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const status = document.getElementById("cloud-status");
   const tokenKey = "portfolio_admin_session";
   let authenticated = false;
-  const getEditor = () => window.DesignAdmin || window.PortfolioAdmin;
+  const getEditor = () => window.PortfolioAdmin;
 
   if (!login || !logout || !publish || !user || !status) return;
 
@@ -43,7 +43,7 @@ document.addEventListener("DOMContentLoaded", () => {
     status.textContent =
       message ||
       (authenticated
-        ? `Conectado. Seus ${mediaDescription} serão publicados juntos.`
+        ? `Conectado. Seus ${mediaDescription} serão publicados em um único envio.`
         : "Entre com uma das contas GitHub autorizadas para publicar.");
   };
   document.addEventListener("portfolio-editor-state", () => {
@@ -158,9 +158,7 @@ document.addEventListener("DOMContentLoaded", () => {
         editor.notice(status.textContent, "error");
         return;
       }
-      status.textContent = window.DesignAdmin
-        ? "Designs publicados. O GitHub Pages atualizará a galeria após concluir o deploy."
-        : "Projetos publicados. O GitHub Pages atualizará após concluir o deploy.";
+      status.textContent = "Projetos publicados. O GitHub Pages atualizará após concluir o deploy.";
       editor.notice(status.textContent);
     } catch (error) {
       const detail =

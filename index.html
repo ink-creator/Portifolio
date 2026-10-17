@@ -3,29 +3,32 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <meta name="theme-color" content="#0b0b1a" />
+    <meta name="theme-color" content="#030914" />
     <meta
       name="description"
-      content="Ink × Stella. Duas perspectivas, ideias em movimento. Conheça nossos projetos de tecnologia e experiências digitais."
+      content="Portfólio de Ink: projetos de programação, ferramentas e experimentos digitais."
     />
-    <title>Ink × Stella — Ideias em movimento</title>
+    <title>Ink — Ideias em movimento</title>
     <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
     <link rel="stylesheet" href="assets/css/style.css" />
     <link rel="stylesheet" href="assets/css/responsive.css" />
-    <link rel="stylesheet" href="assets/css/cosmic.css?v=20260928-2" />
-    <link rel="stylesheet" href="assets/css/intro.css?v=20260920-6" />
-    <script src="assets/js/intro.js?v=20260920-6"></script>
+    <link rel="stylesheet" href="assets/css/cosmic.css?v=20261017-1" />
+    <link rel="stylesheet" href="assets/css/intro.css?v=20261017-1" />
+    <script src="assets/js/intro.js?v=20261017-1"></script>
   </head>
   <body class="home-page">
     <div class="cosmic-backdrop" aria-hidden="true">
-      <svg class="cosmic-halo" viewBox="0 -3.5 100 100">
-        <polygon points="50,3 61,36 96,36 67,56 78,90 50,70 22,90 33,56 4,36 39,36" />
+      <svg class="cosmic-halo black-hole" viewBox="0 0 100 100">
+        <ellipse class="black-hole-ring black-hole-ring-outer" cx="50" cy="50" rx="45" ry="16" />
+        <ellipse class="black-hole-ring black-hole-ring-inner" cx="50" cy="50" rx="34" ry="11" />
+        <circle class="black-hole-glow" cx="50" cy="50" r="22" />
+        <circle class="black-hole-core" cx="50" cy="50" r="15" />
       </svg>
     </div>
     <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
     <header class="site-header">
-      <a class="brand" href="./" aria-label="Ink e Stella, início"
-        >ink<span>×</span>stella<span class="brand-dot">.</span></a
+      <a class="brand" href="./" aria-label="Ink, início"
+        >ink<span class="brand-dot">.</span></a
       ><button
         class="menu-toggle"
         aria-label="Abrir menu"
@@ -36,52 +39,47 @@
       </button>
       <nav class="nav" id="site-nav" aria-label="Navegação principal">
         <a class="active" aria-current="page" href="./">Início</a
-        ><a href="projetos/#programacao">Programação</a><a href="design/#design">Design</a
-        ><a href="sobre/">Sobre nós</a>
+        ><a href="projetos/#programacao">Projetos</a><a href="sobre/">Sobre mim</a>
       </nav>
       <a
         class="header-social"
-        href="https://www.instagram.com/inkxstella/"
-        target="_blank"
-        rel="noopener"
-        >Vamos conversar <span aria-hidden="true">↗</span></a
+        href="projetos/"
+        >Ver projetos <span aria-hidden="true">↗</span></a
       >
     </header>
     <main id="conteudo">
       <section class="hero container">
         <div class="hero-copy">
           <p class="eyebrow">
-            <span class="status-dot" aria-hidden="true"></span> DUAS MENTES. UM ESPAÇO CRIATIVO.
+            <span class="status-dot" aria-hidden="true"></span> IDEIAS, CÓDIGO E CURIOSIDADE.
           </p>
           <h1>
-            <span class="hero-title-line">Boas ideias ficam</span
-            ><span class="hero-title-line gradient-text">melhores em dupla.</span>
+            <span class="hero-title-line">Boas ideias merecem</span
+            ><span class="hero-title-line gradient-text">ganhar vida.</span>
           </h1>
           <p class="hero-text">
-            Somos INK e Stella, propostas diferentes em um só lugar. Um disposto a criar programas e outra a tornar sonhos e 
-            ideias em sua realidade própria para você. Mas quando nos juntamos, o resultado é sempre uma experiência única. 
+            Sou Ink. Transformo curiosidade em aplicações, ferramentas e experimentos digitais,
+            aprendendo com cada desafio e cuidando de cada detalhe do caminho.
           </p>
           <div class="hero-actions">
             <a class="button programming-button" href="projetos/#programacao"
-              >Ver programação <span aria-hidden="true">↗</span></a
-            ><a class="button design-button" href="design/#design"
-              >Ver design <span aria-hidden="true">✦</span></a
+              >Ver projetos <span aria-hidden="true">↗</span></a
             ><a class="button ghost" href="sobre/"
-              >A dupla por trás <span aria-hidden="true">→</span></a
+              >Sobre mim <span aria-hidden="true">→</span></a
             >
           </div>
           <div class="hero-note">
             <svg class="smile" viewBox="0 0 32 32" aria-hidden="true">
               <g class="smile-eyes"><path d="M12 11v2.5" /><path d="M20 11v2.5" /></g>
               <path d="M7 18c5 6 13 6 18 0" /></svg
-            ><span>Criando, aprendendo<br />e evoluindo juntos.</span>
+            ><span>Criando, aprendendo<br />e evoluindo a cada projeto.</span>
           </div>
         </div>
         <div class="creative-stage">
           <div
             class="code-window code-float code-python"
             role="img"
-            aria-label="Trecho criativo em Python: importar ideias e criar em dupla."
+            aria-label="Trecho criativo em Python: Ink transformando ideias em projetos."
           >
             <div class="code-window-bar">
               <span class="code-dots" aria-hidden="true"><i></i><i></i><i></i></span
@@ -90,40 +88,39 @@
             <pre
               aria-hidden="true"
             ><code><span class="code-comment"># o próximo projeto começa aqui</span>
-<span class="code-purple">from</span> pathlib <span class="code-purple">import</span> Path
-<span class="code-purple">import</span> json
+<span class="code-keyword">from</span> pathlib <span class="code-keyword">import</span> Path
+<span class="code-keyword">import</span> json
 
-creators = [<span class="code-green">"Ink"</span>, <span class="code-green">"Stella"</span>]<span class="code-caret"></span></code></pre>
+creator = <span class="code-green">"Ink"</span>
+build(idea, <span class="code-green">with_curiosity</span>=<span class="code-blue">True</span>)<span class="code-caret"></span></code></pre>
           </div>
           <div class="stage-grid" aria-hidden="true"></div>
-          <div class="identity-art" aria-label="Ink e Stella: duas perspectivas que se encontram">
-            <div class="art-top"><span> </span><span>01 / ∞</span></div>
+          <div class="identity-art" aria-label="Ink: código, curiosidade e criação">
+            <div class="art-top"><span>PORTFÓLIO</span><span>01 / ∞</span></div>
             <div class="orbit orbit-one" aria-hidden="true"></div>
             <div class="orbit orbit-two" aria-hidden="true"></div>
-            <span class="art-spark" aria-hidden="true">✳</span>
+            <span class="art-spark" aria-hidden="true">●</span>
             <div class="identity-type">
-              <span>ink<span class="type-period">.</span></span
-              ><span class="identity-cross">×</span
-              ><span>stella<span class="type-period">.</span></span>
+              <span>ink<span class="type-period">.</span></span>
             </div>
             <div class="art-bottom">
-              <span>INDEPENDENTES NA IDEIA.<br />JUNTOS NA CRIAÇÃO.</span
+              <span>CURIOSO POR NATUREZA.<br />CONSTRUINDO COM INTENÇÃO.</span
               ><span class="art-coordinate" aria-hidden="true">↗</span>
             </div>
           </div>
           <div
             class="code-window code-float code-html"
             role="img"
-            aria-label="Trecho criativo em HTML: uma seção chamada ideias, com o texto Feito em dupla."
+            aria-label="Trecho criativo em HTML: uma seção de ideias construída por Ink."
           >
             <div class="code-window-bar">
               <span class="code-dots" aria-hidden="true"><i></i><i></i><i></i></span
-              ><span>together.html</span><span class="code-language" aria-hidden="true">⌘</span>
+              ><span>ideas.html</span><span class="code-language" aria-hidden="true">⌘</span>
             </div>
             <pre
               aria-hidden="true"
-            ><code><span class="code-blue">&lt;section</span> <span class="code-lilac">id</span>=<span class="code-green">"ideias"</span><span class="code-blue">&gt;</span>
-  <span class="code-blue">&lt;h1&gt;</span>Feito em dupla.<span class="code-blue">&lt;/h1&gt;</span>
+            ><code><span class="code-blue">&lt;section</span> <span class="code-attribute">id</span>=<span class="code-green">"ideias"</span><span class="code-blue">&gt;</span>
+  <span class="code-blue">&lt;h1&gt;</span>Feito por Ink.<span class="code-blue">&lt;/h1&gt;</span>
 <span class="code-blue">&lt;/section&gt;</span></code></pre>
           </div>
         </div>
@@ -131,24 +128,21 @@ creators = [<span class="code-green">"Ink"</span>, <span class="code-green">"Ste
       <div class="home-paths container" aria-label="Explore o portfólio">
         <a href="projetos/"
           ><span class="path-number">01</span
-          ><span><small>FEITO POR NÓS</small><strong>Explore os projetos</strong></span
+          ><span><small>DO CÓDIGO À INTERFACE</small><strong>Explore os projetos</strong></span
           ><span class="path-arrow" aria-hidden="true">↗</span></a
         ><a href="sobre/"
           ><span class="path-number">02</span
-          ><span><small>POR TRÁS DAS IDEIAS</small><strong>Conheça a dupla</strong></span
+          ><span><small>POR TRÁS DAS IDEIAS</small><strong>Conheça meu processo</strong></span
           ><span class="path-arrow" aria-hidden="true">↗</span></a
         >
       </div>
     </main>
     <footer class="footer">
       <div class="container footer-inner">
-        <span>© <span data-year></span> Ink × Stella</span
-        ><span>Código, criatividade e um pouco de nós.</span
-        ><a href="https://www.instagram.com/inkxstella/" target="_blank" rel="noopener"
-          >Instagram ↗</a
-        >
+        <span>© <span data-year></span> Ink</span
+        ><span>Código, curiosidade e ideias em movimento.</span>
       </div>
     </footer>
-    <script src="assets/js/app.js?v=20260928-4"></script>
+    <script src="assets/js/app.js?v=20261017-1"></script>
   </body>
 </html>

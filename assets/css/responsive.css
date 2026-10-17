@@ -179,9 +179,9 @@
     gap: 5px;
     padding: 10px;
     border-radius: 16px;
-    background: #171529;
+    background: #07182a;
     box-shadow: 0 15px 30px #0005;
-    border: 1px solid #44365e;
+    border: 1px solid #22527a;
     margin: 0;
   }
   .nav.open {
@@ -269,7 +269,7 @@
     display: none;
   }
   .project-grid,
-  .duo-grid,
+  .profile-grid,
   .gallery {
     grid-template-columns: 1fr;
   }
@@ -282,7 +282,7 @@
   .card-body {
     padding: 24px;
   }
-  .duo-grid {
+  .profile-grid {
     gap: 18px;
   }
   .person-card h2 {
@@ -382,15 +382,15 @@
 }
 /* A darker canvas and a calmer, two-line introduction. */
 :root {
-  --bg: #030309;
-  --surface: #0c0c1a;
-  --surface2: #13132a;
-  --border: #232238;
+  --bg: #020711;
+  --surface: #07111f;
+  --surface2: #0b1a2d;
+  --border: #19324c;
 }
 body {
   background:
     radial-gradient(ellipse at 8% 45%, #183d9810, transparent 42%),
-    radial-gradient(ellipse at 96% 30%, #602fae17, transparent 43%), #030309;
+    radial-gradient(ellipse at 96% 30%, #155b9f24, transparent 43%), #020711;
 }
 .hero {
   grid-template-columns: 1.2fr 1fr;
@@ -429,7 +429,7 @@ body {
   flex-shrink: 0;
 }
 .footer {
-  background: #030309;
+  background: #020711;
 }
 @media (max-width: 1000px) {
   .hero {

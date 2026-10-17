@@ -1,4 +1,4 @@
-/* The entrance starts with the star and smile centered, then sends each to its
+/* The entrance starts with the black hole and smile centered, then sends each to its
    position in the page after the one-eye wink. */
 (() => {
   const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)");
@@ -38,19 +38,19 @@
     return new Promise((resolve) => setTimeout(resolve, duration));
   }
 
-  function flyToTargets(star, face, halo, smile, duration) {
-    const starStart = star.getBoundingClientRect();
+  function flyToTargets(blackHole, face, halo, smile, duration) {
+    const blackHoleStart = blackHole.getBoundingClientRect();
     const faceStart = face.getBoundingClientRect();
 
     // Finished Web Animations keep their last frame. Lock that visual state into
     // regular styles so this flight can be steered on every animation frame.
-    star.getAnimations().forEach((animation) => animation.cancel());
+    blackHole.getAnimations().forEach((animation) => animation.cancel());
     face.getAnimations().forEach((animation) => animation.cancel());
-    Object.assign(star.style, {
-      left: `${starStart.left}px`,
-      top: `${starStart.top}px`,
-      width: `${starStart.width}px`,
-      height: `${starStart.height}px`,
+    Object.assign(blackHole.style, {
+      left: `${blackHoleStart.left}px`,
+      top: `${blackHoleStart.top}px`,
+      width: `${blackHoleStart.width}px`,
+      height: `${blackHoleStart.height}px`,
       opacity: 1,
       transform: "rotate(0deg)",
     });
@@ -75,14 +75,14 @@
         const eased = 1 - (1 - progress) ** 4;
         // These rectangles are intentionally read on every frame. Scrolling in
         // either direction moves the destination, and the clones follow it.
-        const starEnd = halo.getBoundingClientRect();
+        const blackHoleEnd = halo.getBoundingClientRect();
         const faceEnd = smile.getBoundingClientRect();
 
-        Object.assign(star.style, {
-          left: `${mix(starStart.left, starEnd.left, eased)}px`,
-          top: `${mix(starStart.top, starEnd.top, eased)}px`,
-          width: `${mix(starStart.width, starEnd.width, eased)}px`,
-          height: `${mix(starStart.height, starEnd.height, eased)}px`,
+        Object.assign(blackHole.style, {
+          left: `${mix(blackHoleStart.left, blackHoleEnd.left, eased)}px`,
+          top: `${mix(blackHoleStart.top, blackHoleEnd.top, eased)}px`,
+          width: `${mix(blackHoleStart.width, blackHoleEnd.width, eased)}px`,
+          height: `${mix(blackHoleStart.height, blackHoleEnd.height, eased)}px`,
           transform: `rotate(${360 * eased}deg)`,
         });
         Object.assign(face.style, {
@@ -132,8 +132,8 @@
       overlay = document.createElement("div");
       overlay.className = "portfolio-intro";
       overlay.setAttribute("aria-hidden", "true");
-      const star = halo.cloneNode(true);
-      star.setAttribute("class", "portfolio-intro__star");
+      const blackHole = halo.cloneNode(true);
+      blackHole.setAttribute("class", "portfolio-intro__black-hole black-hole");
       const face = smile.cloneNode(true);
       face.setAttribute("class", "portfolio-intro__face");
       const eyes = face.querySelector(".smile-eyes");
@@ -152,15 +152,15 @@
       const viewportHeight = document.documentElement.clientHeight || innerHeight;
       const centerX = viewportWidth / 2;
       const centerY = viewportHeight / 2;
-      const starSize = Math.min(viewportWidth * 0.68, viewportHeight * 0.78, 1100);
-      const faceSize = starSize * 0.46;
+      const blackHoleSize = Math.min(viewportWidth * 0.68, viewportHeight * 0.78, 1100);
+      const faceSize = blackHoleSize * 0.46;
       const faceStartLeft = centerX - faceSize / 2;
       const faceStartTop = centerY - faceSize / 2 - faceSize * 0.05 + 3;
-      Object.assign(star.style, {
+      Object.assign(blackHole.style, {
         left: `${centerX}px`,
         top: `${centerY}px`,
-        width: `${starSize}px`,
-        height: `${starSize}px`,
+        width: `${blackHoleSize}px`,
+        height: `${blackHoleSize}px`,
         transform: "translate(-50%, -50%)",
       });
       Object.assign(face.style, {
@@ -169,7 +169,7 @@
         width: `${faceSize}px`,
         height: `${faceSize}px`,
       });
-      overlay.append(star, face);
+      overlay.append(blackHole, face);
       document.body.appendChild(overlay);
       window.addEventListener(
         "resize",
@@ -192,7 +192,7 @@
           { duration: 500, easing: ease },
         ),
         animate(
-          star,
+          blackHole,
           [
             { opacity: 0, transform: "translate(-50%, -50%) scale(.84)" },
             { opacity: 1, transform: "translate(-50%, -50%) scale(1)" },
@@ -226,10 +226,10 @@
           easing: "ease-out",
         }),
       );
-      // The face and star travel together; keep both visible until both arrive.
+      // The face and black hole travel together; keep both visible until both arrive.
       await Promise.all([
         ...reveals,
-        flyToTargets(star, face, halo, smile, 2200),
+        flyToTargets(blackHole, face, halo, smile, 2200),
       ]);
       if (!finished) await wait(180);
     } finally {

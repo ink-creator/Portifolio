@@ -7,8 +7,8 @@
   --border2: #343b4a;
   --text: #f5f7fb;
   --muted: #99a2b1;
-  --accent: #9a8cff;
-  --accent2: #c2baff;
+  --accent: #58adff;
+  --accent2: #a8d5ff;
   --danger: #ff7777;
   --ok: #8ee5b1;
   --radius: 18px;
@@ -24,7 +24,7 @@ html {
 body {
   margin: 0;
   background:
-    radial-gradient(circle at 75% -10%, rgba(154, 140, 255, 0.1), transparent 34%), var(--bg);
+    radial-gradient(circle at 75% -10%, rgba(88, 173, 255, 0.12), transparent 34%), var(--bg);
   color: var(--text);
   font-family: Inter, system-ui, sans-serif;
   line-height: 1.6;
@@ -136,7 +136,7 @@ select {
   font-weight: 750;
 }
 .hero-card {
-  background: linear-gradient(150deg, rgba(154, 140, 255, 0.12), transparent 48%), var(--surface);
+  background: linear-gradient(150deg, rgba(88, 173, 255, 0.12), transparent 48%), var(--surface);
   border: 1px solid var(--border);
   border-radius: 25px;
   padding: 22px;
@@ -336,7 +336,7 @@ select {
 .filter-button.active {
   color: var(--text);
   border-color: var(--accent);
-  background: #171523;
+  background: #0d1d2e;
 }
 .detail-header {
   max-width: 850px;
@@ -465,7 +465,7 @@ select {
 .panel textarea:focus,
 .panel select:focus {
   border-color: var(--accent);
-  box-shadow: 0 0 0 3px rgba(154, 140, 255, 0.08);
+  box-shadow: 0 0 0 3px rgba(88, 173, 255, 0.1);
 }
 .panel small {
   color: #737c8b;
@@ -543,7 +543,7 @@ select {
   background: #10131a;
 }
 .admin-notice.error {
-  border-color: #713d45;
+  border-color: #1a3e45;
   color: #ffb4b4;
 }
 .file-button {
@@ -565,7 +565,7 @@ select {
 .upload-zone:hover,
 .upload-zone.drag {
   border-color: var(--accent);
-  background: #11101b;
+  background: #0b1724;
 }
 .upload-zone span {
   color: var(--muted);
@@ -577,7 +577,7 @@ select {
   border-radius: 11px;
   display: grid;
   place-items: center;
-  background: #181524;
+  background: #10243a;
   color: var(--accent2);
   font-weight: 800;
   margin-bottom: 4px;

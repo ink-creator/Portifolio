@@ -3,27 +3,30 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <meta name="theme-color" content="#03020d" />
+    <meta name="theme-color" content="#020711" />
     <meta
       name="description"
-      content="Explore os projetos, experimentos e trabalhos de tecnologia de Ink e Stella."
+      content="Explore os projetos, experimentos e ferramentas de tecnologia criados por Ink."
     />
-    <title>Projetos — Ink × Stella</title>
+    <title>Projetos — Ink</title>
     <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml" />
     <link rel="stylesheet" href="../assets/css/style.css" />
     <link rel="stylesheet" href="../assets/css/responsive.css" />
-    <link rel="stylesheet" href="../assets/css/cosmic.css?v=20260928-2" />
+    <link rel="stylesheet" href="../assets/css/cosmic.css?v=20261017-1" />
   </head>
   <body class="projects-page">
     <div class="cosmic-backdrop" aria-hidden="true">
-      <svg class="cosmic-halo" viewBox="0 -3.5 100 100">
-        <polygon points="50,3 61,36 96,36 67,56 78,90 50,70 22,90 33,56 4,36 39,36" />
+      <svg class="cosmic-halo black-hole" viewBox="0 0 100 100">
+        <ellipse class="black-hole-ring black-hole-ring-outer" cx="50" cy="50" rx="45" ry="16" />
+        <ellipse class="black-hole-ring black-hole-ring-inner" cx="50" cy="50" rx="34" ry="11" />
+        <circle class="black-hole-glow" cx="50" cy="50" r="22" />
+        <circle class="black-hole-core" cx="50" cy="50" r="15" />
       </svg>
     </div>
     <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
     <header class="site-header">
-      <a class="brand" href="../" aria-label="Ink e Stella, início"
-        >ink<span>×</span>stella<span class="brand-dot">.</span></a
+      <a class="brand" href="../" aria-label="Ink, início"
+        >ink<span class="brand-dot">.</span></a
       ><button
         class="menu-toggle"
         aria-label="Abrir menu"
@@ -34,31 +37,24 @@
       </button>
       <nav class="nav" id="site-nav" aria-label="Navegação principal">
         <a href="../">Início</a
-        ><a href="../projetos/#programacao" class="active" aria-current="page">Programação</a
-        ><a href="../design/#design">Design</a><a href="../sobre/">Sobre nós</a>
+        ><a href="../projetos/#programacao" class="active" aria-current="page">Projetos</a
+        ><a href="../sobre/">Sobre mim</a>
       </nav>
       <a
         class="header-social"
-        href="https://www.instagram.com/inkxstella/"
-        target="_blank"
-        rel="noopener"
-        >Vamos conversar <span aria-hidden="true">↗</span></a
+        href="../sobre/"
+        >Sobre mim <span aria-hidden="true">↗</span></a
       >
     </header>
     <main id="conteudo" class="container page">
-      <nav class="area-switch" aria-label="Escolha uma área do portfólio">
-        <a href="#programacao" class="active" aria-current="page"
-          ><span aria-hidden="true">&lt;/&gt;</span> Programação</a
-        ><a href="../design/#design"><span aria-hidden="true">✦</span> Design</a>
-      </nav>
       <div class="page-heading">
-        <p class="eyebrow">PROGRAMAÇÃO · INK</p>
+        <p class="eyebrow">PROJETOS · INK</p>
         <div class="page-heading-row">
           <h1>Ideias que<br /><span class="gradient-text">ganharam vida.</span></h1>
           <div
             class="code-window code-mini"
             role="img"
-            aria-label="Detalhe decorativo em HTML: projetos feitos em dupla."
+            aria-label="Detalhe decorativo em HTML: projetos criados por Ink."
           >
             <div class="code-window-bar">
               <span class="code-dots" aria-hidden="true"><i></i><i></i><i></i></span
@@ -66,7 +62,7 @@
             </div>
             <pre
               aria-hidden="true"
-            ><code><span class="code-blue">&lt;main</span> <span class="code-lilac">class</span>=<span class="code-green">"projetos"</span><span class="code-blue">&gt;</span>
+            ><code><span class="code-blue">&lt;main</span> <span class="code-attribute">class</span>=<span class="code-green">"projetos"</span><span class="code-blue">&gt;</span>
   <span class="code-comment">&lt;!-- ideias ganhando vida --&gt;</span>
 <span class="code-blue">&lt;/main&gt;</span></code></pre>
           </div>
@@ -84,14 +80,11 @@
     </main>
     <footer class="footer">
       <div class="container footer-inner">
-        <span>© <span data-year></span> Ink × Stella</span
-        ><span>Código, criatividade e um pouco de nós.</span
-        ><a href="https://www.instagram.com/inkxstella/" target="_blank" rel="noopener"
-          >Instagram ↗</a
-        >
+        <span>© <span data-year></span> Ink</span
+        ><span>Código, curiosidade e ideias em movimento.</span>
       </div>
     </footer>
-    <script src="../assets/js/app.js?v=20260928-4"></script>
+    <script src="../assets/js/app.js?v=20261017-1"></script>
     <script src="../assets/js/projects.js"></script>
     <script src="../assets/js/projects-list.js"></script>
   </body>

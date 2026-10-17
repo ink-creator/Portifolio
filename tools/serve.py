@@ -23,7 +23,7 @@ def main():
     args = parser.parse_args()
     handler = partial(NoCacheHandler, directory=str(ROOT))
     server = ThreadingHTTPServer(("127.0.0.1", args.port), handler)
-    print(f"Ink × Stella: http://127.0.0.1:{args.port}/")
+    print(f"Ink: http://127.0.0.1:{args.port}/")
     try:
         server.serve_forever()
     except KeyboardInterrupt:

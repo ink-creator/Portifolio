@@ -36,17 +36,17 @@
       "about-transition-out",
       "projects-transition-out",
     );
-    document.querySelector(".page-transition-star")?.remove();
+    document.querySelector(".page-transition-cosmos")?.remove();
     document.querySelectorAll("[data-transition-source]").forEach((source) => {
       source.style.removeProperty("visibility");
       source.removeAttribute("data-transition-source");
     });
   });
 
-  function leaveWithStar(destination, direction) {
+  function leaveWithBlackHole(destination, direction) {
     document.dispatchEvent(new Event("portfolio:intro-finish"));
     const source = document.querySelector(
-      direction === "down" ? ".cosmic-halo" : ".about-end-star",
+      direction === "down" ? ".cosmic-halo" : ".about-end-black-hole",
     );
     if (!source) {
       location.assign(destination);
@@ -57,10 +57,10 @@
     const size = rect.width;
     const startLeft = direction === "down" ? rect.left : (innerWidth - size) / 2;
     const startTop = direction === "down" ? rect.top : innerHeight + 50;
-    const star = source.cloneNode(true);
-    star.setAttribute("class", "cosmic-halo page-transition-star");
-    star.setAttribute("aria-hidden", "true");
-    Object.assign(star.style, {
+    const blackHole = source.cloneNode(true);
+    blackHole.setAttribute("class", "cosmic-halo black-hole page-transition-cosmos");
+    blackHole.setAttribute("aria-hidden", "true");
+    Object.assign(blackHole.style, {
       left: `${startLeft}px`,
       top: `${startTop}px`,
       width: `${size}px`,
@@ -70,7 +70,7 @@
     });
     source.dataset.transitionSource = "true";
     source.style.visibility = "hidden";
-    document.body.appendChild(star);
+    document.body.appendChild(blackHole);
     lockPage();
     document.body.classList.add(
       direction === "down" ? "about-transition-out" : "projects-transition-out",
@@ -111,9 +111,9 @@
             },
             { top: `${-size / 2}px`, rotate: "0deg", scale: 1, opacity: 1 },
           ];
-    // Let every text block disappear before the star starts moving.
+    // Let every text block disappear before the black hole starts moving.
     setTimeout(() => {
-      const flight = star.animate(frames, {
+      const flight = blackHole.animate(frames, {
         duration: 920,
         easing: "cubic-bezier(.48,.04,.86,.36)",
         fill: "forwards",
@@ -144,18 +144,13 @@
     if (destination.origin !== location.origin) return;
 
     const goesToProjects = destinationPath.endsWith("/projetos");
-    const goesToDesign = destinationPath.endsWith("/design");
     const goesToAbout = destinationPath.endsWith("/sobre");
     const fromHome = document.body.classList.contains("home-page");
     const fromProjects = document.body.classList.contains("projects-page");
-    const fromDesign = document.body.classList.contains("design-page");
     const fromAbout = document.body.classList.contains("about-page");
-    const fallsToAbout = goesToAbout && (fromHome || fromProjects || fromDesign);
-    const risesToPortfolio = (goesToProjects || goesToDesign) && fromAbout;
-    const fadesToPortfolio =
-      ((goesToProjects || goesToDesign) && fromHome) ||
-      (goesToDesign && fromProjects) ||
-      (goesToProjects && fromDesign);
+    const fallsToAbout = goesToAbout && (fromHome || fromProjects);
+    const risesToPortfolio = goesToProjects && fromAbout;
+    const fadesToPortfolio = goesToProjects && fromHome;
     if (!fallsToAbout && !risesToPortfolio && !fadesToPortfolio) return;
 
     event.preventDefault();
@@ -166,11 +161,11 @@
     )
       return;
     if (fallsToAbout) {
-      leaveWithStar(destination.href, "down");
+      leaveWithBlackHole(destination.href, "down");
       return;
     }
     if (risesToPortfolio) {
-      leaveWithStar(destination.href, "up");
+      leaveWithBlackHole(destination.href, "up");
       return;
     }
     document.body.classList.add("page-transition-out");

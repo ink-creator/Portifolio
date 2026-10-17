@@ -2,7 +2,7 @@
   "projects": [
     {
       "id": "notas-flutuantes",
-      "title": "Notas Flutuantes",
+      "title": "Ink Notes",
       "creators": [
         "Ink"
       ],
@@ -10,7 +10,7 @@
       "status": "completed",
       "featured": true,
       "shortDescription": "Quadro visual no navegador para organizar ideias com notas conectadas, arquivos, múltiplos quadros e armazenamento local.",
-      "description": "Notas Flutuantes é um espaço de trabalho visual criado para organizar ideias de forma livre e flexível. Permite criar, mover, redimensionar, colorir, fixar e conectar notas; organizar conteúdos em múltiplos quadros; anexar arquivos e links; e utilizar busca, calendário, zoom, atalhos, temas claro e escuro e interface em português ou inglês. Os quadros, anexos e versões salvas permanecem no navegador, sem conta ou backend, e podem ser protegidos por backups exportados e importados em JSON.",
+      "description": "Ink Notes é um espaço de trabalho visual criado para organizar ideias de forma livre e flexível. Permite criar, mover, redimensionar, colorir, fixar e conectar notas; organizar conteúdos em múltiplos quadros; anexar arquivos e links; e utilizar busca, calendário, zoom, atalhos, temas claro e escuro e interface em português ou inglês. Os quadros, anexos e versões salvas permanecem no navegador, sem conta ou backend, e podem ser protegidos por backups exportados e importados em JSON.",
       "technologies": [
         "HTML",
         "CSS",
@@ -37,7 +37,7 @@
     },
     {
       "id": "analisador-de-arquivos",
-      "title": "Analisador de Projetos",
+      "title": "Ink Analyzer",
       "creators": [
         "Ink"
       ],
@@ -45,7 +45,7 @@
       "status": "completed",
       "featured": true,
       "shortDescription": "Aplicativo desktop para analisar projetos de programação, visualizar estrutura, linguagens, estatísticas, arquivos e indicadores de código sem modificar o projeto original.",
-      "description": "Analisador de Projetos é uma ferramenta desktop criada para inspecionar projetos de programação locais de forma visual e somente leitura. O programa analisa arquivos, pastas, linhas, tamanho, distribuição de linguagens, extensões, profundidade da estrutura e maiores arquivos e diretórios. Também oferece uma árvore interativa para explorar o projeto, pesquisa por arquivos e pastas, identificação de marcadores como TODO, FIXME e HACK, além de um modo CLI com saída em JSON.",
+      "description": "Ink Analyzer é uma ferramenta desktop criada para inspecionar projetos de programação locais de forma visual e somente leitura. O programa analisa arquivos, pastas, linhas, tamanho, distribuição de linguagens, extensões, profundidade da estrutura e maiores arquivos e diretórios. Também oferece uma árvore interativa para explorar o projeto, pesquisa por arquivos e pastas, identificação de marcadores como TODO, FIXME e HACK, além de um modo CLI com saída em JSON.",
       "technologies": [
         "Python",
         "pywebview",
@@ -72,7 +72,7 @@
     },
     {
       "id": "leito-de-projetos",
-      "title": "Leito de Projetos",
+      "title": "Ink Reader",
       "creators": [
         "Ink"
       ],
@@ -80,7 +80,7 @@
       "status": "completed",
       "featured": true,
       "shortDescription": "Aplicativo desktop para transformar projetos de código em arquivos organizados para análise, documentação, compartilhamento e uso com ferramentas de IA.",
-      "description": "Leitor de Projetos é uma ferramenta desktop criada para preparar projetos de programação para análise e compartilhamento. O aplicativo permite selecionar arquivos e pastas, aplicar filtros e gerar o conteúdo em um único arquivo, arquivos separados ou partes preparadas para IA. O modo Prepare for AI estima tokens, divide projetos grandes automaticamente e exporta o conteúdo em Markdown ou TXT, mantendo tudo localmente e sem exigir chave de API.",
+      "description": "Ink Reader é uma ferramenta desktop criada para preparar projetos de programação para análise e compartilhamento. O aplicativo permite selecionar arquivos e pastas, aplicar filtros e gerar o conteúdo em um único arquivo, arquivos separados ou partes preparadas para IA. O modo Prepare for AI estima tokens, divide projetos grandes automaticamente e exporta o conteúdo em Markdown ou TXT, mantendo tudo localmente e sem exigir chave de API.",
       "technologies": [
         "Python",
         "Tkinter",
@@ -106,7 +106,7 @@
     },
     {
       "id": "conversor-de-arquivos",
-      "title": "Conversor de Arquivos",
+      "title": "Ink Converter",
       "creators": [
         "Ink"
       ],
@@ -114,7 +114,7 @@
       "status": "completed",
       "featured": false,
       "shortDescription": "Aplicativo desktop para converter documentos, dados estruturados e imagens, com suporte a conversão em lote, compressão e redimensionamento.",
-      "description": "Conversor de Arquivos é uma aplicação desktop criada para simplificar conversões comuns de arquivos em uma interface visual. O programa suporta documentos, dados estruturados e imagens, detecta automaticamente formatos compatíveis e oferece conversão em lote com políticas para conflitos de nomes. A área de imagens também permite comprimir e redimensionar arquivos, enquanto o pywebview integra a interface em HTML, CSS e JavaScript ao backend em Python.",
+      "description": "Ink Converter é uma aplicação desktop criada para simplificar conversões comuns de arquivos em uma interface visual. O programa suporta documentos, dados estruturados e imagens, detecta automaticamente formatos compatíveis e oferece conversão em lote com políticas para conflitos de nomes. A área de imagens também permite comprimir e redimensionar arquivos, enquanto o pywebview integra a interface em HTML, CSS e JavaScript ao backend em Python.",
       "technologies": [
         "Python",
         "pywebview",

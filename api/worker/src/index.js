@@ -72,7 +72,7 @@ async function github(path, options = {}, token) {
       accept: "application/vnd.github+json",
       authorization: `Bearer ${token}`,
       "x-github-api-version": "2022-11-28",
-      "user-agent": "ink-stella-portfolio-admin",
+      "user-agent": "ink-portfolio-admin",
       ...(options.headers || {}),
     },
   });
@@ -127,7 +127,7 @@ async function sessionUser(request, env) {
   if (!token) return null;
   try {
     const { payload } = await jwtVerify(token, new TextEncoder().encode(env.SESSION_SECRET), {
-      issuer: "ink-stella-admin",
+      issuer: "ink-admin",
       audience: "portfolio-worker",
     });
     return payload;
@@ -152,21 +152,6 @@ function validateProject(project, seen) {
   seen.add(project.id);
   if (!String(project.title || "").trim() || !String(project.shortDescription || "").trim()) {
     throw new Error(`Título e descrição curta são obrigatórios em ${project.id}.`);
-  }
-}
-
-function validateDesignProject(project, seen) {
-  if (!project || typeof project !== "object") throw new Error("Trabalho de design inválido.");
-  if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(project.id || "")) {
-    throw new Error(`ID inválido: ${project.id || "vazio"}.`);
-  }
-  if (seen.has(project.id)) throw new Error(`ID duplicado: ${project.id}.`);
-  seen.add(project.id);
-  if (!String(project.title || "").trim()) {
-    throw new Error(`O título é obrigatório em ${project.id}.`);
-  }
-  if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(project.category || "")) {
-    throw new Error(`Categoria inválida em ${project.id}.`);
   }
 }
 
@@ -304,33 +289,6 @@ async function publish(env, projects, options = {}) {
   return prepared.projects;
 }
 
-async function publishDesign(env, designData) {
-  if (!designData || !Array.isArray(designData.categories) || !Array.isArray(designData.projects)) {
-    throw new Error("Dados de design inválidos.");
-  }
-  const categoryIds = new Set();
-  for (const category of designData.categories) {
-    if (
-      !category ||
-      !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(category.id || "") ||
-      !String(category.label || "").trim() ||
-      categoryIds.has(category.id)
-    ) {
-      throw new Error("Há uma categoria de design inválida ou repetida.");
-    }
-    categoryIds.add(category.id);
-  }
-  const categories = structuredClone(designData.categories);
-  const projects = await publish(env, designData.projects, {
-    validate: validateDesignProject,
-    folder: "design",
-    dataPath: "data/design-projects.json",
-    wrap: (items) => ({ categories, projects: items }),
-    commitMessage: "admin: atualizar projetos de design",
-  });
-  return { categories, projects };
-}
-
 async function handle(request, env) {
   const url = new URL(request.url);
   if (request.method === "OPTIONS") {
@@ -386,7 +344,7 @@ async function handle(request, env) {
       return redirect(`${adminUrl}#error=acesso_negado`);
     const session = await new SignJWT({ login: account.login, avatar: account.avatar_url })
       .setProtectedHeader({ alg: "HS256" })
-      .setIssuer("ink-stella-admin")
+      .setIssuer("ink-admin")
       .setAudience("portfolio-worker")
       .setIssuedAt()
       .setExpirationTime("2h")
@@ -406,12 +364,6 @@ async function handle(request, env) {
     const body = await readPublishBody(request);
     const projects = await publish(env, body.projects);
     return json(request, env, { ok: true, projects });
-  }
-
-  if (url.pathname === "/api/publish-design" && request.method === "POST") {
-    const body = await readPublishBody(request);
-    const designData = await publishDesign(env, body.designData);
-    return json(request, env, { ok: true, designData });
   }
 
   return json(request, env, { error: "rota não encontrada" }, 404);
