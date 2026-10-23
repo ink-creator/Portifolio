@@ -12,45 +12,43 @@
     <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
     <link rel="stylesheet" href="assets/css/style.css" />
     <link rel="stylesheet" href="assets/css/responsive.css" />
-    <link rel="stylesheet" href="assets/css/cosmic.css?v=20261017-2" />
-    <link rel="stylesheet" href="assets/css/intro.css?v=20261017-1" />
-    <script src="assets/js/intro.js?v=20261017-1"></script>
+    <link rel="stylesheet" href="assets/css/cosmic.css?v=20261022-6" />
+    <link rel="stylesheet" href="assets/css/gravity.css?v=20261022-6" />
+    <link rel="stylesheet" href="assets/css/infall.css?v=20261022-6" />
+    <link rel="stylesheet" href="assets/css/intro.css?v=20261022-6" />
+    <script src="assets/js/gravity.js?v=20261022-6"></script>
+    <script src="assets/js/infall.js?v=20261022-6"></script>
+    <script src="assets/js/intro.js?v=20261022-6"></script>
   </head>
   <body class="home-page">
     <div class="cosmic-backdrop" aria-hidden="true">
-      <svg class="cosmic-halo black-hole" viewBox="0 0 100 100">
-        <defs>
-          <radialGradient id="black-hole-aura-gradient">
-            <stop offset="0" stop-color="#dff5ff" stop-opacity=".5" />
-            <stop offset=".38" stop-color="#58adff" stop-opacity=".32" />
-            <stop offset=".72" stop-color="#176fc4" stop-opacity=".1" />
-            <stop offset="1" stop-color="#020711" stop-opacity="0" />
-          </radialGradient>
-          <linearGradient id="black-hole-disk-gradient">
-            <stop offset="0" stop-color="#0b315b" stop-opacity=".12" />
-            <stop offset=".2" stop-color="#2589df" stop-opacity=".7" />
-            <stop offset=".46" stop-color="#dff5ff" />
-            <stop offset=".58" stop-color="#8bd2ff" stop-opacity=".95" />
-            <stop offset=".82" stop-color="#176fc4" stop-opacity=".62" />
-            <stop offset="1" stop-color="#071a31" stop-opacity=".08" />
-          </linearGradient>
-          <radialGradient id="black-hole-core-gradient" cx="38%" cy="34%">
-            <stop offset="0" stop-color="#08111d" />
-            <stop offset=".62" stop-color="#010307" />
-            <stop offset="1" stop-color="#000" />
-          </radialGradient>
-        </defs>
-        <circle class="black-hole-aura" cx="50" cy="50" r="36" fill="url(#black-hole-aura-gradient)" />
-        <g class="black-hole-disk-plane" transform="rotate(-9 50 50)">
-          <ellipse class="black-hole-disk" cx="50" cy="50" rx="46" ry="14" stroke="url(#black-hole-disk-gradient)" />
-          <ellipse class="black-hole-disk-detail" cx="50" cy="50" rx="40" ry="10.5" />
-        </g>
-        <circle class="black-hole-lensing-ring" cx="50" cy="50" r="21" />
-        <circle class="black-hole-core" cx="50" cy="50" r="16" fill="url(#black-hole-core-gradient)" />
-        <path class="black-hole-lensed-light" d="M31 43a21 21 0 0 1 38 0" />
-        <path class="black-hole-foreground-disk" d="M7 51c18 18 67 18 86-2" stroke="url(#black-hole-disk-gradient)" />
-        <path class="black-hole-hot-edge" d="M23 59c17 8 39 8 56-1" />
-      </svg>
+      <div class="cosmic-halo black-hole" aria-hidden="true">
+        <div class="black-hole__scene">
+          <span class="black-hole__aura"></span>
+          <span class="black-hole__lensing"></span>
+          <div class="black-hole__disk black-hole__disk--back">
+            <span class="black-hole__stream"></span>
+            <span class="black-hole__stream"></span>
+            <span class="black-hole__stream"></span>
+            <span class="black-hole__stream"></span>
+            <span class="black-hole__stream"></span>
+            <span class="black-hole__stream"></span>
+          </div>
+          <span class="black-hole__photon-ring"></span>
+          <span class="black-hole__shadow"></span>
+          <div class="black-hole__foreground">
+            <div class="black-hole__disk black-hole__disk--front">
+              <span class="black-hole__stream"></span>
+              <span class="black-hole__stream"></span>
+              <span class="black-hole__stream"></span>
+              <span class="black-hole__stream"></span>
+              <span class="black-hole__stream"></span>
+              <span class="black-hole__stream"></span>
+            </div>
+          </div>
+          <span class="black-hole__glint"></span>
+        </div>
+      </div>
     </div>
     <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
     <header class="site-header">
@@ -170,6 +168,6 @@ build(idea, <span class="code-green">with_curiosity</span>=<span class="code-blu
         ><span>Código, curiosidade e ideias em movimento.</span>
       </div>
     </footer>
-    <script src="assets/js/app.js?v=20261017-1"></script>
+    <script src="assets/js/app.js?v=20261022-6"></script>
   </body>
 </html>

@@ -55,7 +55,7 @@ body {
   margin: 0;
   animation: none !important;
   pointer-events: none;
-  will-change: top, rotate, scale, opacity;
+  will-change: transform, opacity;
 }
 .route-transition-lock,
 .route-transition-lock body {
@@ -82,8 +82,8 @@ body.projects-transition-out .footer {
   animation: none !important;
   pointer-events: none;
   transition:
-    opacity 0.3s ease,
-    transform 0.32s cubic-bezier(0.4, 0, 1, 1);
+    opacity 0.26s ease 0.48s,
+    transform 0.6s cubic-bezier(0.4, 0, 1, 1) 0.12s;
 }
 .button.primary {
   background: linear-gradient(180deg, #1b78c955, #0c4d956b);
@@ -123,81 +123,175 @@ body.projects-transition-out .footer {
 }
 .cosmic-halo {
   position: absolute;
-  width: 670px;
-  height: 670px;
+  width: 720px;
+  height: 720px;
   left: 50%;
-  top: -250px;
+  top: -255px;
   transform: translateX(-50%);
+}
+/* The light is bent around an uninterrupted event horizon. The near disk is
+   masked out of the shadow; moving gas stays inside a stable orbital plane. */
+.black-hole {
+  position: relative;
+  flex-shrink: 0;
+  isolation: isolate;
   overflow: visible;
-  filter:
-    drop-shadow(0 0 5px #58adff)
-    drop-shadow(0 0 18px #176fc4aa);
-  animation: black-hole-pulse 8s ease-in-out infinite;
+  pointer-events: none;
+  contain: layout style;
 }
-.black-hole-aura {
-  opacity: 0.88;
-  transform-box: fill-box;
-  transform-origin: center;
-  animation: black-hole-aura 6s ease-in-out infinite;
+.cosmic-halo.black-hole {
+  position: absolute;
 }
-.black-hole-disk {
-  fill: none;
-  stroke-width: 5.2;
-  stroke-linecap: round;
-  opacity: 0.78;
-  filter:
-    drop-shadow(0 0 1.8px #dff5ff)
-    drop-shadow(0 0 5px #2589df);
+.cosmic-halo.black-hole.page-transition-cosmos {
+  position: fixed;
 }
-.black-hole-disk-detail {
-  fill: none;
-  stroke: #a8d5ff;
-  stroke-width: 0.55;
-  stroke-linecap: round;
-  stroke-dasharray: 7 4 2 5;
-  opacity: 0.6;
-  animation: black-hole-orbit 12s linear infinite;
+.black-hole__scene {
+  position: absolute;
+  inset: 0;
+  transform: rotate(-12deg);
 }
-.black-hole-lensing-ring {
-  fill: none;
-  stroke: #7fc5ff;
-  stroke-width: 1.15;
-  opacity: 0.75;
-  filter:
-    drop-shadow(0 0 1px #dff5ff)
-    drop-shadow(0 0 3px #2589df);
+.black-hole__aura,
+.black-hole__lensing,
+.black-hole__photon-ring,
+.black-hole__shadow,
+.black-hole__glint {
+  position: absolute;
+  display: block;
+  border-radius: 50%;
 }
-.black-hole-core {
-  stroke: #000;
-  stroke-width: 1.6;
-  filter:
-    drop-shadow(0 0 2px #000)
-    drop-shadow(0 0 5px #020711);
+.black-hole__aura {
+  inset: -9%;
+  background:
+    radial-gradient(ellipse closest-side at 43% 41%, #8ed4ff1a 0%, #2585ed1f 27%, #1649a40c 43%, transparent 90%),
+    radial-gradient(ellipse 43% 8% at 45% 50%, #c6eeff59, #318ff522 58%, transparent 88%);
+  animation: black-hole-radiance 6.8s ease-in-out infinite;
 }
-.black-hole-lensed-light,
-.black-hole-foreground-disk,
-.black-hole-hot-edge {
-  fill: none;
-  stroke-linecap: round;
+.black-hole__lensing {
+  z-index: 2;
+  inset: 25%;
+  background: conic-gradient(from 180deg, transparent 8%, #2c629e38 20%, #9bd5ffb3 34%, #e8f8ffeb 46%, #b4e4ffb3 58%, #3b77b359 76%, transparent 92%);
+  mask-image: radial-gradient(closest-side, transparent 77%, #0005 80%, #000 83%, #000a 86%, #0003 91%, transparent 97%);
+  filter: blur(0.8px);
 }
-.black-hole-lensed-light {
-  stroke: #dff5ff;
-  stroke-width: 1.7;
-  opacity: 0.88;
-  filter: drop-shadow(0 0 2px #58adff);
+.black-hole__disk {
+  position: absolute;
+  inset: 3% 0;
+  border-radius: 50%;
+  transform: scaleY(0.2);
+  background:
+    radial-gradient(ellipse closest-side at 32% 49%, #fff5e259, #e8f8ff33 27%, #91cfff26 53%, transparent 84%),
+    radial-gradient(closest-side, transparent 24%, #eefbff59 29%, #b9e3ff3b 36%, #418fdf26 51%, transparent 87%),
+    conic-gradient(from 0deg, #2761a738, #1b509240 72deg, #4d9bdd59 142deg, #b9e7ff80 216deg, #fff6e699 267deg, #d1efff80 302deg, #2761a738);
+  mask-image: radial-gradient(closest-side, transparent 25%, #000 31% 45%, #000d 54%, #0007 70%, #0002 86%, transparent 99%);
 }
-.black-hole-foreground-disk {
-  stroke-width: 5;
-  opacity: 0.96;
-  filter:
-    drop-shadow(0 0 1.5px #dff5ff)
-    drop-shadow(0 0 5px #2589df);
+.black-hole__disk::before,
+.black-hole__disk::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
 }
-.black-hole-hot-edge {
-  stroke: #e8f7ff;
-  stroke-width: 0.85;
-  opacity: 0.76;
-  filter: drop-shadow(0 0 1.5px #74bdff);
+.black-hole__disk::before {
+  background: conic-gradient(from 18deg, transparent 0deg 22deg, #75b8f252 68deg, transparent 116deg 158deg, #e7f8ff8c 217deg, transparent 272deg 304deg, #a1d9ff59 332deg, transparent);
+  mask-image: radial-gradient(closest-side, transparent 27%, #0008 39%, #000 52%, #0006 74%, transparent 94%);
+  mix-blend-mode: screen;
+  filter: blur(6px);
+  opacity: 0.5;
+  animation: black-hole-accretion 21s linear infinite;
+}
+.black-hole__disk::after {
+  background: linear-gradient(95deg, #fff2d94d 6%, #d7f3ff33 28%, transparent 49%, #2266aa26 67%, #06182c80 94%);
+  mask-image: radial-gradient(closest-side, transparent 27%, #0008 40%, #000 62%, transparent 96%);
+  opacity: 0.7;
+}
+/* Broken filaments orbit at different speeds; the thermal asymmetry above
+   stays fixed so the approaching side remains brighter than the far side. */
+.black-hole__stream {
+  position: absolute;
+  display: block;
+  inset: var(--stream-inset, 0);
+  border-radius: 50%;
+  background: conic-gradient(from var(--stream-phase, 0deg), transparent 0deg 18deg, #62b9f52e 38deg, #b6e8ffa6 64deg, #fff5df 86deg, #dff7ffb3 109deg, transparent 143deg 207deg, #428fd54d 232deg, #97d9ff99 263deg, #e9faffb3 281deg, transparent 319deg);
+  mask-image: radial-gradient(ellipse closest-side at 49% 51%, transparent 80%, #0005 84%, #000 86.5% 88%, #0005 90%, transparent 94%);
+  mix-blend-mode: screen;
+  opacity: var(--stream-opacity, 0.55);
+  animation: black-hole-accretion var(--stream-speed, 16s) linear infinite;
+  animation-delay: var(--stream-delay, 0s);
+}
+.black-hole__stream:nth-child(1) {
+  --stream-inset: 0.5% 1.5%;
+  --stream-phase: 137deg;
+  --stream-speed: 31s;
+  --stream-opacity: 0.35;
+  --stream-delay: -18s;
+}
+.black-hole__stream:nth-child(2) {
+  --stream-inset: 6% 7%;
+  --stream-phase: 28deg;
+  --stream-speed: 23s;
+  --stream-opacity: 0.45;
+  --stream-delay: -7s;
+}
+.black-hole__stream:nth-child(3) {
+  --stream-inset: 13% 12%;
+  --stream-phase: 201deg;
+  --stream-speed: 16s;
+  --stream-opacity: 0.56;
+  --stream-delay: -11s;
+}
+.black-hole__stream:nth-child(4) {
+  --stream-inset: 19% 20%;
+  --stream-phase: 76deg;
+  --stream-speed: 11s;
+  --stream-opacity: 0.66;
+  --stream-delay: -3s;
+}
+.black-hole__stream:nth-child(5) {
+  --stream-inset: 25% 24%;
+  --stream-phase: 249deg;
+  --stream-speed: 8s;
+  --stream-opacity: 0.8;
+  --stream-delay: -5s;
+}
+.black-hole__stream:nth-child(6) {
+  --stream-inset: 31% 30%;
+  --stream-phase: 167deg;
+  --stream-speed: 5s;
+  --stream-opacity: 0.72;
+  --stream-delay: -2s;
+}
+.black-hole__photon-ring {
+  z-index: 4;
+  inset: 29.95%;
+  background: conic-gradient(from 180deg, #102a4d40, #7cbef080 17%, #dff3ff 34%, #f3fbff 48%, #b4deffb3 60%, #295f9c66 80%, #102a4d40);
+  box-shadow:
+    0 0 2px 0.5px #e7f6ff99,
+    0 0 6px 1px #72c3ff4d,
+    0 0 20px 4px #2876d526,
+    inset 0 0 3px #e0f5ff99;
+}
+.black-hole__shadow {
+  z-index: 5;
+  inset: 30.2%;
+  background: #000102;
+  box-shadow: inset 0 0 8px 2px #000, 0 0 2px 1px #000;
+}
+.black-hole__foreground {
+  position: absolute;
+  z-index: 3;
+  inset: 0;
+  mask-image: radial-gradient(circle closest-side, transparent 40%, #000 44%);
+}
+.black-hole__disk--front {
+  opacity: 0.2;
+}
+.black-hole__glint {
+  z-index: 3;
+  inset: 16% 0;
+  background: radial-gradient(ellipse 50% 1.3% at 50% 50%, #dff5ff99, #68baff33 48%, transparent 86%);
+  mask-image: radial-gradient(circle closest-side, transparent 59%, #000 65%);
+  filter: blur(1.5px);
+  opacity: 0.25;
 }
 .home-page .site-header {
   border-bottom: 0;
@@ -525,20 +619,18 @@ body.projects-transition-out .footer {
   max-width: 680px;
 }
 .about-end-mark {
-  min-height: 725px;
+  min-height: 775px;
   display: grid;
   place-items: center;
   padding-top: 55px;
   overflow: hidden;
 }
+.about-page main.page {
+  padding-bottom: 32px;
+}
 .about-end-black-hole {
-  width: 670px;
-  height: 670px;
-  overflow: visible;
-  filter:
-    drop-shadow(0 0 5px #58adff)
-    drop-shadow(0 0 18px #176fc4aa);
-  animation: black-hole-pulse 8s ease-in-out infinite;
+  width: 720px;
+  height: 720px;
 }
 .code-mini {
   flex: 0 1 302px;
@@ -572,29 +664,18 @@ body.projects-transition-out .footer {
     translate: 0 -7px;
   }
 }
-@keyframes black-hole-pulse {
+@keyframes black-hole-radiance {
   0%,
   100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.93;
-  }
-}
-@keyframes black-hole-aura {
-  0%,
-  100% {
-    opacity: 0.82;
-    transform: scale(0.98);
+    opacity: 0.8;
   }
   50% {
     opacity: 1;
-    transform: scale(1.04);
   }
 }
-@keyframes black-hole-orbit {
+@keyframes black-hole-accretion {
   to {
-    stroke-dashoffset: -36;
+    transform: rotate(360deg);
   }
 }
 @keyframes projects-reveal {
@@ -686,16 +767,16 @@ body.projects-transition-out .footer {
     height: 82px;
   }
   .cosmic-halo {
-    width: 500px;
-    height: 500px;
-    top: -187px;
+    width: 530px;
+    height: 530px;
+    top: -183px;
   }
   .about-end-mark {
-    min-height: 555px;
+    min-height: 585px;
   }
   .about-end-black-hole {
-    width: 500px;
-    height: 500px;
+    width: 530px;
+    height: 530px;
   }
   .cosmic-backdrop {
     height: 1250px;
@@ -767,19 +848,16 @@ body.projects-transition-out .footer {
     height: 76px;
   }
   .cosmic-halo {
-    width: 340px;
-    height: 340px;
-    top: -127px;
-    filter:
-      drop-shadow(0 0 4px #58adff)
-      drop-shadow(0 0 11px #176fc4aa);
+    width: 360px;
+    height: 360px;
+    top: -114px;
   }
   .about-end-mark {
-    min-height: 395px;
+    min-height: 415px;
   }
   .about-end-black-hole {
-    width: 340px;
-    height: 340px;
+    width: 360px;
+    height: 360px;
   }
   .site-header .nav {
     background: #061426f5;
@@ -882,9 +960,9 @@ body.projects-transition-out .footer {
 }
 @media (prefers-reduced-motion: reduce) {
   .code-float,
-  .cosmic-halo,
-  .black-hole-aura,
-  .black-hole-disk-detail {
+  .black-hole *,
+  .black-hole *::before,
+  .black-hole *::after {
     animation: none;
   }
 }

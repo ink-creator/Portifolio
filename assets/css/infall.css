@@ -1,0 +1,101 @@
+/* Discrete stars curve inward; the event horizon remains above this field. */
+.black-hole__particles {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  container-type: size;
+  transform: scaleY(0.88);
+  pointer-events: none;
+}
+.black-hole__particle {
+  position: absolute;
+  display: block;
+  left: 50%;
+  top: 50%;
+  width: var(--infall-size, 1px);
+  height: var(--infall-size, 1px);
+  opacity: 0;
+  transform-origin: center;
+  animation: black-hole-infall var(--infall-duration, 10s) linear infinite;
+  animation-delay: var(--infall-delay, 0s);
+}
+.black-hole__particle i {
+  position: absolute;
+  display: block;
+  inset: 0;
+  border-radius: 50%;
+  background: #effaff;
+  box-shadow: 0 0 3px #c1ecffb3, 0 0 7px #68baff59;
+}
+.black-hole__particle:nth-child(5n) i::before,
+.black-hole__particle:nth-child(5n) i::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: calc(var(--infall-size, 1px) * 3);
+  height: 0.5px;
+  background: #e2f6ff80;
+  transform: translate(-50%, -50%);
+}
+.black-hole__particle:nth-child(5n) i::after {
+  transform: translate(-50%, -50%) rotate(90deg);
+}
+.black-hole__particle::before {
+  content: "";
+  position: absolute;
+  right: 40%;
+  top: calc(50% - 0.4px);
+  width: var(--infall-tail, 8px);
+  height: 0.8px;
+  border-radius: 50%;
+  background: linear-gradient(90deg, transparent, #6bbcff26 35%, #b9e8ff99);
+  transform-origin: right center;
+  animation: black-hole-infall-tail var(--infall-duration, 10s) linear infinite;
+  animation-delay: var(--infall-delay, 0s);
+}
+@keyframes black-hole-infall {
+  0% {
+    opacity: 0;
+    transform: rotate(var(--infall-orbit0)) translate3d(var(--infall-r0), 0, 0) rotate(var(--infall-a0));
+  }
+  12% {
+    opacity: 0.55;
+  }
+  40% {
+    opacity: 0.8;
+    transform: rotate(var(--infall-orbit1)) translate3d(var(--infall-r1), 0, 0) rotate(var(--infall-a1));
+  }
+  69% {
+    opacity: 0.95;
+    transform: rotate(var(--infall-orbit2)) translate3d(var(--infall-r2), 0, 0) rotate(var(--infall-a2));
+  }
+  88% {
+    opacity: 0;
+    transform: rotate(var(--infall-orbit3)) translate3d(var(--infall-r3), 0, 0) rotate(var(--infall-a3));
+  }
+  100% {
+    opacity: 0;
+    transform: rotate(var(--infall-orbit4)) translate3d(var(--infall-r4), 0, 0) rotate(var(--infall-a4));
+  }
+}
+@keyframes black-hole-infall-tail {
+  0% { transform: scaleX(0.2); opacity: 0.1; }
+  40% { transform: scaleX(0.45); opacity: 0.45; }
+  69% { transform: scaleX(1); opacity: 0.85; }
+  88%, 100% { transform: scaleX(1.15); opacity: 0; }
+}
+@media (max-width: 540px) {
+  .black-hole__particle:nth-child(n + 25) {
+    display: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .black-hole__particles {
+    display: none;
+  }
+  .black-hole__particle,
+  .black-hole__particle::before {
+    animation: none;
+  }
+}
